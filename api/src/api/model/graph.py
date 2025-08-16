@@ -38,3 +38,13 @@ class Graph(object):
         nodes_str = "\n".join(str(node) for node in self.nodes)
         edges_str = "\n".join(str(edge) for edge in self.edges)
         return f"Nodes:\n{nodes_str}\nEdges:\n{edges_str}"
+
+    @property
+    def directed(self):
+        return self._directed
+
+    @directed.setter
+    def directed(self, value: bool):
+        if not isinstance(value, bool):
+            raise TypeError('Directed must be a boolean')
+        self._directed = value

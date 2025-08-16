@@ -1,3 +1,6 @@
 from django.shortcuts import render
 
-# Create your views here.
+
+def index(request):
+    datasource_plugins = None
+    return render(request, 'index.html', {'title': 'Index', 'datasource_plugins': datasource_plugins})
