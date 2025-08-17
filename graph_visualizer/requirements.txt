@@ -1,0 +1,2 @@
+graph-core==0.1.0
+Django==5.2.5
