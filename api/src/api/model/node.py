@@ -1,9 +1,23 @@
 from datetime import datetime
 from typing import Dict, Union
 
+
 class Node(object):
-    def __init__(self, data: Dict[str, Union[str, int, float, datetime]]):
+    def __init__(self, id: str, data: Dict[str, Union[str, int, float, datetime]]):
+        self._id = id
         self._data = data
+
+    @property
+    def id(self) -> str:
+        return self._id
+
+    @id.setter
+    def id(self, value: str):
+        if not isinstance(value, str):
+            raise TypeError("id must be a string")
+        if not value.strip():
+            raise ValueError("id cannot be empty")
+        self._id = value
 
     @property
     def data(self) -> Dict[str, Union[str, int, float, datetime]]:
@@ -21,4 +35,5 @@ class Node(object):
         self._data = value
 
     def __str__(self):
-        return "\n".join(f"{key}: {value}" for key, value in self._data.items())
+        return self._id+ "\n\t" + "\n\t".join(f"{key}: {value}" for key, value in self._data.items())
+
