@@ -26,4 +26,4 @@ class Edge(object):
         self._dest = value
 
     def __str__(self):
-        return f"{self.src} -> {self.dest}"
+        return f"{self.src.id} -> {self.dest.id}"
