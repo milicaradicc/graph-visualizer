@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "graph-datasource-rdf"
+version = "0.1"
+description = "Component for loading graph data from rdf file."
+dependencies = [
+    "graph-api==0.1",
+    "rdflib>=6.0"
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.entry-points."core.datasource"]
+datasource_rdf = "datasource_rdf.datasource:RdfDataSource"

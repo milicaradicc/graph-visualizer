@@ -1,6 +1,14 @@
 from django.apps import AppConfig
+from core.use_cases import PluginService
 
+datasource_group='core.datasource'
 
 class GraphVisualizerConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'graph_visualizer'
+
+    plugin_service = PluginService()
+
+    def ready(self):
+        self.plugin_service.load_plugins(datasource_group)
+
