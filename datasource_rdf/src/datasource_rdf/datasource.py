@@ -1,6 +1,20 @@
 from api.model import Graph, Node, Edge
 from api.components.data_source_plugin import DataSourcePlugin
-from rdflib import Graph as RdfGraph,RDF
+from rdflib import Graph as RdfGraph, RDF, Literal, XSD
+
+
+def _convert_literal(literal: Literal):
+    """Convert RDF literal into int, float, date, or string"""
+    dt = literal.datatype
+
+    if dt in (XSD.integer, XSD.int, XSD.long, XSD.short):
+        return int(literal)
+    elif dt in (XSD.float, XSD.double, XSD.decimal):
+        return float(literal)
+    elif dt in (XSD.date, XSD.dateTime):
+        return literal.toPython()
+    else:
+        return str(literal)
 
 
 class RdfDataSource(DataSourcePlugin):
@@ -19,21 +33,20 @@ class RdfDataSource(DataSourcePlugin):
         edges = []
 
         for s, p, o in rdf_graph:
+            s = str(s)
             if s not in nodes:
-                    nodes[s] = {}
+                nodes[s] = Node(s, {})
             if o.__class__.__name__ == 'Literal':
-                nodes[s][p] = str(o)
+                value = _convert_literal(o)
+                nodes[s].data[str(p)] = value
             elif p == RDF.type:
-                nodes[s]['type'] = str(o)
+                nodes[s].data['type'] = str(o)
             else:
-                edges.append((s, o))
+                o = str(o)
                 if s not in nodes:
-                    nodes[s] = {}
+                    nodes[s] = Node(s, {})
                 if o not in nodes:
-                    nodes[o] = {}
+                    nodes[o] = Node(o, {})
+                edges.append(Edge(nodes[s], nodes[o]))
 
-        graph_nodes = [Node(identifier, data) for identifier, data in nodes.items()]
-        graph_edges = [Edge(e[0], e[1]) for e in edges]
-
-        return Graph(graph_nodes, graph_edges, True)
-
+        return Graph(nodes.values(), edges, True)
