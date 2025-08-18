@@ -1,3 +1,4 @@
 -e ./api
 -e ./core
+-e ./datasource_rdf
 -r ./graph_visualizer/requirements.txt
