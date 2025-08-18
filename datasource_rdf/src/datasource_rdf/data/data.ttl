@@ -1,0 +1,3989 @@
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+ex:Person56 a foaf:Person ;
+    ex:age "57"^^xsd:int ;
+    ex:birthdate "2011-08-01"^^xsd:date ;
+    ex:height "1.76"^^xsd:float ;
+    foaf:knows ex:Person120,
+        ex:Person122,
+        ex:Person127,
+        ex:Person16,
+        ex:Person174,
+        ex:Person176,
+        ex:Person192,
+        ex:Person194,
+        ex:Person220,
+        ex:Person247,
+        ex:Person250,
+        ex:Person72,
+        ex:Person92 ;
+    foaf:name "Person 56"^^xsd:string .
+
+ex:Person125 a foaf:Person ;
+    ex:age "70"^^xsd:int ;
+    ex:birthdate "2011-08-24"^^xsd:date ;
+    ex:height "1.83"^^xsd:float ;
+    foaf:knows ex:Person118,
+        ex:Person165,
+        ex:Person202,
+        ex:Person233,
+        ex:Person243,
+        ex:Person33,
+        ex:Person57,
+        ex:Person66,
+        ex:Person79,
+        ex:Person91 ;
+    foaf:name "Person 125"^^xsd:string .
+
+ex:Person130 a foaf:Person ;
+    ex:age "54"^^xsd:int ;
+    ex:birthdate "2019-04-04"^^xsd:date ;
+    ex:height "1.74"^^xsd:float ;
+    foaf:knows ex:Person108,
+        ex:Person113,
+        ex:Person133,
+        ex:Person18,
+        ex:Person22,
+        ex:Person223,
+        ex:Person232,
+        ex:Person29,
+        ex:Person74,
+        ex:Person83 ;
+    foaf:name "Person 130"^^xsd:string .
+
+ex:Person132 a foaf:Person ;
+    ex:age "18"^^xsd:int ;
+    ex:birthdate "2001-09-01"^^xsd:date ;
+    ex:height "1.86"^^xsd:float ;
+    foaf:knows ex:Person164,
+        ex:Person173,
+        ex:Person179,
+        ex:Person57,
+        ex:Person99,
+	ex:Person132 ;
+    foaf:name "Person 132"^^xsd:string .
+
+ex:Person189 a foaf:Person ;
+    ex:age "73"^^xsd:int ;
+    ex:birthdate "2013-12-13"^^xsd:date ;
+    ex:height "1.83"^^xsd:float ;
+    foaf:knows ex:Person114,
+        ex:Person164,
+        ex:Person195,
+        ex:Person20,
+        ex:Person49,
+        ex:Person58,
+        ex:Person71,
+        ex:Person73,
+        ex:Person80,
+        ex:Person82,
+        ex:Person91,
+        ex:Person95,
+        ex:Person99 ;
+    foaf:name "Person 189"^^xsd:string .
+
+ex:Person202 a foaf:Person ;
+    ex:age "53"^^xsd:int ;
+    ex:birthdate "2023-01-09"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person139,
+        ex:Person155,
+        ex:Person198,
+        ex:Person216,
+        ex:Person244,
+        ex:Person41,
+        ex:Person79,
+        ex:Person97 ;
+    foaf:name "Person 202"^^xsd:string .
+
+ex:Person54 a foaf:Person ;
+    ex:age "23"^^xsd:int ;
+    ex:birthdate "1974-01-16"^^xsd:date ;
+    ex:height "1.81"^^xsd:float ;
+    foaf:knows ex:Person141,
+        ex:Person154,
+        ex:Person193,
+        ex:Person248,
+        ex:Person38,
+        ex:Person42,
+        ex:Person52,
+        ex:Person66 ;
+    foaf:name "Person 54"^^xsd:string .
+
+ex:Person110 a foaf:Person ;
+    ex:age "41"^^xsd:int ;
+    ex:birthdate "1970-06-12"^^xsd:date ;
+    ex:height "1.52"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person123,
+        ex:Person128,
+        ex:Person137,
+        ex:Person2,
+        ex:Person206,
+        ex:Person58 ;
+    foaf:name "Person 110"^^xsd:string .
+
+ex:Person112 a foaf:Person ;
+    ex:age "51"^^xsd:int ;
+    ex:birthdate "1986-12-15"^^xsd:date ;
+    ex:height "1.85"^^xsd:float ;
+    foaf:knows ex:Person111,
+        ex:Person113,
+        ex:Person129,
+        ex:Person16,
+        ex:Person173,
+        ex:Person199,
+        ex:Person208,
+        ex:Person213,
+        ex:Person26,
+        ex:Person36,
+        ex:Person70 ;
+    foaf:name "Person 112"^^xsd:string .
+
+ex:Person140 a foaf:Person ;
+    ex:age "36"^^xsd:int ;
+    ex:birthdate "1997-09-14"^^xsd:date ;
+    ex:height "1.55"^^xsd:float ;
+    foaf:knows ex:Person114,
+        ex:Person13,
+        ex:Person133,
+        ex:Person164,
+        ex:Person169,
+        ex:Person183,
+        ex:Person187,
+        ex:Person199,
+        ex:Person213,
+        ex:Person240,
+        ex:Person38,
+        ex:Person65,
+        ex:Person98 ;
+    foaf:name "Person 140"^^xsd:string .
+
+ex:Person17 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "1995-01-06"^^xsd:date ;
+    ex:height "1.75"^^xsd:float ;
+    foaf:knows ex:Person118,
+        ex:Person146,
+        ex:Person15,
+        ex:Person186,
+        ex:Person31,
+        ex:Person40 ;
+    foaf:name "Person 17"^^xsd:string .
+
+ex:Person196 a foaf:Person ;
+    ex:age "39"^^xsd:int ;
+    ex:birthdate "1971-02-09"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person135,
+        ex:Person136,
+        ex:Person161,
+        ex:Person174,
+        ex:Person178,
+        ex:Person184,
+        ex:Person208,
+        ex:Person22,
+        ex:Person38,
+        ex:Person51,
+        ex:Person52,
+        ex:Person57,
+        ex:Person65,
+        ex:Person87,
+        ex:Person90 ;
+    foaf:name "Person 196"^^xsd:string .
+
+ex:Person200 a foaf:Person ;
+    ex:age "58"^^xsd:int ;
+    ex:birthdate "1993-01-09"^^xsd:date ;
+    ex:height "1.76"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person134,
+        ex:Person147,
+        ex:Person161,
+        ex:Person165,
+        ex:Person168,
+        ex:Person178,
+        ex:Person207,
+        ex:Person21,
+        ex:Person223,
+        ex:Person231,
+        ex:Person42,
+        ex:Person48,
+        ex:Person49 ;
+    foaf:name "Person 200"^^xsd:string .
+
+ex:Person230 a foaf:Person ;
+    ex:age "44"^^xsd:int ;
+    ex:birthdate "1994-01-27"^^xsd:date ;
+    ex:height "1.86"^^xsd:float ;
+    foaf:knows ex:Person14,
+        ex:Person158,
+        ex:Person160,
+        ex:Person194,
+        ex:Person20,
+        ex:Person23,
+        ex:Person232,
+        ex:Person39,
+        ex:Person65 ;
+    foaf:name "Person 230"^^xsd:string .
+
+ex:Person249 a foaf:Person ;
+    ex:age "66"^^xsd:int ;
+    ex:birthdate "1996-01-14"^^xsd:date ;
+    ex:height "1.88"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person139,
+        ex:Person151,
+        ex:Person178,
+        ex:Person20,
+        ex:Person216,
+        ex:Person245,
+        ex:Person41,
+        ex:Person46,
+        ex:Person63 ;
+    foaf:name "Person 249"^^xsd:string .
+
+ex:Person25 a foaf:Person ;
+    ex:age "39"^^xsd:int ;
+    ex:birthdate "1993-04-12"^^xsd:date ;
+    ex:height "1.86"^^xsd:float ;
+    foaf:knows ex:Person121,
+        ex:Person129,
+        ex:Person14,
+        ex:Person147,
+        ex:Person200,
+        ex:Person23,
+        ex:Person232,
+        ex:Person239,
+        ex:Person27,
+        ex:Person62,
+        ex:Person76,
+        ex:Person85 ;
+    foaf:name "Person 25"^^xsd:string .
+
+ex:Person26 a foaf:Person ;
+    ex:age "46"^^xsd:int ;
+    ex:birthdate "2000-04-08"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person119,
+        ex:Person145,
+        ex:Person154,
+        ex:Person157,
+        ex:Person224,
+        ex:Person54,
+        ex:Person82 ;
+    foaf:name "Person 26"^^xsd:string .
+
+ex:Person30 a foaf:Person ;
+    ex:age "29"^^xsd:int ;
+    ex:birthdate "1980-03-25"^^xsd:date ;
+    ex:height "1.54"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person105,
+        ex:Person115,
+        ex:Person166,
+        ex:Person167,
+        ex:Person204,
+        ex:Person207,
+        ex:Person221,
+        ex:Person236,
+        ex:Person246,
+        ex:Person28,
+        ex:Person5,
+        ex:Person67,
+        ex:Person97 ;
+    foaf:name "Person 30"^^xsd:string .
+
+ex:Person34 a foaf:Person ;
+    ex:age "71"^^xsd:int ;
+    ex:birthdate "1987-11-19"^^xsd:date ;
+    ex:height "1.93"^^xsd:float ;
+    foaf:knows ex:Person112,
+        ex:Person129,
+        ex:Person139,
+        ex:Person180,
+        ex:Person21,
+        ex:Person23,
+        ex:Person236,
+        ex:Person43,
+        ex:Person57,
+        ex:Person60,
+        ex:Person61,
+        ex:Person98,
+        ex:Person99 ;
+    foaf:name "Person 34"^^xsd:string .
+
+ex:Person55 a foaf:Person ;
+    ex:age "48"^^xsd:int ;
+    ex:birthdate "2010-04-20"^^xsd:date ;
+    ex:height "1.98"^^xsd:float ;
+    foaf:knows ex:Person11,
+        ex:Person151,
+        ex:Person156,
+        ex:Person202,
+        ex:Person211,
+        ex:Person60,
+        ex:Person8 ;
+    foaf:name "Person 55"^^xsd:string .
+
+ex:Person7 a foaf:Person ;
+    ex:age "66"^^xsd:int ;
+    ex:birthdate "2004-03-24"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person152,
+        ex:Person166,
+        ex:Person195,
+        ex:Person20,
+        ex:Person5,
+        ex:Person8,
+        ex:Person89 ;
+    foaf:name "Person 7"^^xsd:string .
+
+ex:Person71 a foaf:Person ;
+    ex:age "47"^^xsd:int ;
+    ex:birthdate "2019-08-04"^^xsd:date ;
+    ex:height "1.82"^^xsd:float ;
+    foaf:knows ex:Person142,
+        ex:Person146,
+        ex:Person182,
+        ex:Person187,
+        ex:Person193,
+        ex:Person236,
+        ex:Person26 ;
+    foaf:name "Person 71"^^xsd:string .
+
+ex:Person1 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "2021-06-14"^^xsd:date ;
+    ex:height "1.94"^^xsd:float ;
+    foaf:knows ex:Person120,
+        ex:Person133,
+        ex:Person134,
+        ex:Person147,
+        ex:Person158,
+        ex:Person16,
+        ex:Person166,
+        ex:Person193,
+        ex:Person21,
+        ex:Person228,
+        ex:Person243,
+        ex:Person5,
+        ex:Person55,
+        ex:Person71 ;
+    foaf:name "Person 1"^^xsd:string .
+
+ex:Person141 a foaf:Person ;
+    ex:age "79"^^xsd:int ;
+    ex:birthdate "1996-11-21"^^xsd:date ;
+    ex:height "1.93"^^xsd:float ;
+    foaf:knows ex:Person151,
+        ex:Person158,
+        ex:Person171,
+        ex:Person210,
+        ex:Person52,
+        ex:Person84,
+        ex:Person92 ;
+    foaf:name "Person 141"^^xsd:string .
+
+ex:Person148 a foaf:Person ;
+    ex:age "65"^^xsd:int ;
+    ex:birthdate "1971-05-09"^^xsd:date ;
+    ex:height "1.59"^^xsd:float ;
+    foaf:knows ex:Person114,
+        ex:Person136,
+        ex:Person138,
+        ex:Person164,
+        ex:Person172,
+        ex:Person201,
+        ex:Person208,
+        ex:Person220,
+        ex:Person26,
+        ex:Person60,
+        ex:Person69,
+        ex:Person77 ;
+    foaf:name "Person 148"^^xsd:string .
+
+ex:Person150 a foaf:Person ;
+    ex:age "42"^^xsd:int ;
+    ex:birthdate "2003-06-12"^^xsd:date ;
+    ex:height "1.9"^^xsd:float ;
+    foaf:knows ex:Person102,
+        ex:Person153,
+        ex:Person165,
+        ex:Person213,
+        ex:Person35,
+        ex:Person72 ;
+    foaf:name "Person 150"^^xsd:string .
+
+ex:Person18 a foaf:Person ;
+    ex:age "79"^^xsd:int ;
+    ex:birthdate "1965-09-05"^^xsd:date ;
+    ex:height "1.64"^^xsd:float ;
+    foaf:knows ex:Person117,
+        ex:Person13,
+        ex:Person174,
+        ex:Person175,
+        ex:Person182,
+        ex:Person202,
+        ex:Person237,
+        ex:Person61,
+        ex:Person72 ;
+    foaf:name "Person 18"^^xsd:string .
+
+ex:Person181 a foaf:Person ;
+    ex:age "73"^^xsd:int ;
+    ex:birthdate "2007-08-17"^^xsd:date ;
+    ex:height "1.6"^^xsd:float ;
+    foaf:knows ex:Person116,
+        ex:Person131,
+        ex:Person137,
+        ex:Person161,
+        ex:Person195,
+        ex:Person205,
+        ex:Person230,
+        ex:Person39,
+        ex:Person49,
+        ex:Person58,
+        ex:Person77 ;
+    foaf:name "Person 181"^^xsd:string .
+
+ex:Person185 a foaf:Person ;
+    ex:age "60"^^xsd:int ;
+    ex:birthdate "1981-06-09"^^xsd:date ;
+    ex:height "1.78"^^xsd:float ;
+    foaf:knows ex:Person102,
+        ex:Person109,
+        ex:Person118,
+        ex:Person126,
+        ex:Person15,
+        ex:Person207,
+        ex:Person223,
+        ex:Person234,
+        ex:Person28,
+        ex:Person36,
+        ex:Person52,
+        ex:Person64 ;
+    foaf:name "Person 185"^^xsd:string .
+
+ex:Person19 a foaf:Person ;
+    ex:age "30"^^xsd:int ;
+    ex:birthdate "1996-04-26"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person123,
+        ex:Person138,
+        ex:Person141,
+        ex:Person151,
+        ex:Person172,
+        ex:Person194,
+        ex:Person237,
+        ex:Person38,
+        ex:Person4,
+        ex:Person70,
+        ex:Person92,
+        ex:Person97 ;
+    foaf:name "Person 19"^^xsd:string .
+
+ex:Person215 a foaf:Person ;
+    ex:age "44"^^xsd:int ;
+    ex:birthdate "2016-06-12"^^xsd:date ;
+    ex:height "1.84"^^xsd:float ;
+    foaf:knows ex:Person1,
+        ex:Person104,
+        ex:Person116,
+        ex:Person120,
+        ex:Person145,
+        ex:Person16,
+        ex:Person186,
+        ex:Person23,
+        ex:Person235,
+        ex:Person238,
+        ex:Person39,
+        ex:Person41,
+        ex:Person6,
+        ex:Person70 ;
+    foaf:name "Person 215"^^xsd:string .
+
+ex:Person221 a foaf:Person ;
+    ex:age "48"^^xsd:int ;
+    ex:birthdate "1992-05-27"^^xsd:date ;
+    ex:height "1.8"^^xsd:float ;
+    foaf:knows ex:Person131,
+        ex:Person165,
+        ex:Person167,
+        ex:Person186,
+        ex:Person198,
+        ex:Person233,
+        ex:Person250,
+        ex:Person30,
+        ex:Person31,
+        ex:Person37,
+        ex:Person88 ;
+    foaf:name "Person 221"^^xsd:string .
+
+ex:Person236 a foaf:Person ;
+    ex:age "74"^^xsd:int ;
+    ex:birthdate "2014-08-12"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person147,
+        ex:Person159,
+        ex:Person165,
+        ex:Person169,
+        ex:Person197,
+        ex:Person21,
+        ex:Person41,
+        ex:Person57,
+        ex:Person72,
+        ex:Person86 ;
+    foaf:name "Person 236"^^xsd:string .
+
+ex:Person241 a foaf:Person ;
+    ex:age "69"^^xsd:int ;
+    ex:birthdate "2010-02-27"^^xsd:date ;
+    ex:height "1.81"^^xsd:float ;
+    foaf:knows ex:Person12,
+        ex:Person182,
+        ex:Person230,
+        ex:Person32,
+        ex:Person5,
+        ex:Person53 ;
+    foaf:name "Person 241"^^xsd:string .
+
+ex:Person27 a foaf:Person ;
+    ex:age "79"^^xsd:int ;
+    ex:birthdate "2004-07-01"^^xsd:date ;
+    ex:height "1.95"^^xsd:float ;
+    foaf:knows ex:Person110,
+        ex:Person116,
+        ex:Person172,
+        ex:Person176,
+        ex:Person242,
+        ex:Person35,
+        ex:Person43 ;
+    foaf:name "Person 27"^^xsd:string .
+
+ex:Person83 a foaf:Person ;
+    ex:age "28"^^xsd:int ;
+    ex:birthdate "1973-05-02"^^xsd:date ;
+    ex:height "1.82"^^xsd:float ;
+    foaf:knows ex:Person11,
+        ex:Person167,
+        ex:Person199,
+        ex:Person209,
+        ex:Person230,
+        ex:Person238,
+        ex:Person62,
+        ex:Person66,
+        ex:Person67,
+        ex:Person69,
+        ex:Person91 ;
+    foaf:name "Person 83"^^xsd:string .
+
+ex:Person84 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "1985-03-07"^^xsd:date ;
+    ex:height "1.77"^^xsd:float ;
+    foaf:knows ex:Person142,
+        ex:Person177,
+        ex:Person178,
+        ex:Person2,
+        ex:Person214,
+        ex:Person219,
+        ex:Person223,
+        ex:Person233,
+        ex:Person38,
+        ex:Person50,
+        ex:Person60 ;
+    foaf:name "Person 84"^^xsd:string .
+
+ex:Person105 a foaf:Person ;
+    ex:age "53"^^xsd:int ;
+    ex:birthdate "1973-01-30"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person119,
+        ex:Person128,
+        ex:Person158,
+        ex:Person161,
+        ex:Person18,
+        ex:Person205,
+        ex:Person210,
+        ex:Person24,
+        ex:Person247,
+        ex:Person52 ;
+    foaf:name "Person 105"^^xsd:string .
+
+ex:Person11 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "2021-05-18"^^xsd:date ;
+    ex:height "1.71"^^xsd:float ;
+    foaf:knows ex:Person167,
+        ex:Person176,
+        ex:Person179,
+        ex:Person198,
+        ex:Person204,
+        ex:Person211,
+        ex:Person237,
+        ex:Person246,
+        ex:Person62,
+        ex:Person68,
+        ex:Person96 ;
+    foaf:name "Person 11"^^xsd:string .
+
+ex:Person123 a foaf:Person ;
+    ex:age "69"^^xsd:int ;
+    ex:birthdate "1968-03-16"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person44,
+        ex:Person51,
+        ex:Person84,
+        ex:Person98 ;
+    foaf:name "Person 123"^^xsd:string .
+
+ex:Person142 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "1990-09-13"^^xsd:date ;
+    ex:height "1.73"^^xsd:float ;
+    foaf:knows ex:Person111,
+        ex:Person112,
+        ex:Person118,
+        ex:Person148,
+        ex:Person160,
+        ex:Person167,
+        ex:Person188,
+        ex:Person199,
+        ex:Person219,
+        ex:Person246,
+        ex:Person33 ;
+    foaf:name "Person 142"^^xsd:string .
+
+ex:Person143 a foaf:Person ;
+    ex:age "32"^^xsd:int ;
+    ex:birthdate "1969-01-07"^^xsd:date ;
+    ex:height "1.52"^^xsd:float ;
+    foaf:knows ex:Person1,
+        ex:Person132,
+        ex:Person170,
+        ex:Person214,
+        ex:Person228,
+        ex:Person69,
+        ex:Person78,
+        ex:Person85 ;
+    foaf:name "Person 143"^^xsd:string .
+
+ex:Person168 a foaf:Person ;
+    ex:age "44"^^xsd:int ;
+    ex:birthdate "1987-10-22"^^xsd:date ;
+    ex:height "1.75"^^xsd:float ;
+    foaf:knows ex:Person119,
+        ex:Person123,
+        ex:Person131,
+        ex:Person157,
+        ex:Person172,
+        ex:Person175,
+        ex:Person220,
+        ex:Person244,
+        ex:Person250,
+        ex:Person9,
+        ex:Person91 ;
+    foaf:name "Person 168"^^xsd:string .
+
+ex:Person176 a foaf:Person ;
+    ex:age "80"^^xsd:int ;
+    ex:birthdate "1968-10-06"^^xsd:date ;
+    ex:height "1.91"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person113,
+        ex:Person150,
+        ex:Person169,
+        ex:Person209,
+        ex:Person235,
+        ex:Person27,
+        ex:Person57,
+        ex:Person93 ;
+    foaf:name "Person 176"^^xsd:string .
+
+ex:Person186 a foaf:Person ;
+    ex:age "42"^^xsd:int ;
+    ex:birthdate "1966-12-26"^^xsd:date ;
+    ex:height "1.81"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person107,
+        ex:Person109,
+        ex:Person115,
+        ex:Person161,
+        ex:Person170,
+        ex:Person191,
+        ex:Person243,
+        ex:Person247,
+        ex:Person3,
+        ex:Person68,
+        ex:Person78,
+        ex:Person79,
+        ex:Person82,
+        ex:Person94 ;
+    foaf:name "Person 186"^^xsd:string .
+
+ex:Person188 a foaf:Person ;
+    ex:age "78"^^xsd:int ;
+    ex:birthdate "2008-10-04"^^xsd:date ;
+    ex:height "1.55"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person156,
+        ex:Person160,
+        ex:Person165,
+        ex:Person18,
+        ex:Person203,
+        ex:Person239,
+        ex:Person39,
+        ex:Person46,
+        ex:Person5,
+        ex:Person70,
+        ex:Person94,
+        ex:Person98 ;
+    foaf:name "Person 188"^^xsd:string .
+
+ex:Person190 a foaf:Person ;
+    ex:age "23"^^xsd:int ;
+    ex:birthdate "2004-05-21"^^xsd:date ;
+    ex:height "1.6"^^xsd:float ;
+    foaf:knows ex:Person122,
+        ex:Person14,
+        ex:Person153,
+        ex:Person208,
+        ex:Person21,
+        ex:Person229,
+        ex:Person44,
+        ex:Person48,
+        ex:Person65 ;
+    foaf:name "Person 190"^^xsd:string .
+
+ex:Person201 a foaf:Person ;
+    ex:age "61"^^xsd:int ;
+    ex:birthdate "1978-12-05"^^xsd:date ;
+    ex:height "2.0"^^xsd:float ;
+    foaf:knows ex:Person108,
+        ex:Person122,
+        ex:Person163,
+        ex:Person173,
+        ex:Person220,
+        ex:Person45 ;
+    foaf:name "Person 201"^^xsd:string .
+
+ex:Person204 a foaf:Person ;
+    ex:age "63"^^xsd:int ;
+    ex:birthdate "2001-04-15"^^xsd:date ;
+    ex:height "1.62"^^xsd:float ;
+    foaf:knows ex:Person120,
+        ex:Person141,
+        ex:Person144,
+        ex:Person172,
+        ex:Person203,
+        ex:Person238,
+        ex:Person27,
+        ex:Person41,
+        ex:Person6,
+        ex:Person88 ;
+    foaf:name "Person 204"^^xsd:string .
+
+ex:Person218 a foaf:Person ;
+    ex:age "52"^^xsd:int ;
+    ex:birthdate "1990-05-06"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person178,
+        ex:Person205,
+        ex:Person222,
+        ex:Person250,
+        ex:Person35,
+        ex:Person47,
+        ex:Person79 ;
+    foaf:name "Person 218"^^xsd:string .
+
+ex:Person224 a foaf:Person ;
+    ex:age "25"^^xsd:int ;
+    ex:birthdate "1989-05-21"^^xsd:date ;
+    ex:height "1.76"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person138,
+        ex:Person150,
+        ex:Person163,
+        ex:Person20,
+        ex:Person250,
+        ex:Person29,
+        ex:Person80,
+        ex:Person98 ;
+    foaf:name "Person 224"^^xsd:string .
+
+ex:Person228 a foaf:Person ;
+    ex:age "78"^^xsd:int ;
+    ex:birthdate "1990-10-18"^^xsd:date ;
+    ex:height "1.9"^^xsd:float ;
+    foaf:knows ex:Person107,
+        ex:Person118,
+        ex:Person121,
+        ex:Person124,
+        ex:Person129,
+        ex:Person13,
+        ex:Person224,
+        ex:Person239,
+        ex:Person240,
+        ex:Person3,
+        ex:Person41,
+        ex:Person46,
+        ex:Person61,
+        ex:Person97 ;
+    foaf:name "Person 228"^^xsd:string .
+
+ex:Person238 a foaf:Person ;
+    ex:age "80"^^xsd:int ;
+    ex:birthdate "1980-08-29"^^xsd:date ;
+    ex:height "1.62"^^xsd:float ;
+    foaf:knows ex:Person173,
+        ex:Person177,
+        ex:Person195,
+        ex:Person203,
+        ex:Person21,
+        ex:Person22,
+        ex:Person222,
+        ex:Person36,
+        ex:Person49,
+        ex:Person50,
+        ex:Person72 ;
+    foaf:name "Person 238"^^xsd:string .
+
+ex:Person24 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "1975-05-05"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person14,
+        ex:Person142,
+        ex:Person144,
+        ex:Person162,
+        ex:Person220,
+        ex:Person223,
+        ex:Person226,
+        ex:Person48,
+        ex:Person52,
+        ex:Person64,
+        ex:Person7,
+        ex:Person73,
+        ex:Person84,
+        ex:Person85 ;
+    foaf:name "Person 24"^^xsd:string .
+
+ex:Person240 a foaf:Person ;
+    ex:age "19"^^xsd:int ;
+    ex:birthdate "1988-05-31"^^xsd:date ;
+    ex:height "1.88"^^xsd:float ;
+    foaf:knows ex:Person111,
+        ex:Person152,
+        ex:Person170,
+        ex:Person178,
+        ex:Person187,
+        ex:Person19,
+        ex:Person198,
+        ex:Person61,
+        ex:Person64,
+        ex:Person66,
+        ex:Person8,
+        ex:Person92,
+        ex:Person93,
+        ex:Person94 ;
+    foaf:name "Person 240"^^xsd:string .
+
+ex:Person245 a foaf:Person ;
+    ex:age "57"^^xsd:int ;
+    ex:birthdate "1974-12-08"^^xsd:date ;
+    ex:height "1.84"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person100,
+        ex:Person110,
+        ex:Person154,
+        ex:Person156,
+        ex:Person160,
+        ex:Person194,
+        ex:Person21,
+        ex:Person242,
+        ex:Person41,
+        ex:Person47,
+        ex:Person50,
+        ex:Person73,
+        ex:Person74 ;
+    foaf:name "Person 245"^^xsd:string .
+
+ex:Person45 a foaf:Person ;
+    ex:age "58"^^xsd:int ;
+    ex:birthdate "2019-10-23"^^xsd:date ;
+    ex:height "1.63"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person113,
+        ex:Person159,
+        ex:Person234,
+        ex:Person64,
+        ex:Person96 ;
+    foaf:name "Person 45"^^xsd:string .
+
+ex:Person62 a foaf:Person ;
+    ex:age "53"^^xsd:int ;
+    ex:birthdate "2001-04-02"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person120,
+        ex:Person124,
+        ex:Person127,
+        ex:Person129,
+        ex:Person170,
+        ex:Person177,
+        ex:Person196,
+        ex:Person197,
+        ex:Person208,
+        ex:Person216,
+        ex:Person231,
+        ex:Person35,
+        ex:Person52,
+        ex:Person79,
+        ex:Person8 ;
+    foaf:name "Person 62"^^xsd:string .
+
+ex:Person9 a foaf:Person ;
+    ex:age "54"^^xsd:int ;
+    ex:birthdate "2016-02-24"^^xsd:date ;
+    ex:height "1.81"^^xsd:float ;
+    foaf:knows ex:Person128,
+        ex:Person139,
+        ex:Person184,
+        ex:Person199,
+        ex:Person244,
+        ex:Person3,
+        ex:Person46,
+        ex:Person81 ;
+    foaf:name "Person 9"^^xsd:string .
+
+ex:Person99 a foaf:Person ;
+    ex:age "79"^^xsd:int ;
+    ex:birthdate "2002-04-16"^^xsd:date ;
+    ex:height "1.96"^^xsd:float ;
+    foaf:knows ex:Person136,
+        ex:Person157,
+        ex:Person158,
+        ex:Person159,
+        ex:Person19,
+        ex:Person21,
+        ex:Person23,
+        ex:Person31,
+        ex:Person40,
+        ex:Person41,
+        ex:Person49,
+        ex:Person65 ;
+    foaf:name "Person 99"^^xsd:string .
+
+ex:Person102 a foaf:Person ;
+    ex:age "32"^^xsd:int ;
+    ex:birthdate "1969-12-29"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person112,
+        ex:Person14,
+        ex:Person193,
+        ex:Person28,
+        ex:Person70,
+        ex:Person75,
+        ex:Person88 ;
+    foaf:name "Person 102"^^xsd:string .
+
+ex:Person111 a foaf:Person ;
+    ex:age "22"^^xsd:int ;
+    ex:birthdate "1997-06-25"^^xsd:date ;
+    ex:height "1.82"^^xsd:float ;
+    foaf:knows ex:Person116,
+        ex:Person121,
+        ex:Person125,
+        ex:Person134,
+        ex:Person149,
+        ex:Person156,
+        ex:Person164,
+        ex:Person210,
+        ex:Person5,
+        ex:Person68,
+        ex:Person78,
+        ex:Person79,
+        ex:Person8 ;
+    foaf:name "Person 111"^^xsd:string .
+
+ex:Person128 a foaf:Person ;
+    ex:age "30"^^xsd:int ;
+    ex:birthdate "2022-12-06"^^xsd:date ;
+    ex:height "1.97"^^xsd:float ;
+    foaf:knows ex:Person131,
+        ex:Person151,
+        ex:Person176,
+        ex:Person18,
+        ex:Person187,
+        ex:Person213,
+        ex:Person223,
+        ex:Person226,
+        ex:Person29,
+        ex:Person37,
+        ex:Person50,
+        ex:Person64,
+        ex:Person77,
+        ex:Person97 ;
+    foaf:name "Person 128"^^xsd:string .
+
+ex:Person133 a foaf:Person ;
+    ex:age "36"^^xsd:int ;
+    ex:birthdate "1995-11-04"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person114,
+        ex:Person148,
+        ex:Person2,
+        ex:Person55 ;
+    foaf:name "Person 133"^^xsd:string .
+
+ex:Person138 a foaf:Person ;
+    ex:age "80"^^xsd:int ;
+    ex:birthdate "1973-04-17"^^xsd:date ;
+    ex:height "1.51"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person119,
+        ex:Person152,
+        ex:Person174,
+        ex:Person210,
+        ex:Person216,
+        ex:Person220,
+        ex:Person222,
+        ex:Person225,
+        ex:Person4,
+        ex:Person88 ;
+    foaf:name "Person 138"^^xsd:string .
+
+ex:Person146 a foaf:Person ;
+    ex:age "34"^^xsd:int ;
+    ex:birthdate "2021-09-21"^^xsd:date ;
+    ex:height "1.89"^^xsd:float ;
+    foaf:knows ex:Person113,
+        ex:Person116,
+        ex:Person121,
+        ex:Person153,
+        ex:Person159,
+        ex:Person168,
+        ex:Person176,
+        ex:Person209,
+        ex:Person220,
+        ex:Person59,
+        ex:Person93 ;
+    foaf:name "Person 146"^^xsd:string .
+
+ex:Person147 a foaf:Person ;
+    ex:age "50"^^xsd:int ;
+    ex:birthdate "2014-02-07"^^xsd:date ;
+    ex:height "1.97"^^xsd:float ;
+    foaf:knows ex:Person1,
+        ex:Person13,
+        ex:Person131,
+        ex:Person132,
+        ex:Person168,
+        ex:Person184,
+        ex:Person195,
+        ex:Person241,
+        ex:Person35,
+        ex:Person42,
+        ex:Person54,
+        ex:Person96 ;
+    foaf:name "Person 147"^^xsd:string .
+
+ex:Person162 a foaf:Person ;
+    ex:age "21"^^xsd:int ;
+    ex:birthdate "1985-10-27"^^xsd:date ;
+    ex:height "1.56"^^xsd:float ;
+    foaf:knows ex:Person148,
+        ex:Person149,
+        ex:Person159,
+        ex:Person173,
+        ex:Person191,
+        ex:Person206,
+        ex:Person23,
+        ex:Person56,
+        ex:Person9 ;
+    foaf:name "Person 162"^^xsd:string .
+
+ex:Person163 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "2018-02-02"^^xsd:date ;
+    ex:height "1.73"^^xsd:float ;
+    foaf:knows ex:Person147,
+        ex:Person171,
+        ex:Person227,
+        ex:Person246,
+        ex:Person59,
+        ex:Person68,
+        ex:Person92 ;
+    foaf:name "Person 163"^^xsd:string .
+
+ex:Person167 a foaf:Person ;
+    ex:age "59"^^xsd:int ;
+    ex:birthdate "1993-07-15"^^xsd:date ;
+    ex:height "1.75"^^xsd:float ;
+    foaf:knows ex:Person107,
+        ex:Person118,
+        ex:Person12,
+        ex:Person126,
+        ex:Person139,
+        ex:Person185,
+        ex:Person206,
+        ex:Person214,
+        ex:Person237,
+        ex:Person34,
+        ex:Person70,
+        ex:Person95,
+        ex:Person96,
+        ex:Person97 ;
+    foaf:name "Person 167"^^xsd:string .
+
+ex:Person169 a foaf:Person ;
+    ex:age "32"^^xsd:int ;
+    ex:birthdate "1989-12-22"^^xsd:date ;
+    ex:height "1.98"^^xsd:float ;
+    foaf:knows ex:Person15,
+        ex:Person194,
+        ex:Person195,
+        ex:Person237,
+        ex:Person78 ;
+    foaf:name "Person 169"^^xsd:string .
+
+ex:Person182 a foaf:Person ;
+    ex:age "73"^^xsd:int ;
+    ex:birthdate "2015-02-11"^^xsd:date ;
+    ex:height "1.52"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person115,
+        ex:Person171,
+        ex:Person193,
+        ex:Person216,
+        ex:Person218,
+        ex:Person244,
+        ex:Person32,
+        ex:Person60,
+        ex:Person69 ;
+    foaf:name "Person 182"^^xsd:string .
+
+ex:Person184 a foaf:Person ;
+    ex:age "38"^^xsd:int ;
+    ex:birthdate "1991-01-11"^^xsd:date ;
+    ex:height "1.68"^^xsd:float ;
+    foaf:knows ex:Person13,
+        ex:Person138,
+        ex:Person145,
+        ex:Person160,
+        ex:Person171,
+        ex:Person173,
+        ex:Person179,
+        ex:Person234,
+        ex:Person244,
+        ex:Person36,
+        ex:Person43,
+        ex:Person68,
+        ex:Person79,
+        ex:Person8 ;
+    foaf:name "Person 184"^^xsd:string .
+
+ex:Person191 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "1989-11-13"^^xsd:date ;
+    ex:height "1.81"^^xsd:float ;
+    foaf:knows ex:Person129,
+        ex:Person180,
+        ex:Person200,
+        ex:Person214,
+        ex:Person221,
+        ex:Person226,
+        ex:Person243,
+        ex:Person29,
+        ex:Person51 ;
+    foaf:name "Person 191"^^xsd:string .
+
+ex:Person197 a foaf:Person ;
+    ex:age "52"^^xsd:int ;
+    ex:birthdate "1984-03-17"^^xsd:date ;
+    ex:height "1.54"^^xsd:float ;
+    foaf:knows ex:Person111,
+        ex:Person147,
+        ex:Person149,
+        ex:Person159,
+        ex:Person2,
+        ex:Person212,
+        ex:Person220,
+        ex:Person227,
+        ex:Person247,
+        ex:Person250,
+        ex:Person3,
+        ex:Person66,
+        ex:Person81 ;
+    foaf:name "Person 197"^^xsd:string .
+
+ex:Person2 a foaf:Person ;
+    ex:age "64"^^xsd:int ;
+    ex:birthdate "2011-02-25"^^xsd:date ;
+    ex:height "1.57"^^xsd:float ;
+    foaf:knows ex:Person212,
+        ex:Person216,
+        ex:Person235,
+        ex:Person60,
+        ex:Person88 ;
+    foaf:name "Person 2"^^xsd:string .
+
+ex:Person209 a foaf:Person ;
+    ex:age "20"^^xsd:int ;
+    ex:birthdate "2009-07-24"^^xsd:date ;
+    ex:height "1.64"^^xsd:float ;
+    foaf:knows ex:Person120,
+        ex:Person137,
+        ex:Person153,
+        ex:Person183,
+        ex:Person193,
+        ex:Person214,
+        ex:Person223,
+        ex:Person232,
+        ex:Person31,
+        ex:Person97 ;
+    foaf:name "Person 209"^^xsd:string .
+
+ex:Person211 a foaf:Person ;
+    ex:age "72"^^xsd:int ;
+    ex:birthdate "2018-09-11"^^xsd:date ;
+    ex:height "1.85"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person129,
+        ex:Person13,
+        ex:Person136,
+        ex:Person143,
+        ex:Person169,
+        ex:Person195,
+        ex:Person215,
+        ex:Person51,
+        ex:Person9,
+        ex:Person98 ;
+    foaf:name "Person 211"^^xsd:string .
+
+ex:Person3 a foaf:Person ;
+    ex:age "36"^^xsd:int ;
+    ex:birthdate "1988-07-26"^^xsd:date ;
+    ex:height "1.51"^^xsd:float ;
+    foaf:knows ex:Person108,
+        ex:Person115,
+        ex:Person139,
+        ex:Person145,
+        ex:Person172,
+        ex:Person213,
+        ex:Person217,
+        ex:Person234,
+        ex:Person236,
+        ex:Person237,
+        ex:Person28,
+        ex:Person29,
+        ex:Person44,
+        ex:Person61,
+        ex:Person93 ;
+    foaf:name "Person 3"^^xsd:string .
+
+ex:Person32 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "1994-03-27"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person137,
+        ex:Person152,
+        ex:Person205,
+        ex:Person216,
+        ex:Person65,
+        ex:Person68,
+        ex:Person96 ;
+    foaf:name "Person 32"^^xsd:string .
+
+ex:Person59 a foaf:Person ;
+    ex:age "72"^^xsd:int ;
+    ex:birthdate "2016-07-19"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person107,
+        ex:Person108,
+        ex:Person174,
+        ex:Person175,
+        ex:Person72,
+        ex:Person89 ;
+    foaf:name "Person 59"^^xsd:string .
+
+ex:Person76 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "1994-07-06"^^xsd:date ;
+    ex:height "1.7"^^xsd:float ;
+    foaf:knows ex:Person111,
+        ex:Person214,
+        ex:Person232,
+        ex:Person52,
+        ex:Person86 ;
+    foaf:name "Person 76"^^xsd:string .
+
+ex:Person82 a foaf:Person ;
+    ex:age "23"^^xsd:int ;
+    ex:birthdate "2019-06-21"^^xsd:date ;
+    ex:height "1.83"^^xsd:float ;
+    foaf:knows ex:Person114,
+        ex:Person117,
+        ex:Person15,
+        ex:Person198,
+        ex:Person223,
+        ex:Person240,
+        ex:Person33,
+        ex:Person45,
+        ex:Person47,
+        ex:Person51,
+        ex:Person63,
+        ex:Person87 ;
+    foaf:name "Person 82"^^xsd:string .
+
+ex:Person86 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "1984-02-28"^^xsd:date ;
+    ex:height "1.97"^^xsd:float ;
+    foaf:knows ex:Person136,
+        ex:Person161,
+        ex:Person167,
+        ex:Person187,
+        ex:Person50 ;
+    foaf:name "Person 86"^^xsd:string .
+
+ex:Person89 a foaf:Person ;
+    ex:age "41"^^xsd:int ;
+    ex:birthdate "2020-08-01"^^xsd:date ;
+    ex:height "1.64"^^xsd:float ;
+    foaf:knows ex:Person134,
+        ex:Person15,
+        ex:Person217,
+        ex:Person229,
+        ex:Person231,
+        ex:Person235,
+        ex:Person39,
+        ex:Person48,
+        ex:Person7,
+        ex:Person82 ;
+    foaf:name "Person 89"^^xsd:string .
+
+ex:Person91 a foaf:Person ;
+    ex:age "43"^^xsd:int ;
+    ex:birthdate "1970-12-19"^^xsd:date ;
+    ex:height "1.55"^^xsd:float ;
+    foaf:knows ex:Person124,
+        ex:Person159,
+        ex:Person204,
+        ex:Person205,
+        ex:Person239,
+        ex:Person38 ;
+    foaf:name "Person 91"^^xsd:string .
+
+ex:Person108 a foaf:Person ;
+    ex:age "29"^^xsd:int ;
+    ex:birthdate "2018-09-02"^^xsd:date ;
+    ex:height "1.83"^^xsd:float ;
+    foaf:knows ex:Person145,
+        ex:Person163,
+        ex:Person204,
+        ex:Person237,
+        ex:Person238,
+        ex:Person244,
+        ex:Person246,
+        ex:Person249,
+        ex:Person250,
+        ex:Person29,
+        ex:Person47,
+        ex:Person5,
+        ex:Person59 ;
+    foaf:name "Person 108"^^xsd:string .
+
+ex:Person115 a foaf:Person ;
+    ex:age "42"^^xsd:int ;
+    ex:birthdate "1989-01-14"^^xsd:date ;
+    ex:height "1.62"^^xsd:float ;
+    foaf:knows ex:Person119,
+        ex:Person124,
+        ex:Person139,
+        ex:Person166,
+        ex:Person172,
+        ex:Person195,
+        ex:Person196,
+        ex:Person209,
+        ex:Person22,
+        ex:Person222,
+        ex:Person31,
+        ex:Person52,
+        ex:Person53,
+        ex:Person62,
+        ex:Person70 ;
+    foaf:name "Person 115"^^xsd:string .
+
+ex:Person131 a foaf:Person ;
+    ex:age "30"^^xsd:int ;
+    ex:birthdate "1975-10-17"^^xsd:date ;
+    ex:height "1.6"^^xsd:float ;
+    foaf:knows ex:Person135,
+        ex:Person142,
+        ex:Person231,
+        ex:Person237,
+        ex:Person246,
+        ex:Person3,
+        ex:Person49 ;
+    foaf:name "Person 131"^^xsd:string .
+
+ex:Person137 a foaf:Person ;
+    ex:age "59"^^xsd:int ;
+    ex:birthdate "1967-01-25"^^xsd:date ;
+    ex:height "1.66"^^xsd:float ;
+    foaf:knows ex:Person114,
+        ex:Person141,
+        ex:Person180,
+        ex:Person21,
+        ex:Person235,
+        ex:Person241,
+        ex:Person41,
+        ex:Person51,
+        ex:Person69 ;
+    foaf:name "Person 137"^^xsd:string .
+
+ex:Person152 a foaf:Person ;
+    ex:age "25"^^xsd:int ;
+    ex:birthdate "2011-10-17"^^xsd:date ;
+    ex:height "1.77"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person130,
+        ex:Person139,
+        ex:Person144,
+        ex:Person211,
+        ex:Person232,
+        ex:Person28,
+        ex:Person66,
+        ex:Person72,
+        ex:Person80,
+        ex:Person89 ;
+    foaf:name "Person 152"^^xsd:string .
+
+ex:Person154 a foaf:Person ;
+    ex:age "41"^^xsd:int ;
+    ex:birthdate "1988-09-15"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person107,
+        ex:Person119,
+        ex:Person120,
+        ex:Person131,
+        ex:Person138,
+        ex:Person183,
+        ex:Person184,
+        ex:Person214,
+        ex:Person224,
+        ex:Person80 ;
+    foaf:name "Person 154"^^xsd:string .
+
+ex:Person155 a foaf:Person ;
+    ex:age "60"^^xsd:int ;
+    ex:birthdate "1975-04-18"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person121,
+        ex:Person134,
+        ex:Person171,
+        ex:Person179,
+        ex:Person187,
+        ex:Person198,
+        ex:Person2,
+        ex:Person201,
+        ex:Person227,
+        ex:Person242,
+        ex:Person49,
+        ex:Person8,
+        ex:Person94 ;
+    foaf:name "Person 155"^^xsd:string .
+
+ex:Person166 a foaf:Person ;
+    ex:age "71"^^xsd:int ;
+    ex:birthdate "2010-04-05"^^xsd:date ;
+    ex:height "1.62"^^xsd:float ;
+    foaf:knows ex:Person118,
+        ex:Person121,
+        ex:Person133,
+        ex:Person138,
+        ex:Person155,
+        ex:Person170,
+        ex:Person192,
+        ex:Person202,
+        ex:Person206,
+        ex:Person208,
+        ex:Person34,
+        ex:Person39,
+        ex:Person60,
+        ex:Person87 ;
+    foaf:name "Person 166"^^xsd:string .
+
+ex:Person170 a foaf:Person ;
+    ex:age "60"^^xsd:int ;
+    ex:birthdate "1985-09-05"^^xsd:date ;
+    ex:height "1.73"^^xsd:float ;
+    foaf:knows ex:Person145,
+        ex:Person153,
+        ex:Person2,
+        ex:Person223,
+        ex:Person227,
+        ex:Person3,
+        ex:Person40,
+        ex:Person53,
+        ex:Person85,
+        ex:Person90 ;
+    foaf:name "Person 170"^^xsd:string .
+
+ex:Person171 a foaf:Person ;
+    ex:age "69"^^xsd:int ;
+    ex:birthdate "1967-02-11"^^xsd:date ;
+    ex:height "1.84"^^xsd:float ;
+    foaf:knows ex:Person115,
+        ex:Person148,
+        ex:Person16,
+        ex:Person224,
+        ex:Person232,
+        ex:Person237,
+        ex:Person248,
+        ex:Person4,
+        ex:Person50,
+        ex:Person57,
+        ex:Person64 ;
+    foaf:name "Person 171"^^xsd:string .
+
+ex:Person179 a foaf:Person ;
+    ex:age "68"^^xsd:int ;
+    ex:birthdate "2000-10-11"^^xsd:date ;
+    ex:height "1.58"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person145,
+        ex:Person174,
+        ex:Person226,
+        ex:Person51 ;
+    foaf:name "Person 179"^^xsd:string .
+
+ex:Person183 a foaf:Person ;
+    ex:age "41"^^xsd:int ;
+    ex:birthdate "1996-01-12"^^xsd:date ;
+    ex:height "1.51"^^xsd:float ;
+    foaf:knows ex:Person128,
+        ex:Person14,
+        ex:Person160,
+        ex:Person169,
+        ex:Person171,
+        ex:Person225,
+        ex:Person246,
+        ex:Person28,
+        ex:Person38,
+        ex:Person74,
+        ex:Person88,
+        ex:Person97 ;
+    foaf:name "Person 183"^^xsd:string .
+
+ex:Person203 a foaf:Person ;
+    ex:age "61"^^xsd:int ;
+    ex:birthdate "1997-01-07"^^xsd:date ;
+    ex:height "1.98"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person116,
+        ex:Person125,
+        ex:Person129,
+        ex:Person136,
+        ex:Person187,
+        ex:Person192,
+        ex:Person227,
+        ex:Person24,
+        ex:Person28,
+        ex:Person33,
+        ex:Person39,
+        ex:Person70,
+        ex:Person89 ;
+    foaf:name "Person 203"^^xsd:string .
+
+ex:Person212 a foaf:Person ;
+    ex:age "48"^^xsd:int ;
+    ex:birthdate "2004-10-12"^^xsd:date ;
+    ex:height "1.83"^^xsd:float ;
+    foaf:knows ex:Person158,
+        ex:Person167,
+        ex:Person17,
+        ex:Person171,
+        ex:Person186,
+        ex:Person227,
+        ex:Person74,
+        ex:Person96,
+        ex:Person98 ;
+    foaf:name "Person 212"^^xsd:string .
+
+ex:Person214 a foaf:Person ;
+    ex:age "61"^^xsd:int ;
+    ex:birthdate "1989-11-02"^^xsd:date ;
+    ex:height "1.85"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person130,
+        ex:Person160,
+        ex:Person218,
+        ex:Person32,
+        ex:Person5,
+        ex:Person80,
+        ex:Person85 ;
+    foaf:name "Person 214"^^xsd:string .
+
+ex:Person225 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "1999-07-11"^^xsd:date ;
+    ex:height "1.85"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person159,
+        ex:Person163,
+        ex:Person206,
+        ex:Person23 ;
+    foaf:name "Person 225"^^xsd:string .
+
+ex:Person229 a foaf:Person ;
+    ex:age "51"^^xsd:int ;
+    ex:birthdate "1986-02-08"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person117,
+        ex:Person123,
+        ex:Person159,
+        ex:Person167,
+        ex:Person170,
+        ex:Person191,
+        ex:Person214,
+        ex:Person227,
+        ex:Person239,
+        ex:Person250,
+        ex:Person53,
+        ex:Person85,
+        ex:Person92,
+        ex:Person96 ;
+    foaf:name "Person 229"^^xsd:string .
+
+ex:Person233 a foaf:Person ;
+    ex:age "63"^^xsd:int ;
+    ex:birthdate "1996-09-27"^^xsd:date ;
+    ex:height "1.68"^^xsd:float ;
+    foaf:knows ex:Person126,
+        ex:Person149,
+        ex:Person178,
+        ex:Person206,
+        ex:Person68,
+        ex:Person93 ;
+    foaf:name "Person 233"^^xsd:string .
+
+ex:Person235 a foaf:Person ;
+    ex:age "23"^^xsd:int ;
+    ex:birthdate "2001-04-28"^^xsd:date ;
+    ex:height "1.65"^^xsd:float ;
+    foaf:knows ex:Person105,
+        ex:Person15,
+        ex:Person151,
+        ex:Person153,
+        ex:Person196,
+        ex:Person216,
+        ex:Person58,
+        ex:Person81,
+        ex:Person88,
+        ex:Person95 ;
+    foaf:name "Person 235"^^xsd:string .
+
+ex:Person248 a foaf:Person ;
+    ex:age "77"^^xsd:int ;
+    ex:birthdate "1999-05-01"^^xsd:date ;
+    ex:height "1.96"^^xsd:float ;
+    foaf:knows ex:Person126,
+        ex:Person143,
+        ex:Person205,
+        ex:Person21,
+        ex:Person229,
+        ex:Person39,
+        ex:Person46,
+        ex:Person67,
+        ex:Person8,
+        ex:Person93,
+        ex:Person99 ;
+    foaf:name "Person 248"^^xsd:string .
+
+ex:Person36 a foaf:Person ;
+    ex:age "33"^^xsd:int ;
+    ex:birthdate "1986-03-20"^^xsd:date ;
+    ex:height "1.82"^^xsd:float ;
+    foaf:knows ex:Person151,
+        ex:Person158,
+        ex:Person159,
+        ex:Person173,
+        ex:Person179,
+        ex:Person206,
+        ex:Person212,
+        ex:Person213,
+        ex:Person41,
+        ex:Person53,
+        ex:Person60,
+        ex:Person63,
+        ex:Person65,
+        ex:Person87 ;
+    foaf:name "Person 36"^^xsd:string .
+
+ex:Person37 a foaf:Person ;
+    ex:age "19"^^xsd:int ;
+    ex:birthdate "1982-07-29"^^xsd:date ;
+    ex:height "1.56"^^xsd:float ;
+    foaf:knows ex:Person15,
+        ex:Person164,
+        ex:Person237,
+        ex:Person32,
+        ex:Person64 ;
+    foaf:name "Person 37"^^xsd:string .
+
+ex:Person4 a foaf:Person ;
+    ex:age "52"^^xsd:int ;
+    ex:birthdate "1970-06-08"^^xsd:date ;
+    ex:height "1.81"^^xsd:float ;
+    foaf:knows ex:Person113,
+        ex:Person120,
+        ex:Person144,
+        ex:Person150,
+        ex:Person157,
+        ex:Person164,
+        ex:Person169,
+        ex:Person178,
+        ex:Person190,
+        ex:Person207,
+        ex:Person223,
+        ex:Person44,
+        ex:Person47,
+        ex:Person65,
+        ex:Person94 ;
+    foaf:name "Person 4"^^xsd:string .
+
+ex:Person40 a foaf:Person ;
+    ex:age "34"^^xsd:int ;
+    ex:birthdate "1984-12-24"^^xsd:date ;
+    ex:height "1.98"^^xsd:float ;
+    foaf:knows ex:Person137,
+        ex:Person144,
+        ex:Person146,
+        ex:Person16,
+        ex:Person192,
+        ex:Person213,
+        ex:Person216,
+        ex:Person218,
+        ex:Person226,
+        ex:Person236,
+        ex:Person248,
+        ex:Person43,
+        ex:Person76,
+        ex:Person88 ;
+    foaf:name "Person 40"^^xsd:string .
+
+ex:Person42 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "2012-02-20"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person144,
+        ex:Person151,
+        ex:Person152,
+        ex:Person155,
+        ex:Person171,
+        ex:Person173,
+        ex:Person218,
+        ex:Person220,
+        ex:Person227,
+        ex:Person25,
+        ex:Person37,
+        ex:Person43,
+        ex:Person44,
+        ex:Person49,
+        ex:Person61 ;
+    foaf:name "Person 42"^^xsd:string .
+
+ex:Person48 a foaf:Person ;
+    ex:age "59"^^xsd:int ;
+    ex:birthdate "2011-08-02"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person105,
+        ex:Person139,
+        ex:Person144,
+        ex:Person170,
+        ex:Person173,
+        ex:Person206,
+        ex:Person5,
+        ex:Person50,
+        ex:Person78 ;
+    foaf:name "Person 48"^^xsd:string .
+
+ex:Person73 a foaf:Person ;
+    ex:age "71"^^xsd:int ;
+    ex:birthdate "1994-09-26"^^xsd:date ;
+    ex:height "1.93"^^xsd:float ;
+    foaf:knows ex:Person12,
+        ex:Person179,
+        ex:Person180,
+        ex:Person195,
+        ex:Person38,
+        ex:Person50,
+        ex:Person60,
+        ex:Person61,
+        ex:Person69,
+        ex:Person77,
+        ex:Person8,
+        ex:Person92 ;
+    foaf:name "Person 73"^^xsd:string .
+
+ex:Person77 a foaf:Person ;
+    ex:age "61"^^xsd:int ;
+    ex:birthdate "2020-06-20"^^xsd:date ;
+    ex:height "1.64"^^xsd:float ;
+    foaf:knows ex:Person116,
+        ex:Person117,
+        ex:Person132,
+        ex:Person136,
+        ex:Person142,
+        ex:Person144,
+        ex:Person18,
+        ex:Person185,
+        ex:Person186,
+        ex:Person211,
+        ex:Person244,
+        ex:Person29,
+        ex:Person41,
+        ex:Person60,
+        ex:Person82 ;
+    foaf:name "Person 77"^^xsd:string .
+
+ex:Person80 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "2011-05-29"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person1,
+        ex:Person101,
+        ex:Person137,
+        ex:Person141,
+        ex:Person144,
+        ex:Person149,
+        ex:Person20,
+        ex:Person212,
+        ex:Person217,
+        ex:Person222,
+        ex:Person245,
+        ex:Person6,
+        ex:Person82,
+        ex:Person93,
+        ex:Person96 ;
+    foaf:name "Person 80"^^xsd:string .
+
+ex:Person87 a foaf:Person ;
+    ex:age "22"^^xsd:int ;
+    ex:birthdate "1984-02-11"^^xsd:date ;
+    ex:height "1.62"^^xsd:float ;
+    foaf:knows ex:Person122,
+        ex:Person137,
+        ex:Person147,
+        ex:Person175,
+        ex:Person185,
+        ex:Person215,
+        ex:Person243,
+        ex:Person30,
+        ex:Person49,
+        ex:Person86,
+        ex:Person92,
+        ex:Person96 ;
+    foaf:name "Person 87"^^xsd:string .
+
+ex:Person95 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "1999-12-07"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person125,
+        ex:Person132,
+        ex:Person153,
+        ex:Person161,
+        ex:Person190,
+        ex:Person194,
+        ex:Person210,
+        ex:Person242,
+        ex:Person59,
+        ex:Person99 ;
+    foaf:name "Person 95"^^xsd:string .
+
+ex:Person10 a foaf:Person ;
+    ex:age "78"^^xsd:int ;
+    ex:birthdate "1977-05-13"^^xsd:date ;
+    ex:height "1.94"^^xsd:float ;
+    foaf:knows ex:Person105,
+        ex:Person199,
+        ex:Person216,
+        ex:Person247,
+        ex:Person43,
+        ex:Person51,
+        ex:Person54,
+        ex:Person58,
+        ex:Person59,
+        ex:Person98 ;
+    foaf:name "Person 10"^^xsd:string .
+
+ex:Person109 a foaf:Person ;
+    ex:age "71"^^xsd:int ;
+    ex:birthdate "2010-02-14"^^xsd:date ;
+    ex:height "1.75"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person114,
+        ex:Person193,
+        ex:Person217,
+        ex:Person226,
+        ex:Person29,
+        ex:Person43 ;
+    foaf:name "Person 109"^^xsd:string .
+
+ex:Person119 a foaf:Person ;
+    ex:age "40"^^xsd:int ;
+    ex:birthdate "1990-07-13"^^xsd:date ;
+    ex:height "1.89"^^xsd:float ;
+    foaf:knows ex:Person115,
+        ex:Person122,
+        ex:Person15,
+        ex:Person151,
+        ex:Person181,
+        ex:Person182,
+        ex:Person19,
+        ex:Person194,
+        ex:Person240,
+        ex:Person33,
+        ex:Person51,
+        ex:Person53,
+        ex:Person70 ;
+    foaf:name "Person 119"^^xsd:string .
+
+ex:Person122 a foaf:Person ;
+    ex:age "49"^^xsd:int ;
+    ex:birthdate "1975-03-14"^^xsd:date ;
+    ex:height "1.56"^^xsd:float ;
+    foaf:knows ex:Person112,
+        ex:Person126,
+        ex:Person133,
+        ex:Person149,
+        ex:Person166,
+        ex:Person174,
+        ex:Person22,
+        ex:Person243,
+        ex:Person246 ;
+    foaf:name "Person 122"^^xsd:string .
+
+ex:Person127 a foaf:Person ;
+    ex:age "43"^^xsd:int ;
+    ex:birthdate "2001-11-13"^^xsd:date ;
+    ex:height "1.65"^^xsd:float ;
+    foaf:knows ex:Person188,
+        ex:Person210,
+        ex:Person58,
+        ex:Person64,
+        ex:Person80,
+        ex:Person88 ;
+    foaf:name "Person 127"^^xsd:string .
+
+ex:Person135 a foaf:Person ;
+    ex:age "43"^^xsd:int ;
+    ex:birthdate "2000-01-07"^^xsd:date ;
+    ex:height "1.93"^^xsd:float ;
+    foaf:knows ex:Person105,
+        ex:Person121,
+        ex:Person134,
+        ex:Person143,
+        ex:Person181,
+        ex:Person221,
+        ex:Person227,
+        ex:Person23,
+        ex:Person89 ;
+    foaf:name "Person 135"^^xsd:string .
+
+ex:Person145 a foaf:Person ;
+    ex:age "72"^^xsd:int ;
+    ex:birthdate "1979-01-11"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person114,
+        ex:Person154,
+        ex:Person163,
+        ex:Person21,
+        ex:Person234,
+        ex:Person240,
+        ex:Person29,
+        ex:Person49,
+        ex:Person53,
+        ex:Person6,
+        ex:Person9,
+        ex:Person98 ;
+    foaf:name "Person 145"^^xsd:string .
+
+ex:Person157 a foaf:Person ;
+    ex:age "27"^^xsd:int ;
+    ex:birthdate "1965-12-17"^^xsd:date ;
+    ex:height "1.52"^^xsd:float ;
+    foaf:knows ex:Person124,
+        ex:Person13,
+        ex:Person139,
+        ex:Person179,
+        ex:Person192,
+        ex:Person203,
+        ex:Person217,
+        ex:Person224,
+        ex:Person238,
+        ex:Person242,
+        ex:Person247,
+        ex:Person248,
+        ex:Person60,
+        ex:Person64,
+        ex:Person74 ;
+    foaf:name "Person 157"^^xsd:string .
+
+ex:Person165 a foaf:Person ;
+    ex:age "69"^^xsd:int ;
+    ex:birthdate "1984-06-25"^^xsd:date ;
+    ex:height "1.88"^^xsd:float ;
+    foaf:knows ex:Person11,
+        ex:Person133,
+        ex:Person178,
+        ex:Person21,
+        ex:Person22,
+        ex:Person231,
+        ex:Person43,
+        ex:Person51,
+        ex:Person83,
+        ex:Person86,
+        ex:Person92 ;
+    foaf:name "Person 165"^^xsd:string .
+
+ex:Person175 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "2008-12-22"^^xsd:date ;
+    ex:height "1.55"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person165,
+        ex:Person180,
+        ex:Person185,
+        ex:Person204,
+        ex:Person21,
+        ex:Person216,
+        ex:Person242,
+        ex:Person4,
+        ex:Person6,
+        ex:Person81 ;
+    foaf:name "Person 175"^^xsd:string .
+
+ex:Person198 a foaf:Person ;
+    ex:age "68"^^xsd:int ;
+    ex:birthdate "1972-04-14"^^xsd:date ;
+    ex:height "1.71"^^xsd:float ;
+    foaf:knows ex:Person12,
+        ex:Person194,
+        ex:Person199,
+        ex:Person201,
+        ex:Person203,
+        ex:Person217,
+        ex:Person231,
+        ex:Person28,
+        ex:Person38,
+        ex:Person44,
+        ex:Person63,
+        ex:Person69,
+        ex:Person70,
+        ex:Person8,
+        ex:Person85 ;
+    foaf:name "Person 198"^^xsd:string .
+
+ex:Person208 a foaf:Person ;
+    ex:age "42"^^xsd:int ;
+    ex:birthdate "2016-08-16"^^xsd:date ;
+    ex:height "1.86"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person117,
+        ex:Person129,
+        ex:Person135,
+        ex:Person152,
+        ex:Person155,
+        ex:Person180,
+        ex:Person222,
+        ex:Person232,
+        ex:Person235,
+        ex:Person31,
+        ex:Person35,
+        ex:Person39,
+        ex:Person41,
+        ex:Person61 ;
+    foaf:name "Person 208"^^xsd:string .
+
+ex:Person210 a foaf:Person ;
+    ex:age "69"^^xsd:int ;
+    ex:birthdate "1968-08-05"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person134,
+        ex:Person137,
+        ex:Person166,
+        ex:Person173,
+        ex:Person223,
+        ex:Person70 ;
+    foaf:name "Person 210"^^xsd:string .
+
+ex:Person217 a foaf:Person ;
+    ex:age "22"^^xsd:int ;
+    ex:birthdate "1971-02-10"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person143,
+        ex:Person15,
+        ex:Person153,
+        ex:Person17,
+        ex:Person197,
+        ex:Person222,
+        ex:Person226,
+        ex:Person23,
+        ex:Person41,
+        ex:Person61,
+        ex:Person75,
+        ex:Person90,
+        ex:Person93 ;
+    foaf:name "Person 217"^^xsd:string .
+
+ex:Person22 a foaf:Person ;
+    ex:age "48"^^xsd:int ;
+    ex:birthdate "1980-10-31"^^xsd:date ;
+    ex:height "1.96"^^xsd:float ;
+    foaf:knows ex:Person128,
+        ex:Person175,
+        ex:Person193,
+        ex:Person30,
+        ex:Person93 ;
+    foaf:name "Person 22"^^xsd:string .
+
+ex:Person231 a foaf:Person ;
+    ex:age "54"^^xsd:int ;
+    ex:birthdate "1973-03-22"^^xsd:date ;
+    ex:height "1.5"^^xsd:float ;
+    foaf:knows ex:Person108,
+        ex:Person13,
+        ex:Person151,
+        ex:Person187,
+        ex:Person68,
+        ex:Person75,
+        ex:Person94 ;
+    foaf:name "Person 231"^^xsd:string .
+
+ex:Person242 a foaf:Person ;
+    ex:age "26"^^xsd:int ;
+    ex:birthdate "1996-03-18"^^xsd:date ;
+    ex:height "1.57"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person144,
+        ex:Person156,
+        ex:Person163,
+        ex:Person168,
+        ex:Person189,
+        ex:Person192,
+        ex:Person211,
+        ex:Person223,
+        ex:Person27,
+        ex:Person3,
+        ex:Person58,
+        ex:Person7 ;
+    foaf:name "Person 242"^^xsd:string .
+
+ex:Person33 a foaf:Person ;
+    ex:age "39"^^xsd:int ;
+    ex:birthdate "1979-02-11"^^xsd:date ;
+    ex:height "1.68"^^xsd:float ;
+    foaf:knows ex:Person107,
+        ex:Person117,
+        ex:Person140,
+        ex:Person192,
+        ex:Person43,
+        ex:Person92 ;
+    foaf:name "Person 33"^^xsd:string .
+
+ex:Person35 a foaf:Person ;
+    ex:age "51"^^xsd:int ;
+    ex:birthdate "1982-11-14"^^xsd:date ;
+    ex:height "1.91"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person107,
+        ex:Person121,
+        ex:Person134,
+        ex:Person235,
+        ex:Person29,
+        ex:Person42,
+        ex:Person54,
+        ex:Person80 ;
+    foaf:name "Person 35"^^xsd:string .
+
+ex:Person50 a foaf:Person ;
+    ex:age "26"^^xsd:int ;
+    ex:birthdate "1989-12-01"^^xsd:date ;
+    ex:height "1.67"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person110,
+        ex:Person117,
+        ex:Person146,
+        ex:Person149,
+        ex:Person158,
+        ex:Person190,
+        ex:Person201,
+        ex:Person239,
+        ex:Person243,
+        ex:Person27,
+        ex:Person43 ;
+    foaf:name "Person 50"^^xsd:string .
+
+ex:Person74 a foaf:Person ;
+    ex:age "48"^^xsd:int ;
+    ex:birthdate "2003-12-17"^^xsd:date ;
+    ex:height "1.8"^^xsd:float ;
+    foaf:knows ex:Person214,
+        ex:Person250,
+        ex:Person63,
+        ex:Person7,
+        ex:Person9 ;
+    foaf:name "Person 74"^^xsd:string .
+
+ex:Person85 a foaf:Person ;
+    ex:age "63"^^xsd:int ;
+    ex:birthdate "1986-12-28"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person102,
+        ex:Person137,
+        ex:Person198,
+        ex:Person239,
+        ex:Person42 ;
+    foaf:name "Person 85"^^xsd:string .
+
+ex:Person90 a foaf:Person ;
+    ex:age "40"^^xsd:int ;
+    ex:birthdate "1999-10-05"^^xsd:date ;
+    ex:height "1.83"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person104,
+        ex:Person14,
+        ex:Person233,
+        ex:Person247,
+        ex:Person39,
+        ex:Person92 ;
+    foaf:name "Person 90"^^xsd:string .
+
+ex:Person94 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "2004-08-07"^^xsd:date ;
+    ex:height "1.7"^^xsd:float ;
+    foaf:knows ex:Person11,
+        ex:Person140,
+        ex:Person177,
+        ex:Person220,
+        ex:Person244 ;
+    foaf:name "Person 94"^^xsd:string .
+
+ex:Person100 a foaf:Person ;
+    ex:age "18"^^xsd:int ;
+    ex:birthdate "2007-02-24"^^xsd:date ;
+    ex:height "1.76"^^xsd:float ;
+    foaf:knows ex:Person166,
+        ex:Person183,
+        ex:Person20,
+        ex:Person203,
+        ex:Person225,
+        ex:Person233,
+        ex:Person234,
+        ex:Person243,
+        ex:Person4,
+        ex:Person7,
+        ex:Person72,
+        ex:Person75,
+        ex:Person96 ;
+    foaf:name "Person 100"^^xsd:string .
+
+ex:Person103 a foaf:Person ;
+    ex:age "72"^^xsd:int ;
+    ex:birthdate "2015-10-07"^^xsd:date ;
+    ex:height "1.98"^^xsd:float ;
+    foaf:knows ex:Person110,
+        ex:Person173,
+        ex:Person201,
+        ex:Person203,
+        ex:Person221,
+        ex:Person227,
+        ex:Person229,
+        ex:Person96 ;
+    foaf:name "Person 103"^^xsd:string .
+
+ex:Person113 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "2008-12-17"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person129,
+        ex:Person156,
+        ex:Person31,
+        ex:Person46,
+        ex:Person66,
+        ex:Person77,
+        ex:Person86 ;
+    foaf:name "Person 113"^^xsd:string .
+
+ex:Person114 a foaf:Person ;
+    ex:age "33"^^xsd:int ;
+    ex:birthdate "2012-08-29"^^xsd:date ;
+    ex:height "1.64"^^xsd:float ;
+    foaf:knows ex:Person107,
+        ex:Person11,
+        ex:Person119,
+        ex:Person126,
+        ex:Person15,
+        ex:Person188,
+        ex:Person197,
+        ex:Person200,
+        ex:Person212,
+        ex:Person31,
+        ex:Person35,
+        ex:Person80 ;
+    foaf:name "Person 114"^^xsd:string .
+
+ex:Person116 a foaf:Person ;
+    ex:age "28"^^xsd:int ;
+    ex:birthdate "1965-09-24"^^xsd:date ;
+    ex:height "1.53"^^xsd:float ;
+    foaf:knows ex:Person13,
+        ex:Person208,
+        ex:Person233,
+        ex:Person45,
+        ex:Person73 ;
+    foaf:name "Person 116"^^xsd:string .
+
+ex:Person12 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "2016-05-03"^^xsd:date ;
+    ex:height "1.73"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person124,
+        ex:Person127,
+        ex:Person135,
+        ex:Person163,
+        ex:Person194,
+        ex:Person206,
+        ex:Person25,
+        ex:Person65,
+        ex:Person9,
+        ex:Person99 ;
+    foaf:name "Person 12"^^xsd:string .
+
+ex:Person121 a foaf:Person ;
+    ex:age "50"^^xsd:int ;
+    ex:birthdate "2006-07-22"^^xsd:date ;
+    ex:height "1.55"^^xsd:float ;
+    foaf:knows ex:Person107,
+        ex:Person118,
+        ex:Person134,
+        ex:Person135,
+        ex:Person138,
+        ex:Person160,
+        ex:Person210,
+        ex:Person226,
+        ex:Person48,
+        ex:Person59,
+        ex:Person67,
+        ex:Person72,
+        ex:Person73 ;
+    foaf:name "Person 121"^^xsd:string .
+
+ex:Person124 a foaf:Person ;
+    ex:age "78"^^xsd:int ;
+    ex:birthdate "1969-12-10"^^xsd:date ;
+    ex:height "1.89"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person13,
+        ex:Person186,
+        ex:Person211,
+        ex:Person240,
+        ex:Person38,
+        ex:Person78 ;
+    foaf:name "Person 124"^^xsd:string .
+
+ex:Person16 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "1965-11-14"^^xsd:date ;
+    ex:height "1.72"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person106,
+        ex:Person115,
+        ex:Person116,
+        ex:Person12,
+        ex:Person124,
+        ex:Person14,
+        ex:Person149,
+        ex:Person158,
+        ex:Person183,
+        ex:Person220,
+        ex:Person46,
+        ex:Person49,
+        ex:Person58 ;
+    foaf:name "Person 16"^^xsd:string .
+
+ex:Person160 a foaf:Person ;
+    ex:age "39"^^xsd:int ;
+    ex:birthdate "1991-04-06"^^xsd:date ;
+    ex:height "1.63"^^xsd:float ;
+    foaf:knows ex:Person131,
+        ex:Person156,
+        ex:Person182,
+        ex:Person187,
+        ex:Person211,
+        ex:Person233,
+        ex:Person46,
+        ex:Person59,
+        ex:Person75,
+        ex:Person86,
+        ex:Person9,
+        ex:Person90 ;
+    foaf:name "Person 160"^^xsd:string .
+
+ex:Person161 a foaf:Person ;
+    ex:age "20"^^xsd:int ;
+    ex:birthdate "2005-07-17"^^xsd:date ;
+    ex:height "1.58"^^xsd:float ;
+    foaf:knows ex:Person12,
+        ex:Person129,
+        ex:Person185,
+        ex:Person20,
+        ex:Person218,
+        ex:Person35,
+        ex:Person6,
+        ex:Person67,
+        ex:Person71,
+        ex:Person87,
+        ex:Person97 ;
+    foaf:name "Person 161"^^xsd:string .
+
+ex:Person164 a foaf:Person ;
+    ex:age "47"^^xsd:int ;
+    ex:birthdate "1985-01-02"^^xsd:date ;
+    ex:height "1.52"^^xsd:float ;
+    foaf:knows ex:Person157,
+        ex:Person187,
+        ex:Person2,
+        ex:Person213,
+        ex:Person41,
+        ex:Person70,
+        ex:Person77,
+        ex:Person89 ;
+    foaf:name "Person 164"^^xsd:string .
+
+ex:Person195 a foaf:Person ;
+    ex:age "22"^^xsd:int ;
+    ex:birthdate "1973-04-01"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person117,
+        ex:Person140,
+        ex:Person148,
+        ex:Person151,
+        ex:Person152,
+        ex:Person154,
+        ex:Person165,
+        ex:Person37,
+        ex:Person61,
+        ex:Person70,
+        ex:Person81,
+        ex:Person92 ;
+    foaf:name "Person 195"^^xsd:string .
+
+ex:Person20 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "2019-01-01"^^xsd:date ;
+    ex:height "1.91"^^xsd:float ;
+    foaf:knows ex:Person114,
+        ex:Person161,
+        ex:Person181,
+        ex:Person21,
+        ex:Person66 ;
+    foaf:name "Person 20"^^xsd:string .
+
+ex:Person205 a foaf:Person ;
+    ex:age "45"^^xsd:int ;
+    ex:birthdate "1994-02-18"^^xsd:date ;
+    ex:height "1.65"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person104,
+        ex:Person138,
+        ex:Person139,
+        ex:Person34,
+        ex:Person63,
+        ex:Person65 ;
+    foaf:name "Person 205"^^xsd:string .
+
+ex:Person207 a foaf:Person ;
+    ex:age "41"^^xsd:int ;
+    ex:birthdate "2005-12-13"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person102,
+        ex:Person117,
+        ex:Person126,
+        ex:Person130,
+        ex:Person157,
+        ex:Person177,
+        ex:Person183,
+        ex:Person205,
+        ex:Person219,
+        ex:Person223,
+        ex:Person5,
+        ex:Person87,
+        ex:Person90,
+        ex:Person91,
+        ex:Person92 ;
+    foaf:name "Person 207"^^xsd:string .
+
+ex:Person219 a foaf:Person ;
+    ex:age "44"^^xsd:int ;
+    ex:birthdate "1987-11-09"^^xsd:date ;
+    ex:height "1.72"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person142,
+        ex:Person175,
+        ex:Person197,
+        ex:Person46,
+        ex:Person73,
+        ex:Person81 ;
+    foaf:name "Person 219"^^xsd:string .
+
+ex:Person222 a foaf:Person ;
+    ex:age "35"^^xsd:int ;
+    ex:birthdate "2022-08-10"^^xsd:date ;
+    ex:height "1.94"^^xsd:float ;
+    foaf:knows ex:Person120,
+        ex:Person127,
+        ex:Person155,
+        ex:Person172,
+        ex:Person174,
+        ex:Person187,
+        ex:Person190,
+        ex:Person227,
+        ex:Person228,
+        ex:Person237,
+        ex:Person239,
+        ex:Person31,
+        ex:Person76 ;
+    foaf:name "Person 222"^^xsd:string .
+
+ex:Person232 a foaf:Person ;
+    ex:age "64"^^xsd:int ;
+    ex:birthdate "1987-05-12"^^xsd:date ;
+    ex:height "1.58"^^xsd:float ;
+    foaf:knows ex:Person108,
+        ex:Person111,
+        ex:Person120,
+        ex:Person131,
+        ex:Person162,
+        ex:Person173,
+        ex:Person178,
+        ex:Person217,
+        ex:Person28,
+        ex:Person85 ;
+    foaf:name "Person 232"^^xsd:string .
+
+ex:Person234 a foaf:Person ;
+    ex:age "75"^^xsd:int ;
+    ex:birthdate "1987-09-17"^^xsd:date ;
+    ex:height "1.59"^^xsd:float ;
+    foaf:knows ex:Person1,
+        ex:Person12,
+        ex:Person144,
+        ex:Person147,
+        ex:Person16,
+        ex:Person31,
+        ex:Person37,
+        ex:Person41,
+        ex:Person46,
+        ex:Person62 ;
+    foaf:name "Person 234"^^xsd:string .
+
+ex:Person239 a foaf:Person ;
+    ex:age "21"^^xsd:int ;
+    ex:birthdate "1976-04-27"^^xsd:date ;
+    ex:height "1.67"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person116,
+        ex:Person135,
+        ex:Person136,
+        ex:Person154,
+        ex:Person206,
+        ex:Person207,
+        ex:Person208,
+        ex:Person223,
+        ex:Person243,
+        ex:Person78,
+        ex:Person88 ;
+    foaf:name "Person 239"^^xsd:string .
+
+ex:Person243 a foaf:Person ;
+    ex:age "58"^^xsd:int ;
+    ex:birthdate "1988-12-16"^^xsd:date ;
+    ex:height "1.8"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person143,
+        ex:Person159,
+        ex:Person180,
+        ex:Person237,
+        ex:Person241,
+        ex:Person244,
+        ex:Person42,
+        ex:Person6 ;
+    foaf:name "Person 243"^^xsd:string .
+
+ex:Person250 a foaf:Person ;
+    ex:age "22"^^xsd:int ;
+    ex:birthdate "2017-12-03"^^xsd:date ;
+    ex:height "1.68"^^xsd:float ;
+    foaf:knows ex:Person102,
+        ex:Person118,
+        ex:Person21,
+        ex:Person217,
+        ex:Person235,
+        ex:Person82,
+        ex:Person87,
+        ex:Person94,
+        ex:Person96 ;
+    foaf:name "Person 250"^^xsd:string .
+
+ex:Person29 a foaf:Person ;
+    ex:age "34"^^xsd:int ;
+    ex:birthdate "1993-09-05"^^xsd:date ;
+    ex:height "1.6"^^xsd:float ;
+    foaf:knows ex:Person124,
+        ex:Person129,
+        ex:Person188,
+        ex:Person219,
+        ex:Person222,
+        ex:Person47,
+        ex:Person65,
+        ex:Person75,
+        ex:Person77 ;
+    foaf:name "Person 29"^^xsd:string .
+
+ex:Person43 a foaf:Person ;
+    ex:age "45"^^xsd:int ;
+    ex:birthdate "2024-10-07"^^xsd:date ;
+    ex:height "1.53"^^xsd:float ;
+    foaf:knows ex:Person151,
+        ex:Person205,
+        ex:Person226,
+        ex:Person4,
+        ex:Person42,
+        ex:Person76,
+        ex:Person93 ;
+    foaf:name "Person 43"^^xsd:string .
+
+ex:Person47 a foaf:Person ;
+    ex:age "26"^^xsd:int ;
+    ex:birthdate "2005-04-19"^^xsd:date ;
+    ex:height "1.91"^^xsd:float ;
+    foaf:knows ex:Person165,
+        ex:Person198,
+        ex:Person207,
+        ex:Person217,
+        ex:Person24,
+        ex:Person246,
+        ex:Person51,
+        ex:Person6,
+        ex:Person76,
+        ex:Person83 ;
+    foaf:name "Person 47"^^xsd:string .
+
+ex:Person53 a foaf:Person ;
+    ex:age "66"^^xsd:int ;
+    ex:birthdate "1986-10-09"^^xsd:date ;
+    ex:height "1.8"^^xsd:float ;
+    foaf:knows ex:Person119,
+        ex:Person168,
+        ex:Person189,
+        ex:Person191,
+        ex:Person197,
+        ex:Person21,
+        ex:Person210,
+        ex:Person224,
+        ex:Person225,
+        ex:Person245,
+        ex:Person45,
+        ex:Person67,
+        ex:Person98 ;
+    foaf:name "Person 53"^^xsd:string .
+
+ex:Person58 a foaf:Person ;
+    ex:age "26"^^xsd:int ;
+    ex:birthdate "2008-10-05"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person164,
+        ex:Person181,
+        ex:Person206,
+        ex:Person240,
+        ex:Person242,
+        ex:Person39,
+        ex:Person62,
+        ex:Person92,
+        ex:Person98 ;
+    foaf:name "Person 58"^^xsd:string .
+
+ex:Person6 a foaf:Person ;
+    ex:age "57"^^xsd:int ;
+    ex:birthdate "2020-03-30"^^xsd:date ;
+    ex:height "1.67"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person102,
+        ex:Person149,
+        ex:Person165,
+        ex:Person193,
+        ex:Person212,
+        ex:Person215,
+        ex:Person216,
+        ex:Person237,
+        ex:Person30,
+        ex:Person36,
+        ex:Person46,
+        ex:Person97 ;
+    foaf:name "Person 6"^^xsd:string .
+
+ex:Person61 a foaf:Person ;
+    ex:age "21"^^xsd:int ;
+    ex:birthdate "1968-12-01"^^xsd:date ;
+    ex:height "1.53"^^xsd:float ;
+    foaf:knows ex:Person13,
+        ex:Person139,
+        ex:Person21,
+        ex:Person46,
+        ex:Person62 ;
+    foaf:name "Person 61"^^xsd:string .
+
+ex:Person67 a foaf:Person ;
+    ex:age "23"^^xsd:int ;
+    ex:birthdate "1988-02-17"^^xsd:date ;
+    ex:height "1.96"^^xsd:float ;
+    foaf:knows ex:Person168,
+        ex:Person172,
+        ex:Person177,
+        ex:Person219,
+        ex:Person244,
+        ex:Person248,
+        ex:Person37,
+        ex:Person41 ;
+    foaf:name "Person 67"^^xsd:string .
+
+ex:Person75 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "2007-07-08"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person13,
+        ex:Person136,
+        ex:Person199,
+        ex:Person28,
+        ex:Person64 ;
+    foaf:name "Person 75"^^xsd:string .
+
+ex:Person79 a foaf:Person ;
+    ex:age "19"^^xsd:int ;
+    ex:birthdate "1978-05-23"^^xsd:date ;
+    ex:height "1.67"^^xsd:float ;
+    foaf:knows ex:Person146,
+        ex:Person149,
+        ex:Person156,
+        ex:Person16,
+        ex:Person161,
+        ex:Person175,
+        ex:Person32,
+        ex:Person56,
+        ex:Person69 ;
+    foaf:name "Person 79"^^xsd:string .
+
+ex:Person104 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "1996-06-21"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person219,
+        ex:Person223,
+        ex:Person235,
+        ex:Person25,
+        ex:Person60,
+        ex:Person65,
+        ex:Person71 ;
+    foaf:name "Person 104"^^xsd:string .
+
+ex:Person107 a foaf:Person ;
+    ex:age "78"^^xsd:int ;
+    ex:birthdate "2016-02-01"^^xsd:date ;
+    ex:height "1.89"^^xsd:float ;
+    foaf:knows ex:Person136,
+        ex:Person225,
+        ex:Person74,
+        ex:Person88,
+        ex:Person91 ;
+    foaf:name "Person 107"^^xsd:string .
+
+ex:Person117 a foaf:Person ;
+    ex:age "55"^^xsd:int ;
+    ex:birthdate "2008-03-17"^^xsd:date ;
+    ex:height "1.51"^^xsd:float ;
+    foaf:knows ex:Person124,
+        ex:Person126,
+        ex:Person135,
+        ex:Person159,
+        ex:Person199,
+        ex:Person232,
+        ex:Person237,
+        ex:Person238,
+        ex:Person38,
+        ex:Person72 ;
+    foaf:name "Person 117"^^xsd:string .
+
+ex:Person126 a foaf:Person ;
+    ex:age "78"^^xsd:int ;
+    ex:birthdate "1969-05-25"^^xsd:date ;
+    ex:height "1.58"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person14,
+        ex:Person182,
+        ex:Person49,
+        ex:Person76,
+        ex:Person90 ;
+    foaf:name "Person 126"^^xsd:string .
+
+ex:Person134 a foaf:Person ;
+    ex:age "47"^^xsd:int ;
+    ex:birthdate "2001-10-31"^^xsd:date ;
+    ex:height "1.82"^^xsd:float ;
+    foaf:knows ex:Person121,
+        ex:Person198,
+        ex:Person201,
+        ex:Person229,
+        ex:Person244,
+        ex:Person245,
+        ex:Person25,
+        ex:Person33,
+        ex:Person57,
+        ex:Person69,
+        ex:Person78 ;
+    foaf:name "Person 134"^^xsd:string .
+
+ex:Person14 a foaf:Person ;
+    ex:age "47"^^xsd:int ;
+    ex:birthdate "2019-06-30"^^xsd:date ;
+    ex:height "1.68"^^xsd:float ;
+    foaf:knows ex:Person122,
+        ex:Person207,
+        ex:Person230,
+        ex:Person69,
+        ex:Person78 ;
+    foaf:name "Person 14"^^xsd:string .
+
+ex:Person153 a foaf:Person ;
+    ex:age "80"^^xsd:int ;
+    ex:birthdate "1998-02-23"^^xsd:date ;
+    ex:height "1.88"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person11,
+        ex:Person155,
+        ex:Person156,
+        ex:Person175,
+        ex:Person229,
+        ex:Person234,
+        ex:Person241,
+        ex:Person27,
+        ex:Person32,
+        ex:Person50,
+        ex:Person52,
+        ex:Person69 ;
+    foaf:name "Person 153"^^xsd:string .
+
+ex:Person156 a foaf:Person ;
+    ex:age "20"^^xsd:int ;
+    ex:birthdate "1996-05-06"^^xsd:date ;
+    ex:height "1.53"^^xsd:float ;
+    foaf:knows ex:Person163,
+        ex:Person191,
+        ex:Person193,
+        ex:Person227,
+        ex:Person228,
+        ex:Person247,
+        ex:Person26,
+        ex:Person31,
+        ex:Person46,
+        ex:Person5,
+        ex:Person51,
+        ex:Person58,
+        ex:Person63,
+        ex:Person69 ;
+    foaf:name "Person 156"^^xsd:string .
+
+ex:Person158 a foaf:Person ;
+    ex:age "55"^^xsd:int ;
+    ex:birthdate "2014-09-28"^^xsd:date ;
+    ex:height "1.66"^^xsd:float ;
+    foaf:knows ex:Person117,
+        ex:Person124,
+        ex:Person126,
+        ex:Person157,
+        ex:Person177,
+        ex:Person196,
+        ex:Person23,
+        ex:Person237,
+        ex:Person37,
+        ex:Person47,
+        ex:Person55,
+        ex:Person78 ;
+    foaf:name "Person 158"^^xsd:string .
+
+ex:Person172 a foaf:Person ;
+    ex:age "51"^^xsd:int ;
+    ex:birthdate "2015-01-07"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person118,
+        ex:Person121,
+        ex:Person127,
+        ex:Person149,
+        ex:Person16,
+        ex:Person177,
+        ex:Person199,
+        ex:Person249,
+        ex:Person4,
+        ex:Person52,
+        ex:Person90,
+        ex:Person93 ;
+    foaf:name "Person 172"^^xsd:string .
+
+ex:Person174 a foaf:Person ;
+    ex:age "38"^^xsd:int ;
+    ex:birthdate "1996-08-07"^^xsd:date ;
+    ex:height "1.79"^^xsd:float ;
+    foaf:knows ex:Person113,
+        ex:Person133,
+        ex:Person152,
+        ex:Person162,
+        ex:Person169,
+        ex:Person175,
+        ex:Person193 ;
+    foaf:name "Person 174"^^xsd:string .
+
+ex:Person180 a foaf:Person ;
+    ex:age "35"^^xsd:int ;
+    ex:birthdate "1982-10-07"^^xsd:date ;
+    ex:height "1.64"^^xsd:float ;
+    foaf:knows ex:Person127,
+        ex:Person145,
+        ex:Person162,
+        ex:Person44,
+        ex:Person57,
+        ex:Person66,
+        ex:Person90,
+        ex:Person95 ;
+    foaf:name "Person 180"^^xsd:string .
+
+ex:Person192 a foaf:Person ;
+    ex:age "76"^^xsd:int ;
+    ex:birthdate "1986-02-20"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person108,
+        ex:Person172,
+        ex:Person190,
+        ex:Person226,
+        ex:Person35,
+        ex:Person92 ;
+    foaf:name "Person 192"^^xsd:string .
+
+ex:Person199 a foaf:Person ;
+    ex:age "49"^^xsd:int ;
+    ex:birthdate "1985-07-04"^^xsd:date ;
+    ex:height "1.51"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person135,
+        ex:Person168,
+        ex:Person174,
+        ex:Person19,
+        ex:Person192,
+        ex:Person197,
+        ex:Person20,
+        ex:Person206,
+        ex:Person213,
+        ex:Person22,
+        ex:Person249,
+        ex:Person31,
+        ex:Person43,
+        ex:Person47 ;
+    foaf:name "Person 199"^^xsd:string .
+
+ex:Person23 a foaf:Person ;
+    ex:age "46"^^xsd:int ;
+    ex:birthdate "1967-08-11"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person113,
+        ex:Person126,
+        ex:Person127,
+        ex:Person154,
+        ex:Person158,
+        ex:Person231,
+        ex:Person24,
+        ex:Person6 ;
+    foaf:name "Person 23"^^xsd:string .
+
+ex:Person28 a foaf:Person ;
+    ex:age "67"^^xsd:int ;
+    ex:birthdate "1995-07-13"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person106,
+        ex:Person15,
+        ex:Person17,
+        ex:Person192,
+        ex:Person231,
+        ex:Person247,
+        ex:Person29,
+        ex:Person3,
+        ex:Person81,
+        ex:Person83,
+        ex:Person86 ;
+    foaf:name "Person 28"^^xsd:string .
+
+ex:Person44 a foaf:Person ;
+    ex:age "57"^^xsd:int ;
+    ex:birthdate "2000-02-15"^^xsd:date ;
+    ex:height "1.57"^^xsd:float ;
+    foaf:knows ex:Person109,
+        ex:Person12,
+        ex:Person194,
+        ex:Person213,
+        ex:Person22,
+        ex:Person23,
+        ex:Person234,
+        ex:Person32,
+        ex:Person68,
+        ex:Person78 ;
+    foaf:name "Person 44"^^xsd:string .
+
+ex:Person5 a foaf:Person ;
+    ex:age "41"^^xsd:int ;
+    ex:birthdate "1968-01-20"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person116,
+        ex:Person120,
+        ex:Person162,
+        ex:Person170,
+        ex:Person186,
+        ex:Person191,
+        ex:Person210,
+        ex:Person219,
+        ex:Person247,
+        ex:Person53,
+        ex:Person59,
+        ex:Person73,
+        ex:Person8,
+        ex:Person94 ;
+    foaf:name "Person 5"^^xsd:string .
+
+ex:Person57 a foaf:Person ;
+    ex:age "33"^^xsd:int ;
+    ex:birthdate "1982-06-26"^^xsd:date ;
+    ex:height "1.94"^^xsd:float ;
+    foaf:knows ex:Person134,
+        ex:Person191,
+        ex:Person244,
+        ex:Person40,
+        ex:Person61,
+        ex:Person95 ;
+    foaf:name "Person 57"^^xsd:string .
+
+ex:Person60 a foaf:Person ;
+    ex:age "20"^^xsd:int ;
+    ex:birthdate "2002-02-26"^^xsd:date ;
+    ex:height "1.57"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person105,
+        ex:Person173,
+        ex:Person176,
+        ex:Person205,
+        ex:Person225,
+        ex:Person241,
+        ex:Person25,
+        ex:Person36 ;
+    foaf:name "Person 60"^^xsd:string .
+
+ex:Person64 a foaf:Person ;
+    ex:age "38"^^xsd:int ;
+    ex:birthdate "1972-12-19"^^xsd:date ;
+    ex:height "1.86"^^xsd:float ;
+    foaf:knows ex:Person15,
+        ex:Person180,
+        ex:Person42,
+        ex:Person48,
+        ex:Person49 ;
+    foaf:name "Person 64"^^xsd:string .
+
+ex:Person68 a foaf:Person ;
+    ex:age "60"^^xsd:int ;
+    ex:birthdate "1991-12-24"^^xsd:date ;
+    ex:height "1.9"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person13,
+        ex:Person135,
+        ex:Person177,
+        ex:Person199,
+        ex:Person205,
+        ex:Person212,
+        ex:Person219,
+        ex:Person22,
+        ex:Person241,
+        ex:Person243,
+        ex:Person33,
+        ex:Person50,
+        ex:Person57,
+        ex:Person88 ;
+    foaf:name "Person 68"^^xsd:string .
+
+ex:Person81 a foaf:Person ;
+    ex:age "65"^^xsd:int ;
+    ex:birthdate "2009-02-14"^^xsd:date ;
+    ex:height "1.94"^^xsd:float ;
+    foaf:knows ex:Person158,
+        ex:Person193,
+        ex:Person206,
+        ex:Person212,
+        ex:Person53 ;
+    foaf:name "Person 81"^^xsd:string .
+
+ex:Person88 a foaf:Person ;
+    ex:age "77"^^xsd:int ;
+    ex:birthdate "2024-11-26"^^xsd:date ;
+    ex:height "1.58"^^xsd:float ;
+    foaf:knows ex:Person11,
+        ex:Person122,
+        ex:Person172,
+        ex:Person183,
+        ex:Person189,
+        ex:Person215,
+        ex:Person220,
+        ex:Person231,
+        ex:Person38,
+        ex:Person68,
+        ex:Person73,
+        ex:Person77,
+        ex:Person93,
+        ex:Person95 ;
+    foaf:name "Person 88"^^xsd:string .
+
+ex:Person93 a foaf:Person ;
+    ex:age "22"^^xsd:int ;
+    ex:birthdate "2025-07-17"^^xsd:date ;
+    ex:height "1.79"^^xsd:float ;
+    foaf:knows ex:Person119,
+        ex:Person12,
+        ex:Person120,
+        ex:Person146,
+        ex:Person183,
+        ex:Person21,
+        ex:Person232,
+        ex:Person247,
+        ex:Person44,
+        ex:Person85 ;
+    foaf:name "Person 93"^^xsd:string .
+
+ex:Person101 a foaf:Person ;
+    ex:age "27"^^xsd:int ;
+    ex:birthdate "1991-06-27"^^xsd:date ;
+    ex:height "1.54"^^xsd:float ;
+    foaf:knows ex:Person154,
+        ex:Person204,
+        ex:Person207,
+        ex:Person225,
+        ex:Person229,
+        ex:Person49,
+        ex:Person96 ;
+    foaf:name "Person 101"^^xsd:string .
+
+ex:Person118 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "1969-09-20"^^xsd:date ;
+    ex:height "1.58"^^xsd:float ;
+    foaf:knows ex:Person10,
+        ex:Person114,
+        ex:Person197,
+        ex:Person21,
+        ex:Person243,
+        ex:Person53,
+        ex:Person97 ;
+    foaf:name "Person 118"^^xsd:string .
+
+ex:Person177 a foaf:Person ;
+    ex:age "18"^^xsd:int ;
+    ex:birthdate "1984-05-13"^^xsd:date ;
+    ex:height "1.82"^^xsd:float ;
+    foaf:knows ex:Person117,
+        ex:Person14,
+        ex:Person153,
+        ex:Person180,
+        ex:Person184,
+        ex:Person195,
+        ex:Person238,
+        ex:Person246,
+        ex:Person57,
+        ex:Person58,
+        ex:Person75,
+        ex:Person86 ;
+    foaf:name "Person 177"^^xsd:string .
+
+ex:Person178 a foaf:Person ;
+    ex:age "73"^^xsd:int ;
+    ex:birthdate "1993-07-05"^^xsd:date ;
+    ex:height "1.74"^^xsd:float ;
+    foaf:knows ex:Person106,
+        ex:Person110,
+        ex:Person155,
+        ex:Person176,
+        ex:Person187,
+        ex:Person242,
+        ex:Person250,
+        ex:Person39,
+        ex:Person95,
+        ex:Person96,
+        ex:Person97 ;
+    foaf:name "Person 178"^^xsd:string .
+
+ex:Person193 a foaf:Person ;
+    ex:age "34"^^xsd:int ;
+    ex:birthdate "1978-12-13"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person113,
+        ex:Person120,
+        ex:Person122,
+        ex:Person169,
+        ex:Person180,
+        ex:Person20,
+        ex:Person218,
+        ex:Person229,
+        ex:Person234,
+        ex:Person52,
+        ex:Person76 ;
+    foaf:name "Person 193"^^xsd:string .
+
+ex:Person213 a foaf:Person ;
+    ex:age "31"^^xsd:int ;
+    ex:birthdate "1992-06-17"^^xsd:date ;
+    ex:height "1.66"^^xsd:float ;
+    foaf:knows ex:Person121,
+        ex:Person149,
+        ex:Person187,
+        ex:Person209,
+        ex:Person21,
+        ex:Person248,
+        ex:Person64,
+        ex:Person85 ;
+    foaf:name "Person 213"^^xsd:string .
+
+ex:Person216 a foaf:Person ;
+    ex:age "48"^^xsd:int ;
+    ex:birthdate "2007-11-05"^^xsd:date ;
+    ex:height "1.6"^^xsd:float ;
+    foaf:knows ex:Person136,
+        ex:Person224,
+        ex:Person245,
+        ex:Person30,
+        ex:Person72,
+        ex:Person83,
+        ex:Person94 ;
+    foaf:name "Person 216"^^xsd:string .
+
+ex:Person220 a foaf:Person ;
+    ex:age "57"^^xsd:int ;
+    ex:birthdate "1998-09-03"^^xsd:date ;
+    ex:height "1.95"^^xsd:float ;
+    foaf:knows ex:Person149,
+        ex:Person151,
+        ex:Person18,
+        ex:Person192,
+        ex:Person69 ;
+    foaf:name "Person 220"^^xsd:string .
+
+ex:Person226 a foaf:Person ;
+    ex:age "66"^^xsd:int ;
+    ex:birthdate "1966-03-23"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person115,
+        ex:Person151,
+        ex:Person171,
+        ex:Person194,
+        ex:Person225,
+        ex:Person234,
+        ex:Person69,
+        ex:Person89 ;
+    foaf:name "Person 226"^^xsd:string .
+
+ex:Person244 a foaf:Person ;
+    ex:age "31"^^xsd:int ;
+    ex:birthdate "1974-01-07"^^xsd:date ;
+    ex:height "1.89"^^xsd:float ;
+    foaf:knows ex:Person117,
+        ex:Person127,
+        ex:Person154,
+        ex:Person159,
+        ex:Person180,
+        ex:Person189,
+        ex:Person23,
+        ex:Person234,
+        ex:Person35,
+        ex:Person44,
+        ex:Person72,
+        ex:Person78,
+        ex:Person97 ;
+    foaf:name "Person 244"^^xsd:string .
+
+ex:Person38 a foaf:Person ;
+    ex:age "26"^^xsd:int ;
+    ex:birthdate "1989-01-09"^^xsd:date ;
+    ex:height "1.59"^^xsd:float ;
+    foaf:knows ex:Person139,
+        ex:Person143,
+        ex:Person178,
+        ex:Person194,
+        ex:Person209,
+        ex:Person222,
+        ex:Person40,
+        ex:Person6,
+        ex:Person63,
+        ex:Person81,
+        ex:Person83,
+        ex:Person95 ;
+    foaf:name "Person 38"^^xsd:string .
+
+ex:Person52 a foaf:Person ;
+    ex:age "52"^^xsd:int ;
+    ex:birthdate "1991-07-27"^^xsd:date ;
+    ex:height "1.57"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person106,
+        ex:Person115,
+        ex:Person126,
+        ex:Person139,
+        ex:Person170,
+        ex:Person201,
+        ex:Person213,
+        ex:Person226,
+        ex:Person246,
+        ex:Person39,
+        ex:Person51,
+        ex:Person63,
+        ex:Person72,
+        ex:Person80 ;
+    foaf:name "Person 52"^^xsd:string .
+
+ex:Person63 a foaf:Person ;
+    ex:age "39"^^xsd:int ;
+    ex:birthdate "2025-05-01"^^xsd:date ;
+    ex:height "1.77"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person113,
+        ex:Person149,
+        ex:Person17,
+        ex:Person177,
+        ex:Person184,
+        ex:Person19,
+        ex:Person222,
+        ex:Person229,
+        ex:Person246,
+        ex:Person34,
+        ex:Person36,
+        ex:Person68,
+        ex:Person73,
+        ex:Person98 ;
+    foaf:name "Person 63"^^xsd:string .
+
+ex:Person65 a foaf:Person ;
+    ex:age "67"^^xsd:int ;
+    ex:birthdate "1984-10-29"^^xsd:date ;
+    ex:height "1.75"^^xsd:float ;
+    foaf:knows ex:Person12,
+        ex:Person161,
+        ex:Person237,
+        ex:Person63,
+        ex:Person87 ;
+    foaf:name "Person 65"^^xsd:string .
+
+ex:Person106 a foaf:Person ;
+    ex:age "71"^^xsd:int ;
+    ex:birthdate "2024-08-06"^^xsd:date ;
+    ex:height "1.83"^^xsd:float ;
+    foaf:knows ex:Person128,
+        ex:Person153,
+        ex:Person16,
+        ex:Person164,
+        ex:Person166,
+        ex:Person208,
+        ex:Person222,
+        ex:Person236,
+        ex:Person63 ;
+    foaf:name "Person 106"^^xsd:string .
+
+ex:Person120 a foaf:Person ;
+    ex:age "57"^^xsd:int ;
+    ex:birthdate "1980-10-26"^^xsd:date ;
+    ex:height "1.86"^^xsd:float ;
+    foaf:knows ex:Person129,
+        ex:Person148,
+        ex:Person153,
+        ex:Person162,
+        ex:Person164,
+        ex:Person17,
+        ex:Person199,
+        ex:Person245,
+        ex:Person40 ;
+    foaf:name "Person 120"^^xsd:string .
+
+ex:Person129 a foaf:Person ;
+    ex:age "41"^^xsd:int ;
+    ex:birthdate "2024-05-26"^^xsd:date ;
+    ex:height "1.6"^^xsd:float ;
+    foaf:knows ex:Person1,
+        ex:Person107,
+        ex:Person108,
+        ex:Person136,
+        ex:Person14,
+        ex:Person157,
+        ex:Person172,
+        ex:Person194,
+        ex:Person67,
+        ex:Person71,
+        ex:Person79,
+        ex:Person8,
+        ex:Person81,
+        ex:Person89 ;
+    foaf:name "Person 129"^^xsd:string .
+
+ex:Person144 a foaf:Person ;
+    ex:age "23"^^xsd:int ;
+    ex:birthdate "1966-02-24"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person134,
+        ex:Person145,
+        ex:Person204,
+        ex:Person207,
+        ex:Person219,
+        ex:Person248,
+        ex:Person249,
+        ex:Person39,
+        ex:Person46,
+        ex:Person51,
+        ex:Person55,
+        ex:Person67,
+        ex:Person75,
+        ex:Person91 ;
+    foaf:name "Person 144"^^xsd:string .
+
+ex:Person149 a foaf:Person ;
+    ex:age "80"^^xsd:int ;
+    ex:birthdate "2021-05-08"^^xsd:date ;
+    ex:height "1.96"^^xsd:float ;
+    foaf:knows ex:Person15,
+        ex:Person185,
+        ex:Person228,
+        ex:Person247,
+        ex:Person40,
+        ex:Person84 ;
+    foaf:name "Person 149"^^xsd:string .
+
+ex:Person151 a foaf:Person ;
+    ex:age "72"^^xsd:int ;
+    ex:birthdate "1970-09-29"^^xsd:date ;
+    ex:height "1.72"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person205,
+        ex:Person215,
+        ex:Person221,
+        ex:Person38 ;
+    foaf:name "Person 151"^^xsd:string .
+
+ex:Person159 a foaf:Person ;
+    ex:age "47"^^xsd:int ;
+    ex:birthdate "1971-07-22"^^xsd:date ;
+    ex:height "1.93"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person177,
+        ex:Person2,
+        ex:Person203,
+        ex:Person207,
+        ex:Person247,
+        ex:Person67,
+        ex:Person75,
+        ex:Person96 ;
+    foaf:name "Person 159"^^xsd:string .
+
+ex:Person194 a foaf:Person ;
+    ex:age "49"^^xsd:int ;
+    ex:birthdate "2016-03-09"^^xsd:date ;
+    ex:height "1.76"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person113,
+        ex:Person177,
+        ex:Person182,
+        ex:Person183,
+        ex:Person220,
+        ex:Person246,
+        ex:Person247,
+        ex:Person4,
+        ex:Person70,
+        ex:Person90 ;
+    foaf:name "Person 194"^^xsd:string .
+
+ex:Person206 a foaf:Person ;
+    ex:age "32"^^xsd:int ;
+    ex:birthdate "2019-02-02"^^xsd:date ;
+    ex:height "1.85"^^xsd:float ;
+    foaf:knows ex:Person107,
+        ex:Person15,
+        ex:Person160,
+        ex:Person187,
+        ex:Person210,
+        ex:Person215,
+        ex:Person233,
+        ex:Person47,
+        ex:Person49,
+        ex:Person63,
+        ex:Person66,
+        ex:Person67,
+        ex:Person81,
+        ex:Person92,
+        ex:Person95 ;
+    foaf:name "Person 206"^^xsd:string .
+
+ex:Person246 a foaf:Person ;
+    ex:age "64"^^xsd:int ;
+    ex:birthdate "1992-07-18"^^xsd:date ;
+    ex:height "1.62"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person118,
+        ex:Person143,
+        ex:Person144,
+        ex:Person150,
+        ex:Person173,
+        ex:Person180,
+        ex:Person190,
+        ex:Person208,
+        ex:Person22,
+        ex:Person239,
+        ex:Person28,
+        ex:Person79,
+        ex:Person87 ;
+    foaf:name "Person 246"^^xsd:string .
+
+ex:Person247 a foaf:Person ;
+    ex:age "65"^^xsd:int ;
+    ex:birthdate "1998-10-23"^^xsd:date ;
+    ex:height "1.78"^^xsd:float ;
+    foaf:knows ex:Person111,
+        ex:Person150,
+        ex:Person19,
+        ex:Person248,
+        ex:Person97,
+        ex:Person98 ;
+    foaf:name "Person 247"^^xsd:string .
+
+ex:Person31 a foaf:Person ;
+    ex:age "77"^^xsd:int ;
+    ex:birthdate "1988-03-23"^^xsd:date ;
+    ex:height "1.86"^^xsd:float ;
+    foaf:knows ex:Person173,
+        ex:Person181,
+        ex:Person219,
+        ex:Person32,
+        ex:Person69 ;
+    foaf:name "Person 31"^^xsd:string .
+
+ex:Person66 a foaf:Person ;
+    ex:age "67"^^xsd:int ;
+    ex:birthdate "1992-09-16"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person111,
+        ex:Person131,
+        ex:Person145,
+        ex:Person181,
+        ex:Person193,
+        ex:Person226,
+        ex:Person227,
+        ex:Person239,
+        ex:Person28,
+        ex:Person31,
+        ex:Person45,
+        ex:Person75 ;
+    foaf:name "Person 66"^^xsd:string .
+
+ex:Person72 a foaf:Person ;
+    ex:age "35"^^xsd:int ;
+    ex:birthdate "1983-07-26"^^xsd:date ;
+    ex:height "1.98"^^xsd:float ;
+    foaf:knows ex:Person130,
+        ex:Person146,
+        ex:Person156,
+        ex:Person160,
+        ex:Person164,
+        ex:Person184,
+        ex:Person203,
+        ex:Person250,
+        ex:Person37,
+        ex:Person5,
+        ex:Person8 ;
+    foaf:name "Person 72"^^xsd:string .
+
+ex:Person78 a foaf:Person ;
+    ex:age "25"^^xsd:int ;
+    ex:birthdate "1986-03-11"^^xsd:date ;
+    ex:height "1.95"^^xsd:float ;
+    foaf:knows ex:Person150,
+        ex:Person156,
+        ex:Person200,
+        ex:Person33,
+        ex:Person41,
+        ex:Person42 ;
+    foaf:name "Person 78"^^xsd:string .
+
+ex:Person98 a foaf:Person ;
+    ex:age "62"^^xsd:int ;
+    ex:birthdate "2003-10-11"^^xsd:date ;
+    ex:height "1.95"^^xsd:float ;
+    foaf:knows ex:Person144,
+        ex:Person174,
+        ex:Person196,
+        ex:Person206,
+        ex:Person24,
+        ex:Person41,
+        ex:Person74,
+        ex:Person97 ;
+    foaf:name "Person 98"^^xsd:string .
+
+ex:Person13 a foaf:Person ;
+    ex:age "60"^^xsd:int ;
+    ex:birthdate "2001-01-12"^^xsd:date ;
+    ex:height "1.59"^^xsd:float ;
+    foaf:knows ex:Person118,
+        ex:Person12,
+        ex:Person152,
+        ex:Person65,
+        ex:Person70 ;
+    foaf:name "Person 13"^^xsd:string .
+
+ex:Person139 a foaf:Person ;
+    ex:age "79"^^xsd:int ;
+    ex:birthdate "1966-02-04"^^xsd:date ;
+    ex:height "1.74"^^xsd:float ;
+    foaf:knows ex:Person102,
+        ex:Person122,
+        ex:Person136,
+        ex:Person184,
+        ex:Person190,
+        ex:Person195,
+        ex:Person39,
+        ex:Person40,
+        ex:Person48 ;
+    foaf:name "Person 139"^^xsd:string .
+
+ex:Person15 a foaf:Person ;
+    ex:age "63"^^xsd:int ;
+    ex:birthdate "2010-11-27"^^xsd:date ;
+    ex:height "1.51"^^xsd:float ;
+    foaf:knows ex:Person223,
+        ex:Person24,
+        ex:Person26,
+        ex:Person53,
+        ex:Person68,
+        ex:Person8 ;
+    foaf:name "Person 15"^^xsd:string .
+
+ex:Person187 a foaf:Person ;
+    ex:age "52"^^xsd:int ;
+    ex:birthdate "1965-12-28"^^xsd:date ;
+    ex:height "1.69"^^xsd:float ;
+    foaf:knows ex:Person101,
+        ex:Person103,
+        ex:Person105,
+        ex:Person136,
+        ex:Person157,
+        ex:Person228,
+        ex:Person24,
+        ex:Person82,
+        ex:Person84,
+        ex:Person98 ;
+    foaf:name "Person 187"^^xsd:string .
+
+ex:Person227 a foaf:Person ;
+    ex:age "43"^^xsd:int ;
+    ex:birthdate "2019-02-05"^^xsd:date ;
+    ex:height "1.75"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person123,
+        ex:Person140,
+        ex:Person173,
+        ex:Person41,
+        ex:Person44,
+        ex:Person48,
+        ex:Person6,
+        ex:Person67,
+        ex:Person8 ;
+    foaf:name "Person 227"^^xsd:string .
+
+ex:Person39 a foaf:Person ;
+    ex:age "33"^^xsd:int ;
+    ex:birthdate "2001-01-07"^^xsd:date ;
+    ex:height "1.58"^^xsd:float ;
+    foaf:knows ex:Person126,
+        ex:Person160,
+        ex:Person177,
+        ex:Person187,
+        ex:Person188,
+        ex:Person212,
+        ex:Person217,
+        ex:Person221,
+        ex:Person225,
+        ex:Person227,
+        ex:Person248,
+        ex:Person249,
+        ex:Person70,
+        ex:Person79,
+        ex:Person97 ;
+    foaf:name "Person 39"^^xsd:string .
+
+ex:Person49 a foaf:Person ;
+    ex:age "70"^^xsd:int ;
+    ex:birthdate "1978-10-21"^^xsd:date ;
+    ex:height "1.85"^^xsd:float ;
+    foaf:knows ex:Person102,
+        ex:Person120,
+        ex:Person134,
+        ex:Person158,
+        ex:Person162,
+        ex:Person173,
+        ex:Person188,
+        ex:Person64,
+        ex:Person90 ;
+    foaf:name "Person 49"^^xsd:string .
+
+ex:Person51 a foaf:Person ;
+    ex:age "51"^^xsd:int ;
+    ex:birthdate "1979-02-03"^^xsd:date ;
+    ex:height "1.7"^^xsd:float ;
+    foaf:knows ex:Person107,
+        ex:Person133,
+        ex:Person14,
+        ex:Person194,
+        ex:Person216,
+        ex:Person227,
+        ex:Person246,
+        ex:Person94 ;
+    foaf:name "Person 51"^^xsd:string .
+
+ex:Person69 a foaf:Person ;
+    ex:age "28"^^xsd:int ;
+    ex:birthdate "2011-03-23"^^xsd:date ;
+    ex:height "1.74"^^xsd:float ;
+    foaf:knows ex:Person116,
+        ex:Person127,
+        ex:Person140,
+        ex:Person153,
+        ex:Person174,
+        ex:Person178,
+        ex:Person191,
+        ex:Person40,
+        ex:Person44,
+        ex:Person46,
+        ex:Person48,
+        ex:Person72 ;
+    foaf:name "Person 69"^^xsd:string .
+
+ex:Person8 a foaf:Person ;
+    ex:age "50"^^xsd:int ;
+    ex:birthdate "1981-07-01"^^xsd:date ;
+    ex:height "1.59"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person118,
+        ex:Person119,
+        ex:Person136,
+        ex:Person146,
+        ex:Person159,
+        ex:Person16,
+        ex:Person192,
+        ex:Person213,
+        ex:Person33,
+        ex:Person51,
+        ex:Person66,
+        ex:Person78,
+        ex:Person97 ;
+    foaf:name "Person 8"^^xsd:string .
+
+ex:Person96 a foaf:Person ;
+    ex:age "21"^^xsd:int ;
+    ex:birthdate "2013-01-03"^^xsd:date ;
+    ex:height "1.76"^^xsd:float ;
+    foaf:knows ex:Person103,
+        ex:Person112,
+        ex:Person142,
+        ex:Person174,
+        ex:Person20,
+        ex:Person242,
+        ex:Person52,
+        ex:Person63,
+        ex:Person74,
+        ex:Person75,
+        ex:Person81 ;
+    foaf:name "Person 96"^^xsd:string .
+
+ex:Person136 a foaf:Person ;
+    ex:age "47"^^xsd:int ;
+    ex:birthdate "1983-12-04"^^xsd:date ;
+    ex:height "1.87"^^xsd:float ;
+    foaf:knows ex:Person157,
+        ex:Person162,
+        ex:Person179,
+        ex:Person192,
+        ex:Person4,
+        ex:Person66,
+        ex:Person77 ;
+    foaf:name "Person 136"^^xsd:string .
+
+ex:Person237 a foaf:Person ;
+    ex:age "57"^^xsd:int ;
+    ex:birthdate "2010-12-11"^^xsd:date ;
+    ex:height "1.74"^^xsd:float ;
+    foaf:knows ex:Person100,
+        ex:Person101,
+        ex:Person122,
+        ex:Person161,
+        ex:Person213,
+        ex:Person46 ;
+    foaf:name "Person 237"^^xsd:string .
+
+ex:Person46 a foaf:Person ;
+    ex:age "65"^^xsd:int ;
+    ex:birthdate "2008-07-25"^^xsd:date ;
+    ex:height "1.99"^^xsd:float ;
+    foaf:knows ex:Person13,
+        ex:Person188,
+        ex:Person41,
+        ex:Person58,
+        ex:Person78 ;
+    foaf:name "Person 46"^^xsd:string .
+
+ex:Person70 a foaf:Person ;
+    ex:age "25"^^xsd:int ;
+    ex:birthdate "1986-01-14"^^xsd:date ;
+    ex:height "1.81"^^xsd:float ;
+    foaf:knows ex:Person108,
+        ex:Person139,
+        ex:Person155,
+        ex:Person166,
+        ex:Person175,
+        ex:Person230,
+        ex:Person239,
+        ex:Person37,
+        ex:Person81,
+        ex:Person91 ;
+    foaf:name "Person 70"^^xsd:string .
+
+ex:Person92 a foaf:Person ;
+    ex:age "25"^^xsd:int ;
+    ex:birthdate "1989-06-21"^^xsd:date ;
+    ex:height "1.76"^^xsd:float ;
+    foaf:knows ex:Person123,
+        ex:Person13,
+        ex:Person178,
+        ex:Person207,
+        ex:Person209,
+        ex:Person47 ;
+    foaf:name "Person 92"^^xsd:string .
+
+ex:Person173 a foaf:Person ;
+    ex:age "56"^^xsd:int ;
+    ex:birthdate "1992-08-17"^^xsd:date ;
+    ex:height "1.92"^^xsd:float ;
+    foaf:knows ex:Person127,
+        ex:Person223,
+        ex:Person242,
+        ex:Person244,
+        ex:Person245,
+        ex:Person36,
+        ex:Person41,
+        ex:Person55,
+        ex:Person84 ;
+    foaf:name "Person 173"^^xsd:string .
+
+ex:Person223 a foaf:Person ;
+    ex:age "52"^^xsd:int ;
+    ex:birthdate "2009-02-14"^^xsd:date ;
+    ex:height "1.82"^^xsd:float ;
+    foaf:knows ex:Person104,
+        ex:Person114,
+        ex:Person123,
+        ex:Person128,
+        ex:Person198,
+        ex:Person209,
+        ex:Person226,
+        ex:Person231,
+        ex:Person232,
+        ex:Person33,
+        ex:Person34,
+        ex:Person66,
+        ex:Person74 ;
+    foaf:name "Person 223"^^xsd:string .
+
+ex:Person97 a foaf:Person ;
+    ex:age "65"^^xsd:int ;
+    ex:birthdate "1969-08-03"^^xsd:date ;
+    ex:height "1.53"^^xsd:float ;
+    foaf:knows ex:Person124,
+        ex:Person129,
+        ex:Person136,
+        ex:Person141,
+        ex:Person15,
+        ex:Person155,
+        ex:Person179,
+        ex:Person182,
+        ex:Person200,
+        ex:Person218,
+        ex:Person31,
+        ex:Person45,
+        ex:Person57,
+        ex:Person74,
+        ex:Person99 ;
+    foaf:name "Person 97"^^xsd:string .
+
+ex:Person21 a foaf:Person ;
+    ex:age "36"^^xsd:int ;
+    ex:birthdate "2010-07-25"^^xsd:date ;
+    ex:height "1.95"^^xsd:float ;
+    foaf:knows ex:Person211,
+        ex:Person219,
+        ex:Person228,
+        ex:Person233,
+        ex:Person36,
+        ex:Person44,
+        ex:Person47,
+        ex:Person66,
+        ex:Person79 ;
+    foaf:name "Person 21"^^xsd:string .
+
+ex:Person41 a foaf:Person ;
+    ex:age "22"^^xsd:int ;
+    ex:birthdate "1983-04-05"^^xsd:date ;
+    ex:height "1.61"^^xsd:float ;
+    foaf:knows ex:Person128,
+        ex:Person135,
+        ex:Person144,
+        ex:Person156,
+        ex:Person45,
+        ex:Person76 ;
+    foaf:name "Person 41"^^xsd:string .
+
