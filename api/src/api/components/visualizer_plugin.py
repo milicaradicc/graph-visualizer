@@ -5,10 +5,6 @@ class VisualizerPlugin(Plugin):
     """
     Base class for visualization plugins.
     """
-
-    def __init__(self, name: str):
-        self.name = name
-
     @abstractmethod
     def visualize(self, data):
         """
