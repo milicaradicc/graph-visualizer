@@ -18,7 +18,7 @@
           <div>
               {% if datasource_plugins %}
                  {% for p in datasource_plugins %}
-                    <a href="{% url 'datasource_plugin' id=p.identifier %}">{{p.name}}</a>
+                    <a>{{p.name}}</a>
                  {% endfor %}
               {% else %}
                 <h3>Not recognized any datasource plugin</h3>
