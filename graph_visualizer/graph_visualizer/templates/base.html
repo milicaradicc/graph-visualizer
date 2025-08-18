@@ -24,6 +24,15 @@
                 <h3>Not recognized any datasource plugin</h3>
               {% endif %}
           </div>
+          <div>
+              {% if visualizer_plugins %}
+                 {% for p in visualizer_plugins %}
+                    <a>{{p.name}}</a>
+                 {% endfor %}
+              {% else %}
+                <h3>Not recognized any visualizer plugin</h3>
+              {% endif %}
+          </div>
       </div>
 <!--      <div class="left">-->
 <!--          <ul>-->
