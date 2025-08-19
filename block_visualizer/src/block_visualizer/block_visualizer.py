@@ -1,4 +1,3 @@
-import os
 import json
 from datetime import datetime, date
 from pathlib import Path
@@ -7,7 +6,6 @@ from typing import List, Dict, Any
 from jinja2 import Environment, FileSystemLoader
 
 from api.components import VisualizerPlugin
-from api.model.graph import Graph  # Pretpostavljam da koristiš Graph objekat
 
 
 class DateTimeEncoder(json.JSONEncoder):
@@ -78,7 +76,7 @@ class BlockVisualizer(VisualizerPlugin):
             nodes_list = _convert_nodes_to_dict(data.get('nodes', []))
             edges_list = _convert_edges_to_dict(data.get('edges', []))
             directed = data.get('directed', False)
-        else:  # Graph objekat
+        else:
             nodes_list = _convert_nodes_to_dict(data.nodes)
             edges_list = _convert_edges_to_dict(data.edges)
             directed = getattr(data, "directed", False)

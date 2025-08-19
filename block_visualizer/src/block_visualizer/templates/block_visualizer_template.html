@@ -1,4 +1,3 @@
-<!-- block_visualizer_template.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -32,7 +31,6 @@ const graphData = {
     nodes: {{ nodes | tojson | safe }},
     edges: {{ edges | tojson | safe }}
 };
-console.log(graphData);
 
 function renderBlockGraph(data) {
     const width = 1000, height = 600;
