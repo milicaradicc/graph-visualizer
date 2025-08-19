@@ -19,32 +19,6 @@ class DateTimeEncoder(json.JSONEncoder):
         return super().default(obj)
 
 
-def _convert_nodes_to_dict(nodes) -> List[Dict[str, Any]]:
-    """Convert node objects to dictionary representation."""
-    return [
-        {
-            'id': node.id,
-        }
-        for node in nodes
-    ]
-
-
-def _convert_edges_to_dict(edges) -> List[Dict[str, str]]:
-    """Convert edge objects to dictionary representation."""
-    return [
-        {
-            'source': edge.src.id,
-            'target': edge.dest.id
-        }
-        for edge in edges
-    ]
-
-
-def _custom_tojson(obj: Any, **kwargs) -> str:
-    """Custom JSON serialization filter for Jinja2 templates."""
-    return json.dumps(obj, cls=DateTimeEncoder, **kwargs)
-
-
 class SimpleVisualizer(VisualizerPlugin):
     """A simple graph visualizer that renders nodes and edges using HTML templates."""
 
@@ -65,8 +39,33 @@ class SimpleVisualizer(VisualizerPlugin):
         )
 
         # Register custom JSON filter that handles datetime objects
-        self._environment.filters['tojson'] = _custom_tojson
+        self._environment.filters['tojson'] = self._custom_tojson
         self._template = self._environment.get_template(self.TEMPLATE_NAME)
+
+    def _custom_tojson(self, obj: Any, **kwargs) -> str:
+        """Custom JSON serialization filter for Jinja2 templates."""
+        return json.dumps(obj, cls=DateTimeEncoder, **kwargs)
+
+    def _convert_nodes_to_dict(self, nodes) -> List[Dict[str, Any]]:
+        """Convert node objects to dictionary representation."""
+        return [
+            {
+                'id': node.id,
+                'name': node.id,
+                **node.data
+            }
+            for node in nodes
+        ]
+
+    def _convert_edges_to_dict(self, edges) -> List[Dict[str, str]]:
+        """Convert edge objects to dictionary representation."""
+        return [
+            {
+                'source': edge.src.id,
+                'target': edge.dest.id
+            }
+            for edge in edges
+        ]
 
     def visualize(self, data: Graph) -> str:
         """
@@ -78,8 +77,8 @@ class SimpleVisualizer(VisualizerPlugin):
         Returns:
             Rendered HTML string
         """
-        nodes_list = _convert_nodes_to_dict(data.nodes)
-        edges_list = _convert_edges_to_dict(data.edges)
+        nodes_list = self._convert_nodes_to_dict(data.nodes)
+        edges_list = self._convert_edges_to_dict(data.edges)
 
         return self._template.render(
             nodes=nodes_list,
