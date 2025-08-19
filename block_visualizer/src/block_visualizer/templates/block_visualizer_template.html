@@ -42,10 +42,15 @@ function renderBlockGraph(data) {
     });
 
     const svg = d3.select("#block-graph")
-        .append("svg")
-        .attr("width", 2000)
-        .attr("height", 2000)
-        .call(d3.zoom().scaleExtent([0.1, 4]).on("zoom", zoomed)); // Dodaj zoom
+    .append("svg")
+    .attr("width", 2000)
+    .attr("height", 2000)
+    .call(d3.zoom()
+        .scaleExtent([0.1, 4]) // zoom od 10% do 400%
+        .on("zoom", (event) => {
+            container.attr("transform", event.transform); // pan + zoom
+        })
+    );
 
     const container = svg.append("g"); // Svi čvorovi i linkovi idu u container
 
