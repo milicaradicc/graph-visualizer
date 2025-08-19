@@ -29,13 +29,10 @@ def _convert_nodes_to_dict(nodes) -> List[Dict[str, Any]]:
 
 
 def _convert_edges_to_dict(edges) -> List[Dict[str, str]]:
-    """Convert edge objects to dictionary representation."""
+    """Convert edge objects to dictionary representation, skipping invalid ones."""
     return [
-        {
-            'source': edge.get('source'),
-            'target': edge.get('target')
-        }
-        for edge in edges
+        {"source": e["source"], "target": e["target"]}
+        for e in edges if "source" in e and "target" in e
     ]
 
 
@@ -58,6 +55,9 @@ class BlockVisualizer(VisualizerPlugin):
     def _setup_template_environment(self) -> None:
         """Configure Jinja2 environment with custom filters and template loader."""
         template_path = Path(__file__).parent / "templates"
+        if not template_path.exists():
+            raise FileNotFoundError(f"Template folder not found: {template_path}")
+
         self._environment = Environment(loader=FileSystemLoader(str(template_path)))
         self._environment.filters['tojson'] = _custom_tojson
         self._template = self._environment.get_template(self.TEMPLATE_NAME)
