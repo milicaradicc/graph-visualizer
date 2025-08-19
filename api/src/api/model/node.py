@@ -36,4 +36,3 @@ class Node(object):
 
     def __str__(self):
         return self._id+ "\n\t" + "\n\t".join(f"{key}: {value}" for key, value in self._data.items())
-
