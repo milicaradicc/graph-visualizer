@@ -42,45 +42,28 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
-// Convert backend data to JavaScript
 const nodes = {{ nodes | tojson }};
 const links = {{ edges | tojson }};
 const isDirected = {{ directed | tojson }};
 
-console.log("Nodes:", nodes);
-console.log("Links:", links);
-console.log("Is Directed:", isDirected);
-
 function calculateNodeRadius(text) {
-    // Estimate text width (rough approximation: 6px per character)
     const charWidth = 6;
     const padding = 10;
     const minRadius = 20;
     const maxRadius = 60;
-
     if (!text) return minRadius;
-
     const textWidth = text.length * charWidth;
     const requiredRadius = Math.max(textWidth / 2 + padding, minRadius);
-
     return Math.min(requiredRadius, maxRadius);
 }
 
 function wrapText(text, maxRadius) {
     if (!text) return [text || ''];
-
-    // Approximate characters per line based on radius
     const charsPerLine = Math.floor((maxRadius * 2 - 10) / 6);
-
-    if (text.length <= charsPerLine) {
-        return [text];
-    }
-
-    // Split long text into multiple lines
+    if (text.length <= charsPerLine) return [text];
     const words = text.split(/[\/\-_\s]+/);
     const lines = [];
     let currentLine = '';
-
     for (const word of words) {
         if ((currentLine + word).length <= charsPerLine) {
             currentLine += (currentLine ? ' ' : '') + word;
@@ -90,13 +73,10 @@ function wrapText(text, maxRadius) {
         }
     }
     if (currentLine) lines.push(currentLine);
-
-    // Limit to 3 lines maximum
     if (lines.length > 3) {
         lines[2] = lines[2].substring(0, charsPerLine - 3) + '...';
         return lines.slice(0, 3);
     }
-
     return lines;
 }
 
@@ -122,36 +102,41 @@ function drag(simulation) {
 }
 
 function createChart() {
-    console.log("Creating chart...");
-
-    if (!nodes || nodes.length === 0) {
-        console.warn("No nodes to display");
-        return;
-    }
-
     const width = 800, height = 600;
-    const arrowSize = 8;
+    const arrowSize = 4;
+    const manyNodes = nodes.length >= 50;
 
-    // Calculate dynamic node sizes
-    const nodeData = nodes.map(node => {
-        const displayText = node.name || node.id || 'Unknown';
-        const radius = calculateNodeRadius(displayText);
-        const textLines = wrapText(displayText, radius);
-        return { ...node, radius, textLines, displayText };
+    const minRadius = manyNodes ? 5 : 15;
+    const maxRadius = manyNodes ? 25 : 60;
+
+    const degreeMap = {};
+    links.forEach(l => {
+        degreeMap[l.source] = (degreeMap[l.source] || 0) + 1;
+        degreeMap[l.target] = (degreeMap[l.target] || 0) + 1;
     });
 
-    console.log("Node data with sizing:", nodeData);
+    const degrees = Object.values(degreeMap);
+    const minDeg = Math.min(...degrees, 0);
+    const maxDeg = Math.max(...degrees, 1);
 
-    // Use the existing SVG element
+    const scaleRadius = d3.scaleLinear()
+        .domain([minDeg, maxDeg])
+        .range([minRadius, maxRadius]);
+
+    const nodeData = nodes.map(node => {
+        const displayText = node.id || 'Unknown';
+        const degree = degreeMap[node.id] || 0;
+        const radius = scaleRadius(degree);
+        return { ...node, radius, displayText, degree };
+    });
+
     const svg = d3.select("#simple_visualizer")
         .attr("width", width)
         .attr("height", height)
         .attr("style", "max-width: 100%; height: auto;");
 
-    // Clear any existing content
     svg.selectAll("*").remove();
 
-    // Define arrowhead marker for directed graphs
     if (isDirected) {
         const defs = svg.append("defs");
         defs.append("marker")
@@ -167,108 +152,96 @@ function createChart() {
             .attr("class", "arrowhead");
     }
 
-    const simulation = d3.forceSimulation(nodeData)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-        .force("charge", d3.forceManyBody().strength(-400))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.radius + 5));
+    const container = svg.append("g");
 
-    // Create links
-    const link = svg.append("g")
+    const link = container.append("g")
         .attr("class", "links")
         .selectAll("line")
         .data(links)
         .join("line")
         .attr("class", d => isDirected ? "link directed" : "link");
 
-    // Create node container
-    const nodeGroup = svg.append("g")
+    const nodeGroup = container.append("g")
         .attr("class", "nodes");
 
-    // Create circles for nodes with dynamic radius
     const node = nodeGroup
         .selectAll("circle")
         .data(nodeData)
         .join("circle")
         .attr("class", "node")
-        .attr("r", d => d.radius)
-        .on("click", function(event, d) {
-            alert("ID: " + d.id);
-        })
-        .call(drag(simulation));
+        .attr("r", d => d.radius);
 
-    // Add tooltips
-    node.append("title").text(d => d.id);
+    node.append("title").text(d => d.displayText);
 
-    // Create multi-line labels
-    const labelGroups = nodeGroup
-        .selectAll("g.label-group")
+    const labels = nodeGroup.selectAll("text")
         .data(nodeData)
-        .join("g")
-        .attr("class", "label-group");
+        .join("text")
+        .attr("class", "node-label")
+        .attr("dy", -3)
+        .style("font-size", "8px")
+        .text(d => d.id);
 
-    labelGroups.each(function(d) {
-        const group = d3.select(this);
-        const lineHeight = 12;
-        const totalHeight = d.textLines.length * lineHeight;
-        const startY = -(totalHeight / 2) + (lineHeight / 2);
+    const simulation = d3.forceSimulation(nodeData)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(manyNodes ? 50 : 150))
+        .force("charge", d3.forceManyBody().strength(manyNodes ? -150 : -400))
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("collision", d3.forceCollide().radius(d => d.radius + 3));
 
-        d.textLines.forEach((line, i) => {
-            group.append("text")
-                .attr("class", "node-label")
-                .attr("dy", startY + (i * lineHeight))
-                .text(line);
-        });
-    });
+    node.call(drag(simulation));
 
     simulation.on("tick", () => {
-        // Update link positions
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
             .attr("x2", d => {
                 if (!isDirected) return d.target.x;
-                // Calculate edge point for arrows
                 const dx = d.target.x - d.source.x;
                 const dy = d.target.y - d.source.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance === 0) return d.target.x;
-                const targetNode = nodeData.find(n => n.id === d.target.id);
-                const targetRadius = targetNode ? targetNode.radius : 20;
+                const targetRadius = d.target.radius || 10;
                 return d.target.x - (dx / distance) * (targetRadius + 5);
             })
             .attr("y2", d => {
                 if (!isDirected) return d.target.y;
-                // Calculate edge point for arrows
                 const dx = d.target.x - d.source.x;
                 const dy = d.target.y - d.source.y;
                 const distance = Math.sqrt(dx * dx + dy * dy);
                 if (distance === 0) return d.target.y;
-                const targetNode = nodeData.find(n => n.id === d.target.id);
-                const targetRadius = targetNode ? targetNode.radius : 20;
+                const targetRadius = d.target.radius || 10;
                 return d.target.y - (dy / distance) * (targetRadius + 5);
             });
 
         node
-            .attr("cx", d => d.x)
-            .attr("cy", d => d.y);
+            .attr("cx", d => {
+                d.x = Math.max(d.radius, Math.min(width - d.radius, d.x));
+                return d.x;
+            })
+            .attr("cy", d => {
+                d.y = Math.max(d.radius, Math.min(height - d.radius, d.y));
+                return d.y;
+            });
 
-        labelGroups
-            .attr("transform", d => `translate(${d.x}, ${d.y})`);
+        labels
+            .attr("x", d => d.x)
+            .attr("y", d => d.y);
     });
 
-    console.log("Chart created successfully");
+    const zoom = d3.zoom()
+        .scaleExtent([0.1, 5])
+        .on("zoom", (event) => {
+            container.attr("transform", event.transform);
+            labels.style("font-size", `${12 / event.transform.k}px`);
+            labels.style("display", event.transform.k > 1.5 ? "block" : "none");
+        });
+
+    svg.call(zoom);
 }
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log("DOM ready, checking data...");
-    console.log("Nodes available:", nodes && nodes.length > 0);
-    console.log("Links available:", links && links.length > 0);
-
     if (nodes && nodes.length > 0) {
         createChart();
     } else {
-        console.warn("No graph data available");
         d3.select("#simple_visualizer")
             .append("text")
             .attr("x", 50)
