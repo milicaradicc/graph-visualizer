@@ -26,7 +26,8 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
 </head>
 <body>
-<div id="block-graph"></div><script>
+<div id="block-graph"></div>
+<script>
 const graphData = {
     nodes: {{ nodes | tojson | safe }},
     edges: {{ edges | tojson | safe }}
@@ -36,28 +37,27 @@ console.log(graphData);
 function renderBlockGraph(data) {
     const width = 1000, height = 600;
 
+    // map edge sources and targets from ids to node references
     data.edges.forEach(edge => {
         edge.source = data.nodes.find(n => n.id === edge.source);
         edge.target = data.nodes.find(n => n.id === edge.target);
     });
 
+    // create the svg and attach zoom behavior
     const svg = d3.select("#block-graph")
-    .append("svg")
-    .attr("width", 2000)
-    .attr("height", 2000)
-    .call(d3.zoom()
-        .scaleExtent([0.1, 4]) // zoom od 10% do 400%
-        .on("zoom", (event) => {
-            container.attr("transform", event.transform); // pan + zoom
-        })
-    );
+        .append("svg")
+        .attr("width", 2000)
+        .attr("height", 2000)
+        .call(d3.zoom()
+            .scaleExtent([0.1, 4]) // allow zoom from 10% to 400%
+            .on("zoom", (event) => {
+                container.attr("transform", event.transform); // apply pan + zoom
+            })
+        );
 
-    const container = svg.append("g"); // Svi čvorovi i linkovi idu u container
+    const container = svg.append("g"); // group containing all nodes and links
 
-    function zoomed(event) {
-        container.attr("transform", event.transform);
-    }
-
+    // define arrow markers for links
     svg.append("defs").append("marker")
         .attr("id", "arrow")
         .attr("viewBox", "0 -5 10 10")
@@ -70,6 +70,7 @@ function renderBlockGraph(data) {
         .attr("d", "M0,-5L10,0L0,5")
         .attr("fill", "#999");
 
+    // handle duplicate or reverse edges
     const links = [];
     const seen = new Set();
     data.edges.forEach(e => {
@@ -86,11 +87,19 @@ function renderBlockGraph(data) {
         }
     });
 
+    // force simulation for nodes and links
     const simulation = d3.forceSimulation(data.nodes)
         .force("link", d3.forceLink(links).id(d => d.id).distance(150))
         .force("charge", d3.forceManyBody().strength(-400))
-        .force("center", d3.forceCenter(width / 2, height / 2));
+        .force("center", d3.forceCenter(width / 2, height / 2))
+        .force("collision", d3.forceCollide().radius(d => {
+            const attrs = Object.entries(d.data || {});
+            const blockHeight = 20 * (attrs.length + 1) + 10;
+            const blockWidth = 150;
+            return Math.sqrt(blockWidth**2 + blockHeight**2) / 2 + 10;
+        }));
 
+    // draw link lines
     const link = container.append("g")
         .attr("class", "links")
         .selectAll("line")
@@ -101,6 +110,7 @@ function renderBlockGraph(data) {
         .attr("stroke", "#999")
         .attr("marker-end", "url(#arrow)");
 
+    // draw nodes
     const node = container.append("g")
         .attr("class", "nodes")
         .selectAll("g")
@@ -109,12 +119,14 @@ function renderBlockGraph(data) {
         .append("g")
         .call(drag(simulation));
 
+    // create node blocks with id and attributes
     node.each(function(d) {
         const attrs = Object.entries(d.data || {});
 
-        const blockHeight = 20 * (attrs.length + 1) + 10;
+        const blockHeight = 20 * (attrs.length + 1) + 10; // height based on number of attributes
         const blockWidth = 150;
 
+        // node background rectangle
         d3.select(this)
             .append("rect")
             .attr("width", blockWidth)
@@ -126,6 +138,7 @@ function renderBlockGraph(data) {
             .attr("rx", 5)
             .attr("ry", 5);
 
+        // header rectangle with id
         d3.select(this)
             .append("rect")
             .attr("width", blockWidth)
@@ -136,6 +149,7 @@ function renderBlockGraph(data) {
             .attr("rx", 5)
             .attr("ry", 5);
 
+        // display node id
         d3.select(this)
             .append("text")
             .attr("x", 0)
@@ -146,6 +160,7 @@ function renderBlockGraph(data) {
             .attr("fill", "#000")
             .attr("text-anchor", "middle");
 
+        // display node attributes
         d3.select(this)
             .selectAll(".attrText")
             .data(attrs)
@@ -159,6 +174,7 @@ function renderBlockGraph(data) {
             .attr("fill", "#000");
     });
 
+    // update positions on each tick
     simulation.on("tick", () => {
         link
             .attr("x1", d => d.source.x)
@@ -169,6 +185,7 @@ function renderBlockGraph(data) {
         node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
 
+    // drag behavior for nodes
     function drag(simulation) {
         return d3.drag()
             .on("start", (event, d) => {
