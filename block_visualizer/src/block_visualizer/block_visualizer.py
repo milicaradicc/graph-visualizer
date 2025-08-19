@@ -1,54 +1,99 @@
 import os
 import json
 from datetime import datetime, date
-from jinja2 import Environment, FileSystemLoader
-from api.components import VisualizerPlugin
+from pathlib import Path
+from typing import List, Dict, Any
 
-def serialize_node(node):
-    new_node = {}
-    for k, v in node.items():
-        if isinstance(v, (datetime, date)):
-            new_node[k] = v.isoformat()
-        else:
-            new_node[k] = v
-    return new_node
+from jinja2 import Environment, FileSystemLoader
+
+from api.components import VisualizerPlugin
+from api.model.graph import Graph  # Pretpostavljam da koristiš Graph objekat
+
+
+class DateTimeEncoder(json.JSONEncoder):
+    """Custom JSON encoder that handles datetime and date objects."""
+
+    def default(self, obj: Any) -> str:
+        if isinstance(obj, (datetime, date)):
+            return obj.isoformat()
+        return super().default(obj)
+
+
+def _convert_nodes_to_dict(nodes) -> List[Dict[str, Any]]:
+    """Convert node objects to dictionary representation."""
+    return [
+        {
+            'id': node.get('id'),
+            **{k: v for k, v in node.items() if k != 'id'}
+        }
+        for node in nodes
+    ]
+
+
+def _convert_edges_to_dict(edges) -> List[Dict[str, str]]:
+    """Convert edge objects to dictionary representation."""
+    return [
+        {
+            'source': edge.get('source'),
+            'target': edge.get('target')
+        }
+        for edge in edges
+    ]
+
+
+def _custom_tojson(obj: Any, **kwargs) -> str:
+    """Custom JSON serialization filter for Jinja2 templates."""
+    return json.dumps(obj, cls=DateTimeEncoder, **kwargs)
+
 
 class BlockVisualizer(VisualizerPlugin):
-    def __init__(self):
-        template_path = os.path.join(os.path.dirname(__file__), "templates")
-        self.env = Environment(loader=FileSystemLoader(template_path))
+    """A block-style graph visualizer that renders nodes and edges using HTML templates."""
 
-    def visualize(self, data):
-        try:
-            template_path = os.path.join(os.path.dirname(__file__), "templates")
+    TEMPLATE_NAME = "block_visualizer_template.html"
+    PLUGIN_NAME = "Block Visualizer"
+    PLUGIN_IDENTIFIER = "block_visualizer"
 
-            self.env = Environment(loader=FileSystemLoader(template_path))
+    def __init__(self) -> None:
+        """Initialize the visualizer with Jinja2 template environment."""
+        self._setup_template_environment()
 
-            template = self.env.get_template("block_view.html")
+    def _setup_template_environment(self) -> None:
+        """Configure Jinja2 environment with custom filters and template loader."""
+        template_path = Path(__file__).parent / "templates"
+        self._environment = Environment(loader=FileSystemLoader(str(template_path)))
+        self._environment.filters['tojson'] = _custom_tojson
+        self._template = self._environment.get_template(self.TEMPLATE_NAME)
 
-            if not isinstance(data, dict):
-                data = {"nodes": [], "edges": []}
+    def visualize(self, data) -> str:
+        """
+        Generate HTML visualization of the graph data.
 
-            data.setdefault("nodes", [])
-            data.setdefault("edges", [])
+        Args:
+            data: Graph object or dict containing 'nodes' and 'edges'
 
-            data["nodes"] = [serialize_node(node) for node in data["nodes"]]
+        Returns:
+            Rendered HTML string
+        """
+        if isinstance(data, dict):
+            nodes_list = _convert_nodes_to_dict(data.get('nodes', []))
+            edges_list = _convert_edges_to_dict(data.get('edges', []))
+            directed = data.get('directed', False)
+        else:  # Graph objekat
+            nodes_list = _convert_nodes_to_dict(data.nodes)
+            edges_list = _convert_edges_to_dict(data.edges)
+            directed = getattr(data, "directed", False)
 
-            for node in data["nodes"]:
-                node.setdefault("id", "unknown")
-                node.setdefault("label", node.get("id", ""))
-                node.setdefault("color", "#69b3a2")
-
-            graph_json = json.dumps(data)
-
-            rendered_html = template.render(graph_html=graph_json)
-            return rendered_html
-
-        except Exception as e:
-            return f"<p>Error in visualization: {e}</p>"
+        return self._template.render(
+            nodes=nodes_list,
+            edges=edges_list,
+            directed=directed,
+            name=self.identifier()
+        )
 
     def name(self) -> str:
-        return "Block Visualizer"
+        """Return the human-readable name of the plugin."""
+        return self.PLUGIN_NAME
 
     def identifier(self) -> str:
-        return "block_visualizer"
+        """Return the unique identifier for the plugin."""
+        return self.PLUGIN_IDENTIFIER
