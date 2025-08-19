@@ -1,0 +1,192 @@
+<!-- block_visualizer_template.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Block Visualizer</title>
+    <style>
+        .node text {
+            font: 12px sans-serif;
+            pointer-events: none;
+        }
+
+        .link {
+            stroke: #999;
+            stroke-opacity: 0.6;
+        }
+
+        svg {
+            width: 100%;
+            height: 600px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+<div id="block-graph"></div>
+<script>
+const graphData = {
+    nodes: {{ nodes | tojson | safe }},
+    edges: {{ edges | tojson | safe }}
+};
+console.log(graphData);
+
+function renderBlockGraph(data) {
+    const width = 1000, height = 600;
+
+    // Mapiranje source/target iz stringova u reference na čvorove
+    data.edges.forEach(edge => {
+        edge.source = data.nodes.find(n => n.id === edge.source);
+        edge.target = data.nodes.find(n => n.id === edge.target);
+    });
+    const svg = d3.select("#block-graph")
+        .append("svg")
+        .attr("width", 2000)  // dovoljno velika širina da svi čvorovi mogu da se razdvoje
+        .attr("height", 2000);
+
+    // Definisanje strelica
+    svg.append("defs").append("marker")
+        .attr("id", "arrow")
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 80)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+        .append("path")
+        .attr("d", "M0,-5L10,0L0,5")
+        .attr("fill", "#999");
+
+    // Kreiranje linkova sa obrnute veze ako postoji
+    const links = [];
+    const seen = new Set();
+    data.edges.forEach(e => {
+        const key1 = `${e.source.id}->${e.target.id}`;
+        const key2 = `${e.target.id}->${e.source.id}`;
+
+        if (!seen.has(key1)) {
+            links.push(e);
+            seen.add(key1);
+        }
+        if (data.edges.find(x => x.source.id === e.target.id && x.target.id === e.source.id) && !seen.has(key2)) {
+            links.push({source: e.target, target: e.source});
+            seen.add(key2);
+        }
+    });
+
+    const simulation = d3.forceSimulation(data.nodes)
+        .force("link", d3.forceLink(links).id(d => d.id).distance(150))
+        .force("charge", d3.forceManyBody().strength(-400))
+        .force("center", d3.forceCenter(width / 2, height / 2));
+
+    // Linije (edges)
+    const link = svg.append("g")
+        .attr("class", "links")
+        .selectAll("line")
+        .data(links)
+        .enter()
+        .append("line")
+        .attr("stroke-width", 2)
+        .attr("stroke", "#999")
+        .attr("marker-end", "url(#arrow)");
+
+    const node = svg.append("g")
+        .attr("class", "nodes")
+        .selectAll("g")
+        .data(data.nodes)
+        .enter()
+        .append("g")
+        .call(drag(simulation));
+
+    node.each(function(d) {
+        // Uzmi samo atribute iz d.data, ako postoji
+        const attrs = Object.entries(d.data || {});
+
+        const blockHeight = 20 * (attrs.length + 1) + 10; // +1 za ID
+        const blockWidth = 150;
+
+        // Pozadina čvora (bela)
+        d3.select(this)
+            .append("rect")
+            .attr("width", blockWidth)
+            .attr("height", blockHeight)
+            .attr("x", -blockWidth/2)
+            .attr("y", -blockHeight/2)
+            .attr("fill", "#ffffff")
+            .attr("stroke", "#000")
+            .attr("rx", 5)
+            .attr("ry", 5);
+
+        // Header sa ID-jem (roze)
+        d3.select(this)
+            .append("rect")
+            .attr("width", blockWidth)
+            .attr("height", 25)
+            .attr("x", -blockWidth/2)
+            .attr("y", -blockHeight/2)
+            .attr("fill", "#f8adbb")
+            .attr("rx", 5)
+            .attr("ry", 5);
+
+        // Prikaz ID-ja
+        d3.select(this)
+            .append("text")
+            .attr("x", 0)
+            .attr("y", -blockHeight/2 + 17)
+            .text(`ID: ${d.id}`)
+            .attr("font-size", "12px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#000")
+            .attr("text-anchor", "middle");
+
+        // Prikaz atributa iz d.data
+        d3.select(this)
+            .selectAll(".attrText")
+            .data(attrs)
+            .enter()
+            .append("text")
+            .attr("class", "attrText")
+            .attr("x", -blockWidth/2 + 5)
+            .attr("y", (attr, i) => -blockHeight/2 + 40 + i * 20)
+            .text(attr => `${attr[0]}: ${attr[1]}`)
+            .attr("font-size", "12px")
+            .attr("fill", "#000");
+    });
+
+
+    simulation.on("tick", () => {
+        link
+            .attr("x1", d => d.source.x)
+            .attr("y1", d => d.source.y)
+            .attr("x2", d => d.target.x)
+            .attr("y2", d => d.target.y);
+
+        node.attr("transform", d => `translate(${d.x},${d.y})`);
+    });
+
+    function drag(simulation) {
+        return d3.drag()
+            .on("start", (event, d) => {
+                if (!event.active) simulation.alphaTarget(0.3).restart();
+                d.fx = d.x;
+                d.fy = d.y;
+            })
+            .on("drag", (event, d) => {
+                d.fx = event.x;
+                d.fy = event.y;
+            })
+            .on("end", (event, d) => {
+                if (!event.active) simulation.alphaTarget(0);
+                d.fx = null;
+                d.fy = null;
+            });
+    }
+}
+
+renderBlockGraph(graphData);
+</script>
+</body>
+</html>
