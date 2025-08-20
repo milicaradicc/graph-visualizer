@@ -1,3 +1,4 @@
+// TODO: omoguciti skrol kad se puno stvari otvori
 (function() {
     const container = document.getElementById("tree-container");
     const graph = window.graphData;
