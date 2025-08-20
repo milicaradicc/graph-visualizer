@@ -1,5 +1,38 @@
-{% extends "base.html" %}
-{% block content %}
-    <h1>Graph Visualizer</h1>
-    {{ graph | safe }}
-{% endblock %}
+<div class="graph-container">
+    <div class="views">
+<main>
+    {{ block_visualizer_html | safe }}
+</main>
+
+        <!-- Tree view -->
+        <div id="tree-view" class="graph-view">
+            <h3>Tree View</h3>
+            {% if tree_html %}
+                {{ tree_html | safe }}
+            {% else %}
+                <svg id="tree-svg"></svg>
+            {% endif %}
+        </div>
+
+        <!-- Main view -->
+        <div id="main-view" class="graph-view">
+            <h3>Main View</h3>
+            {% if graph_html %}
+                {{ graph_html | safe }}
+            {% else %}
+                <svg id="main-svg"></svg>
+            {% endif %}
+        </div>
+
+        <!-- Bird view -->
+        <div id="bird-view" class="graph-view">
+            <h3>Bird View</h3>
+            {% if bird_html %}
+                {{ bird_html | safe }}
+            {% else %}
+                <svg id="bird-svg"></svg>
+            {% endif %}
+        </div>
+
+    </div>
+</div>

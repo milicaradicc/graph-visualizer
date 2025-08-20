@@ -3,11 +3,14 @@
 <head>
     <meta charset="UTF-8">
     {% load static %}
+    <script type="text/javascript" src="https://d3js.org/d3.v3.js"></script>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
     <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
 <!--    <script type="text/javascript" src="{% static 'd3.v3.js' %}"></script>-->
-    <link rel="stylesheet" href="{% static 'style.css' %}"/>
     <title>{{title}}</title>
     {% block head_content %}{% endblock %}
+
 </head>
 <body>
 <div class="page">
@@ -34,15 +37,7 @@
               {% endif %}
           </div>
       </div>
-<!--      <div class="left">-->
-<!--          <ul>-->
-<!--              <li>-->
-<!--                  -->
-<!--              </li>-->
-<!--          </ul>-->
-<!--          {% block links %}{% endblock %}-->
-<!--      </div>-->
-      <div class="center">
+      <div>
           {% block content %}{% endblock %}
       </div>
 </div>
