@@ -1,0 +1,61 @@
+.tree-root,
+.tree-root ul {
+    list-style: none;
+    padding-left: 20px;
+    margin: 0;
+}
+
+.tree-node {
+    margin: 5px 0;
+}
+
+/* Rectangle for node ID */
+.tree-node-label {
+    display: inline-flex;
+    align-items: center;
+    background-color: #252629;
+    color: #ebe3e5;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Plus button */
+.tree-node-label .toggle-btn {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+    border: 1px solid #908f8c;
+    border-radius: 50%;
+    margin-right: 8px;
+    font-weight: bold;
+    color: #908f8c;
+    user-select: none;
+}
+
+/* When expanded */
+.tree-node-label .toggle-btn.open {
+    content: "-";
+    color: #9c555d;
+}
+
+/* Node attributes hidden by default */
+.node-data {
+    margin-top: 4px;
+    margin-left: 26px;
+    padding: 6px 12px;
+    background-color: #f8adbb;
+    border-radius: 4px;
+    font-size: 13px;
+    line-height: 1.4;
+    display: none;
+}
+
+/* Hover effect */
+.tree-node-label:hover {
+    background-color: #9c555d;
+}
