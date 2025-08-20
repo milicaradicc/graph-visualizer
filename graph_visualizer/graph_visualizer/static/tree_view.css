@@ -1,61 +1,111 @@
+/* --- Tree container --- */
 .tree-root,
 .tree-root ul {
     list-style: none;
     padding-left: 20px;
     margin: 0;
+    position: relative;
 }
 
+/* --- Vertical line from parent to children --- */
+.tree-root ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20px;
+    width: 2px;
+    height: 100%;
+    background: #f8adbb;
+}
+
+/* --- Each node --- */
 .tree-node {
-    margin: 5px 0;
+    position: relative;
+    margin: 20px 0 0 0;
+    padding-left: 40px;
 }
 
-/* Rectangle for node ID */
+/* Horizontal line from parent to this node */
+.tree-node::before {
+    content: '';
+    position: absolute;
+    top: 20px; /* vertikalno centrirano sa node karticom */
+    left: 0;
+    width: 40px; /* horizontalna linija od roditelja do ovog čvora */
+    height: 2px;
+    background: #f8adbb;
+    border-radius: 2px;
+}
+
+/* Horizontal connector between siblings */
+.tree-node:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    top: 42px; /* ispod node kartice */
+    left: 20px; /* sredina vertikalne linije */
+    width: 2px;
+    height: calc(100% - 42px);
+    background: #f8adbb;
+}
+
+/* --- Node card --- */
 .tree-node-label {
     display: inline-flex;
     align-items: center;
-    background-color: #252629;
-    color: #ebe3e5;
-    padding: 6px 12px;
-    border-radius: 6px;
-    font-family: Arial, sans-serif;
+    background: #f8adbb;
+    color: #252629;
     font-weight: bold;
+    padding: 8px 14px;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     cursor: pointer;
-}
-
-/* Plus button */
-.tree-node-label .toggle-btn {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    line-height: 18px;
-    text-align: center;
-    border: 1px solid #908f8c;
-    border-radius: 50%;
-    margin-right: 8px;
-    font-weight: bold;
-    color: #908f8c;
-    user-select: none;
-}
-
-/* When expanded */
-.tree-node-label .toggle-btn.open {
-    content: "-";
-    color: #9c555d;
-}
-
-/* Node attributes hidden by default */
-.node-data {
-    margin-top: 4px;
-    margin-left: 26px;
-    padding: 6px 12px;
-    background-color: #f8adbb;
-    border-radius: 4px;
-    font-size: 13px;
-    line-height: 1.4;
-    display: none;
+    transition: background 0.2s, transform 0.2s;
 }
 
 /* Hover effect */
 .tree-node-label:hover {
-    background-color: #9c555d;
+    background: #f0a1b0;
+    transform: translateY(-2px);
+}
+
+/* Toggle button */
+.toggle-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    border-radius: 50%;
+    border: 1px solid #fff;
+    background: #fff;
+    color: #f8adbb;
+    font-weight: bold;
+    transition: all 0.2s;
+}
+
+.toggle-btn:hover {
+    background: #f8adbb;
+    color: #fff;
+}
+
+/* Node attributes */
+.node-data {
+    margin-top: 8px;
+    margin-left: 48px;
+    padding: 8px 12px;
+    background: #fff0f4;
+    border-left: 3px solid #f8adbb;
+    border-radius: 8px;
+    font-size: 13px;
+    line-height: 1.4;
+    display: none;
+    color: #252629;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+/* Smooth expand/collapse */
+.node-data,
+.tree-node ul {
+    transition: all 0.3s ease;
 }
