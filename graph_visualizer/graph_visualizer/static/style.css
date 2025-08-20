@@ -1,0 +1,15 @@
+        .graph-container { display: flex; flex-direction: column; height: 100vh; font-family: Arial, sans-serif; }
+        .controls { padding: 15px; background: #f5f5f5; border-bottom: 1px solid #ddd; }
+        .views-container { display: flex; flex: 1; gap: 10px; padding: 10px; }
+        .view { border: 2px solid; border-radius: 8px; position: relative; background: white; display: flex; flex-direction: column; }
+        .main-view { flex: 2; border-color: #4CAF50; }
+        .bird-view { flex: 1; border-color: #FF9800; background: #f9f9f9; overflow: hidden; pointer-events: none; }
+        .tree-view { flex: 1; border-color: #2196F3; overflow: auto; }
+        .view-header { background: #333; color: white; padding: 10px; text-align: center; font-weight: bold; }
+        .main-view .view-header { background: #4CAF50; }
+        .bird-view .view-header { background: #FF9800; }
+        .tree-view .view-header { background: #2196F3; }
+        .view-content { padding: 10px; flex: 1; position: relative; overflow: auto; }
+        .bird-view .view-content > div { transform: scale(0.6); transform-origin: top left; pointer-events: none; }
+        .visualizer-content { width: 100%; height: 100%; }
+        .visualizer-content.hidden { display: none !important; }
