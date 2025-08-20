@@ -2,6 +2,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 
 from api.components import VisualizerPlugin
+from api.model import Graph
 from .util import _convert_nodes_to_dict, _convert_edges_to_dict, _custom_tojson
 
 
@@ -26,24 +27,17 @@ class BlockVisualizer(VisualizerPlugin):
         self._environment.filters['tojson'] = _custom_tojson
         self._template = self._environment.get_template(self.TEMPLATE_NAME)
 
-    def visualize(self, data) -> str:
+    def visualize(self, data: Graph) -> str:
         """
         Generate HTML visualization of the graph data.
 
-        Args:
-            data: Graph object or dict containing 'nodes' and 'edges'
-
-        Returns:
-            Rendered HTML string
         """
-        if isinstance(data, dict):
-            nodes_list = _convert_nodes_to_dict(data.get('nodes', []))
-            edges_list = _convert_edges_to_dict(data.get('edges', []))
-            directed = data.get('directed', False)
-        else:
-            nodes_list = _convert_nodes_to_dict(data.nodes)
-            edges_list = _convert_edges_to_dict(data.edges)
-            directed = getattr(data, "directed", False)
+        if not hasattr(data, "nodes") or not hasattr(data, "edges"):
+            raise TypeError("Expected Graph object with 'nodes' and 'edges'")
+
+        nodes_list = _convert_nodes_to_dict(data.nodes)
+        edges_list = _convert_edges_to_dict(data.edges)
+        directed = getattr(data, "directed", False)
 
         return self._template.render(
             nodes=nodes_list,
