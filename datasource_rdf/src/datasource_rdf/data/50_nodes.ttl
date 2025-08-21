@@ -1,0 +1,63 @@
+@prefix ex: <http://example.org/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# 50 čvorova
+ex:Person1 a foaf:Person ; ex:age "25"^^xsd:int ; ex:birthdate "1998-01-12"^^xsd:date ; ex:height "1.70"^^xsd:float ; foaf:name "Person 1"^^xsd:string ; foaf:knows ex:Person2, ex:Person3 .
+ex:Person2 a foaf:Person ; ex:age "30"^^xsd:int ; ex:birthdate "1993-05-20"^^xsd:date ; ex:height "1.75"^^xsd:float ; foaf:name "Person 2"^^xsd:string ; foaf:knows ex:Person3 .
+ex:Person3 a foaf:Person ; ex:age "28"^^xsd:int ; ex:birthdate "1995-07-11"^^xsd:date ; ex:height "1.68"^^xsd:float ; foaf:name "Person 3"^^xsd:string ; foaf:knows ex:Person1 .
+
+# Ciklični čvorovi
+ex:Person4 a foaf:Person ; ex:age "31"^^xsd:int ; foaf:name "Person 4"^^xsd:string ; foaf:knows ex:Person5 .
+ex:Person5 a foaf:Person ; ex:age "29"^^xsd:int ; foaf:name "Person 5"^^xsd:string ; foaf:knows ex:Person6 .
+ex:Person6 a foaf:Person ; ex:age "26"^^xsd:int ; foaf:name "Person 6"^^xsd:string ; foaf:knows ex:Person4 .
+
+# Aciklični čvorovi
+ex:Person7 a foaf:Person ; ex:age "22"^^xsd:int ; foaf:name "Person 7"^^xsd:string ; foaf:knows ex:Person8 .
+ex:Person8 a foaf:Person ; ex:age "24"^^xsd:int ; foaf:name "Person 8"^^xsd:string ; foaf:knows ex:Person9 .
+ex:Person9 a foaf:Person ; ex:age "27"^^xsd:int ; foaf:name "Person 9"^^xsd:string .
+
+# Izolovani čvorovi
+ex:Person10 a foaf:Person ; ex:age "35"^^xsd:int ; foaf:name "Person 10"^^xsd:string .
+ex:Person11 a foaf:Person ; ex:age "33"^^xsd:int ; foaf:name "Person 11"^^xsd:string .
+ex:Person12 a foaf:Person ; ex:age "30"^^xsd:int ; foaf:name "Person 12"^^xsd:string .
+
+# Ostali čvorovi povezani nasumično
+ex:Person13 a foaf:Person ; ex:age "21"^^xsd:int ; foaf:name "Person 13"^^xsd:string ; foaf:knows ex:Person14, ex:Person15 .
+ex:Person14 a foaf:Person ; ex:age "28"^^xsd:int ; foaf:name "Person 14"^^xsd:string ; foaf:knows ex:Person16 .
+ex:Person15 a foaf:Person ; ex:age "26"^^xsd:int ; foaf:name "Person 15"^^xsd:string ; foaf:knows ex:Person17, ex:Person18 .
+ex:Person16 a foaf:Person ; ex:age "29"^^xsd:int ; foaf:name "Person 16"^^xsd:string .
+ex:Person17 a foaf:Person ; ex:age "27"^^xsd:int ; foaf:name "Person 17"^^xsd:string .
+ex:Person18 a foaf:Person ; ex:age "25"^^xsd:int ; foaf:name "Person 18"^^xsd:string ; foaf:knows ex:Person19 .
+ex:Person19 a foaf:Person ; ex:age "24"^^xsd:int ; foaf:name "Person 19"^^xsd:string .
+ex:Person20 a foaf:Person ; ex:age "30"^^xsd:int ; foaf:name "Person 20"^^xsd:string ; foaf:knows ex:Person21, ex:Person22 .
+ex:Person21 a foaf:Person ; ex:age "23"^^xsd:int ; foaf:name "Person 21"^^xsd:string .
+ex:Person22 a foaf:Person ; ex:age "28"^^xsd:int ; foaf:name "Person 22"^^xsd:string ; foaf:knows ex:Person23 .
+ex:Person23 a foaf:Person ; ex:age "26"^^xsd:int ; foaf:name "Person 23"^^xsd:string ; foaf:knows ex:Person24 .
+ex:Person24 a foaf:Person ; ex:age "27"^^xsd:int ; foaf:name "Person 24"^^xsd:string ; foaf:knows ex:Person25 .
+ex:Person25 a foaf:Person ; ex:age "29"^^xsd:int ; foaf:name "Person 25"^^xsd:string ; foaf:knows ex:Person26, ex:Person27 .
+ex:Person26 a foaf:Person ; ex:age "31"^^xsd:int ; foaf:name "Person 26"^^xsd:string .
+ex:Person27 a foaf:Person ; ex:age "32"^^xsd:int ; foaf:name "Person 27"^^xsd:string .
+ex:Person28 a foaf:Person ; ex:age "22"^^xsd:int ; foaf:name "Person 28"^^xsd:string ; foaf:knows ex:Person29 .
+ex:Person29 a foaf:Person ; ex:age "25"^^xsd:int ; foaf:name "Person 29"^^xsd:string .
+ex:Person30 a foaf:Person ; ex:age "28"^^xsd:int ; foaf:name "Person 30"^^xsd:string ; foaf:knows ex:Person31, ex:Person32 .
+ex:Person31 a foaf:Person ; ex:age "24"^^xsd:int ; foaf:name "Person 31"^^xsd:string .
+ex:Person32 a foaf:Person ; ex:age "26"^^xsd:int ; foaf:name "Person 32"^^xsd:string ; foaf:knows ex:Person33 .
+ex:Person33 a foaf:Person ; ex:age "27"^^xsd:int ; foaf:name "Person 33"^^xsd:string .
+ex:Person34 a foaf:Person ; ex:age "29"^^xsd:int ; foaf:name "Person 34"^^xsd:string .
+ex:Person35 a foaf:Person ; ex:age "28"^^xsd:int ; foaf:name "Person 35"^^xsd:string ; foaf:knows ex:Person36 .
+ex:Person36 a foaf:Person ; ex:age "26"^^xsd:int ; foaf:name "Person 36"^^xsd:string .
+ex:Person37 a foaf:Person ; ex:age "30"^^xsd:int ; foaf:name "Person 37"^^xsd:string ; foaf:knows ex:Person38, ex:Person39 .
+ex:Person38 a foaf:Person ; ex:age "25"^^xsd:int ; foaf:name "Person 38"^^xsd:string .
+ex:Person39 a foaf:Person ; ex:age "27"^^xsd:int ; foaf:name "Person 39"^^xsd:string ; foaf:knows ex:Person40 .
+ex:Person40 a foaf:Person ; ex:age "29"^^xsd:int ; foaf:name "Person 40"^^xsd:string .
+ex:Person41 a foaf:Person ; ex:age "24"^^xsd:int ; foaf:name "Person 41"^^xsd:string ; foaf:knows ex:Person42 .
+ex:Person42 a foaf:Person ; ex:age "22"^^xsd:int ; foaf:name "Person 42"^^xsd:string .
+ex:Person43 a foaf:Person ; ex:age "28"^^xsd:int ; foaf:name "Person 43"^^xsd:string ; foaf:knows ex:Person44, ex:Person45 .
+ex:Person44 a foaf:Person ; ex:age "26"^^xsd:int ; foaf:name "Person 44"^^xsd:string .
+ex:Person45 a foaf:Person ; ex:age "27"^^xsd:int ; foaf:name "Person 45"^^xsd:string .
+ex:Person46 a foaf:Person ; ex:age "25"^^xsd:int ; foaf:name "Person 46"^^xsd:string ; foaf:knows ex:Person47 .
+ex:Person47 a foaf:Person ; ex:age "29"^^xsd:int ; foaf:name "Person 47"^^xsd:string .
+ex:Person48 a foaf:Person ; ex:age "28"^^xsd:int ; foaf:name "Person 48"^^xsd:string ; foaf:knows ex:Person49, ex:Person50 .
+ex:Person49 a foaf:Person ; ex:age "26"^^xsd:int ; foaf:name "Person 49"^^xsd:string .
+ex:Person50 a foaf:Person ; ex:age "27"^^xsd:int ; foaf:name "Person 50"^^xsd:string .
