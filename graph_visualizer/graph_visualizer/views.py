@@ -109,7 +109,21 @@ def add_workspace(request):
 
     return redirect("index")
 
+def edit_workspace(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
 
+    workspace_name = request.POST.get("workspace_name")
+    if not workspace_name:
+        messages.error(request, "Workspace name cannot be empty")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    workspace_service.get_current_workspace().name = workspace_name
+    print(workspace_service.get_current_workspace())
+
+    return redirect("index")
 
 def set_workspace(request):
     if request.method != "POST":
