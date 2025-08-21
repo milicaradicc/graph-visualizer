@@ -1,0 +1,124 @@
+<div class="workspace-management" style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+
+    <!-- Workspace Selector -->
+    <form method="post" action="{% url 'set_workspace' %}" style="margin: 0;">
+        {% csrf_token %}
+        <label for="workspace" style="margin-right: 0.5rem;">Workspace:</label>
+        <select name="workspace_id" id="workspace"  onchange="this.form.submit()">
+            {% for ws in workspaces %}
+                <option value="{{ ws.id }}" {% if ws.id == current_workspace.id %}selected{% endif %}>
+                    {{ ws.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <button type="button" onclick="openEditWorkspaceModal()">Edit Workspace</button>
+
+    <button type="button" onclick="openCreateWorkspaceModal()">Add Workspace</button>
+
+    <!-- Load New Data -->
+    <button type="button" onclick="openModal()">Load New Data</button>
+
+</div>
+
+<!-- Modal -->
+<div id="dataModal" class="modal">
+    <div class="modal-content">
+        <h3>Load New Data</h3>
+        <form method="post" action="{% url 'load_data' %}">
+            {% csrf_token %}
+            <label for="plugin">Select Plugin:</label>
+            <select id="plugin" name="plugin" onchange="loadParams(this.value)">
+                <option value="">-- choose plugin --</option>
+                {% for plugin in datasource_plugins %}
+                <option value="{{ plugin.identifier }}">{{ plugin.name }}</option>
+                {% endfor %}
+            </select>
+
+            <div id="plugin-params" style="margin-top:1rem;"></div>
+
+            <button type="submit">Load</button>
+            <button type="button" onclick="closeModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- Create Workspace Modal -->
+<div id="createWorkspaceModal" class="modal">
+    <div class="modal-content">
+        <h3>Create New Workspace</h3>
+        <form method="post" action="{% url 'add_workspace' %}">
+            {% csrf_token %}
+            <label for="workspace_name">Workspace Name:</label>
+            <input type="text" id="workspace_name" name="workspace_name" required>
+            <button type="submit">Create</button>
+            <button type="button" onclick="closeCreateWorkspaceModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Workspace Modal -->
+<div id="editWorkspaceModal" class="modal">
+    <div class="modal-content">
+        <h3>Edit Workspace</h3>
+        <form method="post" action="{% url 'edit_workspace' %}">
+            {% csrf_token %}
+            <label for="edit_workspace_name">Workspace Name:</label>
+            <input type="text" id="edit_workspace_name" name="workspace_name" required value="{{ current_workspace.name }}">
+            <button type="submit">Save</button>
+            <button type="button" onclick="closeEditWorkspaceModal()">Cancel</button>
+        </form>
+    </div>
+</div>
+
+<script>
+    function openModal() {
+        document.getElementById("dataModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("dataModal").style.display = "none";
+    }
+
+    function loadParams(pluginName) {
+        if (!pluginName) {
+            document.getElementById("plugin-params").innerHTML = "";
+            return;
+        }
+
+        fetch(`/plugin/${pluginName}/params/`)
+            .then(response => response.json())
+            .then(data => {
+                let html = "";
+                data.forEach(p => {
+                    html += `<label>${p.display_name}:</label>`;
+                    if (p.type === "int") {
+                        html += `<input type="number" step="1" name="${p.name}" required><br>`;
+                    } else if (p.type === "str") {
+                        html += `<input type="text" name="${p.name}" required><br>`;
+                    } else {
+                        html += `<input type="text" name="${p.name}" required><br>`;
+                    }
+                });
+                document.getElementById("plugin-params").innerHTML = html;
+            });
+    }
+
+    function openCreateWorkspaceModal() {
+    document.getElementById("createWorkspaceModal").style.display = "flex";
+}
+
+    function closeCreateWorkspaceModal() {
+        document.getElementById("createWorkspaceModal").style.display = "none";
+    }
+
+    function openEditWorkspaceModal() {
+    document.getElementById("editWorkspaceModal").style.display = "flex";
+}
+
+    function closeEditWorkspaceModal() {
+        document.getElementById("editWorkspaceModal").style.display = "none";
+    }
+</script>
+
