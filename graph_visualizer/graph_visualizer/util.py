@@ -11,10 +11,8 @@ def serialize_to_json(obj, indent=2):
         lambda o: json.dumps(o, indent=indent, default=str, ensure_ascii=False)
     ]
 
-    # Pokušavamo svaku strategiju
     for i, strategy in enumerate(strategies, start=1):
         try:
-            # Identifikacija objekta za log
             obj_id = getattr(obj, 'id', None) or getattr(obj, '_id', None)
             if obj_id is None and hasattr(obj, 'src') and hasattr(obj, 'dest'):
                 obj_id = f"{getattr(obj.src, 'id', '?')}->{getattr(obj.dest, 'id', '?')}"
