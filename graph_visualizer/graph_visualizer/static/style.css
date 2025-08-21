@@ -1,0 +1,66 @@
+.messages {
+  margin: 1em 0;
+  padding: 0;
+}
+
+.message {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+}
+
+.message.success {
+  background-color: #28a745; /* green */
+}
+
+.message.error {
+  background-color: #dc3545; /* red */
+}
+
+.message.warning {
+  background-color: #ffc107; /* yellow */
+  color: #333;
+}
+
+.message.info {
+  background-color: #17a2b8; /* blue */
+}
+
+.popup-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.popup {
+  background: #333;
+  color: #fff;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.popup.success { background: #28a745; } /* green */
+.popup.error   { background: #dc3545; } /* red */
+.popup.warning { background: #ffc107; color: #333; } /* yellow */
+.popup.info    { background: #17a2b8; } /* blue */
+
+.popup-close {
+  margin-left: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
