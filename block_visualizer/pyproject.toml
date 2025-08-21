@@ -10,6 +10,8 @@ dependencies = [
     "graph-api==0.1",
     "rdflib>=6.0"
 ]
+[tool.setuptools.package-data]
+block_visualizer = ["templates/*"]
 
 [tool.setuptools]
 package-dir = {"" = "src"}

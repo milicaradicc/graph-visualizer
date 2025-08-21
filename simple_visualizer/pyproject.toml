@@ -11,6 +11,9 @@ dependencies = [
     "rdflib>=6.0"
 ]
 
+[tool.setuptools.package-data]
+simple_visualizer = ["templates/*"]
+
 [tool.setuptools]
 package-dir = {"" = "src"}
 

@@ -5,20 +5,28 @@ from django.apps import apps
 from django.shortcuts import redirect
 from django.contrib import messages
 from .apps import datasource_group,visualizer_group
+from .util import serialize_to_json
 
 
 def index(request):
     plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
     datasource_plugins = plugin_service.plugins[datasource_group]
     workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
-    graph=workspace_service.get_current_workspace().graph
+    graph = workspace_service.get_current_workspace().graph
     visualizer_plugins = plugin_service.plugins[visualizer_group]
+
+    graph_json = 'null'
+    if graph is not None:
+        graph_json = serialize_to_json(graph)
+
     return render(request, 'index.html', {
         'title': 'Index',
         'datasource_plugins': datasource_plugins,
-        'workspaces':workspace_service.get_workspaces(),
+        'workspaces': workspace_service.get_workspaces(),
         'current_workspace': workspace_service.get_current_workspace(),
-        'block_visualizer_html':'' if graph is None else visualizer_plugins[0].visualize(graph)})
+        'graph_html': '' if graph is None else visualizer_plugins[0].visualize(graph),
+        'graph_json': graph_json,
+    })
 
 def get_plugin_params(request, plugin_identifier):
     plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
