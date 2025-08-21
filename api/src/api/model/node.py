@@ -1,6 +1,6 @@
 import json
 from typing import List, Dict, Union, Any
-from datetime import datetime
+from datetime import datetime, date
 
 
 class Node(object):
@@ -39,11 +39,10 @@ class Node(object):
         """Convert Node to dictionary for JSON serialization"""
         serialized_data = {}
         for key, value in self._data.items():
-            if isinstance(value, datetime):
+            if isinstance(value, (datetime, date)):
                 serialized_data[key] = value.isoformat()
             else:
                 serialized_data[key] = value
-
         return {
             "id": self._id,
             "data": serialized_data
