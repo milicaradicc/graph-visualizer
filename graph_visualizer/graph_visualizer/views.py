@@ -120,7 +120,7 @@ def edit_workspace(request):
 
     workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
     workspace_service.get_current_workspace().name = workspace_name
-    print(workspace_service.get_current_workspace())
+    messages.success(request, f"Workspace '{workspace_name}' updated successfully")
 
     return redirect("index")
 
