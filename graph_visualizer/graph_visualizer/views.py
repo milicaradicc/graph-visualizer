@@ -20,3 +20,72 @@ def index(request):
         'current_workspace': workspace_service.get_current_workspace(),
         'block_visualizer_html':'' if graph is None else visualizer_plugins[0].visualize(graph)})
 
+def get_plugin_params(request, plugin_identifier):
+    plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
+    datasource_plugins = plugin_service.plugins[datasource_group]
+
+    selected_plugin = None
+    for plugin in datasource_plugins:
+        if plugin.identifier() == plugin_identifier:
+            selected_plugin = plugin
+
+    params = selected_plugin.get_parameters()
+
+    result = []
+    for p in params:
+        result.append({
+            "name": p.name,
+            "type": p.param_type.__name__,
+            "required": p.required,
+            "display_name": p.display_name,
+        })
+
+    return JsonResponse(result, safe=False)
+
+def load_data(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
+    datasource_plugins = plugin_service.plugins[datasource_group]
+
+    plugin_id = request.POST.get("plugin")
+    selected_plugin = None
+    for plugin in datasource_plugins:
+        if plugin.identifier() == plugin_id:
+            selected_plugin = plugin
+
+    if not selected_plugin:
+        messages.error(request, "Plugin not found")
+        return redirect("index")
+
+    # Collect plugin parameters using parameter identifiers
+    params = {}
+    for param in selected_plugin.get_parameters():
+        value = request.POST.get(param.name)  # use identifier
+        if value is not None:
+            try:
+                if param.param_type == int:
+                    value = int(value)
+                elif param.param_type == float:
+                    value = float(value)
+                elif param.param_type == bool:
+                    value = value.lower() in ["true", "1", "on"]
+            except ValueError:
+                messages.error(request, f"Invalid value for {param.display_name}")
+                return redirect("index")
+            params[param.name] = value
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+
+    try:
+        graph = selected_plugin.load(**params)
+        current_workspace.graph = graph
+        messages.success(request, f"Data loaded successfully using {selected_plugin.display_name}")
+    except Exception as e:
+        messages.error(request, f"Failed to load data: {str(e)}")
+
+    return redirect("index")
+
