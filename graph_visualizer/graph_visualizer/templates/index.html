@@ -1,3 +1,31 @@
+{% load static %}
+
+<head>
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+
+{% include "workspace_management.html" %}
+
+{% if messages %}
+    <div class="popup-container">
+      {% for message in messages %}
+        <div class="popup {{ message.tags }}">
+          <span class="popup-text">{{ message }}</span>
+          <span class="popup-close" onclick="this.parentElement.remove()">×</span>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+  {% block content %}{% endblock %}
+
+  <script>
+    // Auto-close popups after 5 seconds
+    setTimeout(() => {
+      document.querySelectorAll(".popup").forEach(popup => popup.remove());
+    }, 5000);
+  </script>
+
 <div class="graph-container">
     <div class="views">
 <main>
