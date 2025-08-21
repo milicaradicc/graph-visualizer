@@ -1,12 +1,10 @@
 // TODO: enable scroll when many items are opened
 // TODO: graph change - detect change in main using observer and render new tree
 (function() {
-    console.log("vau")
     const container = document.getElementById("tree-container");
     const graph = window.graphData;
 
     if (!graph) {
-        console.log("Graph data is missing");
         container.innerHTML = "<p>No graph data available.</p>";
         return;
     }
@@ -31,6 +29,7 @@
         const child = nodeMap[edge.dest];
         if (parent && child) {
             parent.children.push(child);
+        } else {
         }
     });
 
@@ -48,7 +47,6 @@
 
         nodes.forEach(node => {
             if (!hasParent.has(node.id)) {
-                console.log(`acyclic root found: ${node.id}`);
                 roots.push(nodeMap[node.id]);
                 // mark all reachable nodes from this root
                 markReachableNodes(node.id, edges, processedNodes);
@@ -58,14 +56,11 @@
         // for remaining nodes (in cycles), use DFS approach
         nodes.forEach(node => {
             if (!processedNodes.has(node.id)) {
-                console.log(`cyclic root found: ${node.id}`);
                 roots.push(nodeMap[node.id]);
                 markReachableNodes(node.id, edges, processedNodes);
             }
         });
 
-        console.log("=== root detection finished ===");
-        console.log("roots found:", roots.map(r => r.id));
         return roots;
     }
 
