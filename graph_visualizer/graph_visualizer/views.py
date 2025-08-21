@@ -36,7 +36,6 @@ def get_plugin_params(request, plugin_identifier):
         result.append({
             "name": p.name,
             "type": p.param_type.__name__,
-            "required": p.required,
             "display_name": p.display_name,
         })
 
@@ -83,7 +82,7 @@ def load_data(request):
     try:
         graph = selected_plugin.load(**params)
         current_workspace.graph = graph
-        messages.success(request, f"Data loaded successfully using {selected_plugin.display_name}")
+        messages.success(request, f"Data loaded successfully using {selected_plugin.name()}")
     except Exception as e:
         messages.error(request, f"Failed to load data: {str(e)}")
 

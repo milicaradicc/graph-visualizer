@@ -108,11 +108,11 @@
                 data.forEach(p => {
                     html += `<label>${p.display_name}:</label>`;
                     if (p.type === "int") {
-                        html += `<input type="number" step="1" name="${p.name}" ${p.required ? "required" : ""}><br>`;
+                        html += `<input type="number" step="1" name="${p.name}" required><br>`;
                     } else if (p.type === "str") {
-                        html += `<input type="text" name="${p.name}" ${p.required ? "required" : ""}><br>`;
+                        html += `<input type="text" name="${p.name}" required><br>`;
                     } else {
-                        html += `<input type="text" name="${p.name}" ${p.required ? "required" : ""}><br>`;
+                        html += `<input type="text" name="${p.name}" required><br>`;
                     }
                 });
                 document.getElementById("plugin-params").innerHTML = html;
