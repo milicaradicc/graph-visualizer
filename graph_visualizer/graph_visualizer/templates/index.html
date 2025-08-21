@@ -43,30 +43,11 @@
     <!-- Views container -->
     <div class="views-container">
 
-        <!-- Main Interactive Views -->
-        <div class="view main-view">
-            <div class="view-header">Main View - Interactive</div>
-            <div class="view-content">
-                <div id="main-block-visualizer" class="visualizer-content">
-                    {{ block_visualizer_html | safe }}
-                </div>
-                <div id="main-simple-visualizer" class="visualizer-content hidden">
-                    {{ simple_visualizer_html | safe }}
-                </div>
-            </div>
-        </div>
-
         <!-- Tree View -->
-        <div class="view tree-view">
-            <div class="view-header">Tree View</div>
-            <div class="view-content" id="tree-container">
-                {% if tree_html %}
-                    {{ tree_html | safe }}
-                {% else %}
-                    <svg id="tree-svg"></svg>
-                {% endif %}
+            <div class="view tree-view">
+                <div class="view-header">Tree View</div>
+                <div class="view-content" id="tree-container"></div>
             </div>
-        </div>
 
         <!-- Additional Views from kolega -->
         <div id="main-view" class="graph-view">
@@ -92,7 +73,6 @@
 
 <script>
     window.graphData = {{ graph_json|safe }};
-
     const select = document.getElementById("visualizer-select");
     const mainBlockDiv = document.getElementById("main-block-visualizer");
     const mainSimpleDiv = document.getElementById("main-simple-visualizer");
