@@ -23,15 +23,11 @@
 </div>
 
 <!-- Modal -->
-<div id="dataModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
-
-    <div style="background:white; padding:2rem; border-radius:10px; min-width:400px;">
+<div id="dataModal" class="modal">
+    <div class="modal-content">
         <h3>Load New Data</h3>
-
         <form method="post" action="{% url 'load_data' %}">
             {% csrf_token %}
-            <!-- Plugin selector -->
             <label for="plugin">Select Plugin:</label>
             <select id="plugin" name="plugin" onchange="loadParams(this.value)">
                 <option value="">-- choose plugin --</option>
@@ -40,10 +36,8 @@
                 {% endfor %}
             </select>
 
-            <!-- Dynamic parameters will go here -->
             <div id="plugin-params" style="margin-top:1rem;"></div>
 
-            <br>
             <button type="submit">Load</button>
             <button type="button" onclick="closeModal()">Cancel</button>
         </form>
@@ -51,35 +45,27 @@
 </div>
 
 <!-- Create Workspace Modal -->
-<div id="createWorkspaceModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
-
-    <div style="background:white; padding:2rem; border-radius:10px; min-width:300px;">
+<div id="createWorkspaceModal" class="modal">
+    <div class="modal-content">
         <h3>Create New Workspace</h3>
-
         <form method="post" action="{% url 'add_workspace' %}">
             {% csrf_token %}
-            <label for="workspace_name">Workspace Name:</label><br>
-            <input type="text" id="workspace_name" name="workspace_name" required><br><br>
-
+            <label for="workspace_name">Workspace Name:</label>
+            <input type="text" id="workspace_name" name="workspace_name" required>
             <button type="submit">Create</button>
             <button type="button" onclick="closeCreateWorkspaceModal()">Cancel</button>
         </form>
     </div>
 </div>
 
-<!-- Create Workspace Modal -->
-<div id="editWorkspaceModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%;
-    background:rgba(0,0,0,0.6); justify-content:center; align-items:center;">
-
-    <div style="background:white; padding:2rem; border-radius:10px; min-width:300px;">
+<!-- Edit Workspace Modal -->
+<div id="editWorkspaceModal" class="modal">
+    <div class="modal-content">
         <h3>Edit Workspace</h3>
-
         <form method="post" action="{% url 'edit_workspace' %}">
             {% csrf_token %}
-            <label for="edit_workspace_name">Workspace Name:</label><br>
-            <input type="text" id="edit_workspace_name" name="workspace_name" required value="{{ current_workspace.name }}"><br><br>
-
+            <label for="edit_workspace_name">Workspace Name:</label>
+            <input type="text" id="edit_workspace_name" name="workspace_name" required value="{{ current_workspace.name }}">
             <button type="submit">Save</button>
             <button type="button" onclick="closeEditWorkspaceModal()">Cancel</button>
         </form>
