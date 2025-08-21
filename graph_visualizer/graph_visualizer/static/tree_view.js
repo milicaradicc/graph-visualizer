@@ -1,8 +1,9 @@
-// TODO: omoguciti skrol kad se puno stvari otvori
+// TODO: enable scroll when many items are opened
+// TODO: graph change - detect change in main using observer and render new tree
 (function() {
+    console.log("vau")
     const container = document.getElementById("tree-container");
     const graph = window.graphData;
-    console.log("Raw graph data:", graph);
 
     if (!graph) {
         console.log("Graph data is missing");
@@ -33,14 +34,64 @@
         }
     });
 
-    // find root nodes
-    const allDestinations = new Set(edges.map(e => e.dest));
-    let roots = nodes.filter(n => !allDestinations.has(n.id)).map(n => nodeMap[n.id]);
-    if (roots.length === 0 && nodes.length > 0) {
-        roots = [nodeMap[nodes[0].id]];
+    // --- hybrid root node detection ---
+    function findRoots(nodes, edges) {
+        // create set of nodes that have parents
+        const hasParent = new Set();
+        edges.forEach(edge => {
+            hasParent.add(edge.dest);
+        });
+
+        // first add all nodes without parents (acyclic roots)
+        const roots = [];
+        const processedNodes = new Set();
+
+        nodes.forEach(node => {
+            if (!hasParent.has(node.id)) {
+                console.log(`acyclic root found: ${node.id}`);
+                roots.push(nodeMap[node.id]);
+                // mark all reachable nodes from this root
+                markReachableNodes(node.id, edges, processedNodes);
+            }
+        });
+
+        // for remaining nodes (in cycles), use DFS approach
+        nodes.forEach(node => {
+            if (!processedNodes.has(node.id)) {
+                console.log(`cyclic root found: ${node.id}`);
+                roots.push(nodeMap[node.id]);
+                markReachableNodes(node.id, edges, processedNodes);
+            }
+        });
+
+        console.log("=== root detection finished ===");
+        console.log("roots found:", roots.map(r => r.id));
+        return roots;
     }
 
-    // create tree node with lazy loading
+    function markReachableNodes(startNodeId, edges, processedNodes) {
+        const stack = [startNodeId];
+        const visited = new Set();
+
+        while (stack.length > 0) {
+            const nodeId = stack.pop();
+            if (visited.has(nodeId)) continue;
+
+            visited.add(nodeId);
+            processedNodes.add(nodeId);
+
+            // add all reachable nodes
+            edges.forEach(edge => {
+                if (edge.src === nodeId && !visited.has(edge.dest)) {
+                    stack.push(edge.dest);
+                }
+            });
+        }
+    }
+
+    const roots = findRoots(nodes, edges);
+
+    // --- create tree node with lazy loading ---
     function createTreeNode(node, visited = new Set()) {
         const li = document.createElement("li");
         li.classList.add("tree-node");
