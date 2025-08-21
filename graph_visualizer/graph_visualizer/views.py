@@ -109,3 +109,21 @@ def add_workspace(request):
 
     return redirect("index")
 
+
+
+def set_workspace(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+    workspace_id = request.POST.get("workspace_id")
+    if not workspace_id:
+        messages.error(request, "No workspace selected")
+        return redirect("index")
+    workspace_id=int(workspace_id)
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    workspace_service.select_workspace(workspace_id)
+    messages.success(request, "Workspace changed successfully")
+
+    return redirect("index")
+
