@@ -1,0 +1,42 @@
+[
+  {
+    "id": "Person1",
+    "name": "Alice",
+    "age": 30,
+    "flies": ["Plane1", "Plane2"]
+  },
+  {
+    "id": "Person2",
+    "name": "Bob",
+    "age": 45,
+    "flies": ["Plane2"]
+  },
+  {
+    "id": "Plane1",
+    "model": "Boeing 737",
+    "capacity": 180,
+    "crew": ["Person1", "Person4"],
+    "passengers": ["Person1", "Person2"]
+  },
+  {
+    "id": "Plane2",
+    "model": "Airbus A320",
+    "capacity": 150,
+    "crew": ["Person5"]
+  },
+  {
+    "id": "Person3",
+    "name": "Charlie",
+    "age": 35
+  },
+  {
+    "id": "Person4",
+    "name": "Diana",
+    "age": 28
+  },
+  {
+    "id": "Person5",
+    "name": "Eve",
+    "age": 40
+  }
+]
