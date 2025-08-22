@@ -25,6 +25,16 @@
     "crew": ["Person5"]
   },
   {
+    "model": "Airbus A320",
+    "capacity": 150,
+    "crew": ["Person5",{
+      "id": "Person9",
+      "name": "Charlie",
+      "age": 35,
+      "friends": ["Person1"]
+    }]
+  },
+  {
     "id": "Person3",
     "name": "Charlie",
     "age": 35
