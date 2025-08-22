@@ -399,3 +399,4 @@ pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/python,django,visualstudiocode,pycharm
 /datasource_rdf/src/datasource_rdf/test/
+/datasorce_json/src/datasource_json/test/
