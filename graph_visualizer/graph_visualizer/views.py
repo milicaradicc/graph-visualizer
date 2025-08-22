@@ -21,14 +21,16 @@ def index(request):
     if graph is not None:
         graph_json = serialize_to_json(graph)
 
-    visualizer_html = {}
-    if graph is not None:
-        for plugin in visualizer_plugins:
-            try:
-                visualizer_html[plugin.identifier()] = plugin.visualize(graph)
-            except Exception as e:
-                print(f"Error generating visualization for {plugin.identifier()}: {e}")
-                visualizer_html[plugin.identifier()] = f"<p>Error loading visualization: {str(e)}</p>"
+    # Only generate HTML for the first (default) visualizer plugin
+    initial_visualizer_html = None
+    default_plugin = None
+    if graph is not None and visualizer_plugins:
+        default_plugin = visualizer_plugins[0]  # First plugin as default
+        try:
+            initial_visualizer_html = default_plugin.visualize(graph)
+        except Exception as e:
+            print(f"Error generating visualization for {default_plugin.identifier()}: {e}")
+            initial_visualizer_html = f"<p>Error loading visualization: {str(e)}</p>"
 
     return render(request, 'index.html', {
         'title': 'Index',
@@ -36,9 +38,11 @@ def index(request):
         'workspaces': workspace_service.get_workspaces(),
         'current_workspace': workspace_service.get_current_workspace(),
         'visualizer_plugins': visualizer_plugins,
-        'visualizer_html': visualizer_html,
+        'initial_visualizer_html': initial_visualizer_html,
+        'default_plugin': default_plugin,
         'graph_json': graph_json,
     })
+
 def get_visualizer_html(request, plugin_identifier):
     """AJAX endpoint to get HTML for a specific visualizer plugin"""
     if request.method != "GET":
@@ -192,4 +196,3 @@ def set_workspace(request):
     messages.success(request, "Workspace changed successfully")
 
     return redirect("index")
-

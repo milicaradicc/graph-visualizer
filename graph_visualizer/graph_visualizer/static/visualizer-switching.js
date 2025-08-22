@@ -1,4 +1,4 @@
-// Enhanced Visualizer switching functionality with debugging
+// Enhanced Visualizer switching functionality with on-demand loading
 class VisualizerSwitcher {
     constructor() {
         this.selectElement = document.getElementById('visualizer-select');
@@ -6,6 +6,7 @@ class VisualizerSwitcher {
         this.loadingIndicator = document.getElementById('loading-indicator');
         this.errorMessage = document.getElementById('error-message');
         this.currentVisualizer = null;
+        this.loadedVisualizers = new Set(); // Track which visualizers are already loaded
 
         this.init();
     }
@@ -13,6 +14,9 @@ class VisualizerSwitcher {
     init() {
         // Set initial visualizer
         this.currentVisualizer = this.selectElement.value;
+
+        // Mark the initial visualizer as loaded
+        this.loadedVisualizers.add(this.currentVisualizer);
 
         // Show initial visualizer
         this.showVisualizer(this.currentVisualizer, false);
@@ -23,8 +27,7 @@ class VisualizerSwitcher {
             this.switchToVisualizer(selectedVisualizer);
         });
 
-        // Debug: List all available visualizers
-        this.debugAvailableVisualizers();
+        console.log(`Initialized with visualizer: ${this.currentVisualizer}`);
     }
 
     showLoading() {
@@ -44,6 +47,7 @@ class VisualizerSwitcher {
             this.errorMessage.textContent = message;
             this.errorMessage.style.display = 'block';
         }
+        console.error('Visualizer error:', message);
     }
 
     hideError() {
@@ -53,19 +57,24 @@ class VisualizerSwitcher {
     }
 
     async switchToVisualizer(pluginId) {
+        // Don't switch if already on this visualizer
+        if (this.currentVisualizer === pluginId) {
+            return;
+        }
+
         this.hideError();
 
         try {
-            // Check if visualizer already exists in DOM
-            const existingVisualizer = document.getElementById(`visualizer-${pluginId}`);
-
-            if (existingVisualizer) {
+            // Check if visualizer is already loaded
+            if (this.loadedVisualizers.has(pluginId)) {
                 // Just show the existing visualizer
+                console.log(`Switching to already loaded visualizer: ${pluginId}`);
                 this.showVisualizer(pluginId, false);
                 return;
             }
 
-            // If we get here, we need to load via AJAX
+            // Load the visualizer via AJAX
+            console.log(`Loading new visualizer: ${pluginId}`);
             this.showLoading();
 
             const response = await fetch(`/get_visualizer_html/${pluginId}/`);
@@ -82,7 +91,10 @@ class VisualizerSwitcher {
 
             // Create new visualizer container
             this.createVisualizerContainer(pluginId, data.html);
+            this.loadedVisualizers.add(pluginId);
             this.showVisualizer(pluginId, true);
+
+            console.log(`Successfully loaded and switched to: ${pluginId}`);
 
         } catch (error) {
             this.showError(`Failed to load visualizer: ${error.message}`);
@@ -100,74 +112,51 @@ class VisualizerSwitcher {
         container.id = `visualizer-${pluginId}`;
         container.setAttribute('data-plugin-id', pluginId);
         container.innerHTML = htmlContent;
+        container.style.display = 'none'; // Initially hidden
 
         // Add to content container
         this.contentContainer.appendChild(container);
+
+        console.log(`Created container for visualizer: ${pluginId}`);
     }
 
     showVisualizer(pluginId, isNewlyLoaded = false) {
+        console.log(`Showing visualizer: ${pluginId}, newly loaded: ${isNewlyLoaded}`);
 
-        // Hide all visualizers - both original and dynamically created ones
+        // Hide all visualizers
         const allVisualizers = this.contentContainer.querySelectorAll('[data-plugin-id]');
-
-        allVisualizers.forEach((viz, index) => {
-            const wasVisible = viz.classList.contains('active');
+        allVisualizers.forEach((viz) => {
             viz.classList.remove('active');
             viz.style.display = 'none';
         });
 
-        // Show selected visualizer - try both original and dynamically created versions
-        const possibleIds = [
-            `${pluginId}`,                      // Direct plugin ID: simple_visualizer, block_visualizer
-            `visualizer-${pluginId}`,           // Dynamic format: visualizer-simple_visualizer
-            `${pluginId.replace('_visualizer', '')}_visualizer`, // Original format: simple_visualizer (from simple_visualizer)
-            `visualizer-${pluginId.replace('_visualizer', '')}` // Dynamic format: visualizer-simple (from simple_visualizer)
-        ];
+        // Find and show the selected visualizer
+        const visualizerElement = document.getElementById(`visualizer-${pluginId}`);
 
-        let foundElements = [];
-        let foundIds = [];
-
-        // Find ALL matching elements (both container divs and SVG elements)
-        for (const id of possibleIds) {
-            const element = document.getElementById(id);
-            if (element) {
-                foundElements.push(element);
-                foundIds.push(id);
-            }
-        }
-
-        if (foundElements.length > 0) {
-            // Show all found elements (both container and content elements)
-            foundElements.forEach((element, index) => {
-                element.classList.add('active');
-                element.style.display = 'block';
-            });
-
+        if (visualizerElement) {
+            visualizerElement.classList.add('active');
+            visualizerElement.style.display = 'block';
             this.currentVisualizer = pluginId;
 
-            // Use the first found element for content checking and initialization
-            const primaryElement = foundElements[0];
-
-            // Check if there's any content in the visualizer
-            const hasContent = primaryElement.innerHTML.trim().length > 0;
-
-            // If newly loaded, trigger initialization
+            // If newly loaded, initialize it
             if (isNewlyLoaded) {
-                this.initializeNewVisualizer(primaryElement, pluginId);
+                this.initializeNewVisualizer(visualizerElement, pluginId);
             } else {
-                // For existing visualizers, trigger resize/refresh
-                this.refreshVisualizer(primaryElement, pluginId);
+                // For existing visualizers, trigger refresh
+                this.refreshVisualizer(visualizerElement, pluginId);
             }
+
+            console.log(`Successfully showed visualizer: ${pluginId}`);
         } else {
             this.showError(`Visualizer container not found: ${pluginId}`);
         }
     }
 
     initializeNewVisualizer(container, pluginId) {
+        console.log(`Initializing new visualizer: ${pluginId}`);
 
         // Execute any scripts in the newly loaded content
         const scripts = container.querySelectorAll('script');
-
         scripts.forEach((oldScript, index) => {
             const newScript = document.createElement('script');
             if (oldScript.src) {
@@ -185,14 +174,13 @@ class VisualizerSwitcher {
     }
 
     refreshVisualizer(container, pluginId) {
+        console.log(`Refreshing visualizer: ${pluginId}`);
 
         // Check for specific visualizer refresh methods
-        if (pluginId === 'simple' && window.simpleVisualizerAPI) {
+        if (pluginId.includes('simple') && window.simpleVisualizerAPI) {
             window.simpleVisualizerAPI.restart();
-        } else if (pluginId === 'block' && window.blockVisualizerAPI) {
+        } else if (pluginId.includes('block') && window.blockVisualizerAPI) {
             window.blockVisualizerAPI.restart();
-        } else {
-            console.log('No specific API found, using generic refresh');
         }
 
         // Generic refresh - trigger resize event
@@ -211,6 +199,19 @@ class VisualizerSwitcher {
         this.selectElement.value = pluginId;
         this.switchToVisualizer(pluginId);
     }
+
+    // Public method to get loaded visualizers
+    getLoadedVisualizers() {
+        return Array.from(this.loadedVisualizers);
+    }
+
+    // Public method to preload a visualizer
+    async preloadVisualizer(pluginId) {
+        if (!this.loadedVisualizers.has(pluginId)) {
+            console.log(`Preloading visualizer: ${pluginId}`);
+            await this.switchToVisualizer(pluginId);
+        }
+    }
 }
 
 // Initialize when DOM is ready
@@ -222,6 +223,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Make it globally available
     window.visualizerSwitcher = visualizerSwitcher;
 
+    console.log('VisualizerSwitcher initialized and available globally');
 });
 
 // Enhanced graph interaction manager integration
