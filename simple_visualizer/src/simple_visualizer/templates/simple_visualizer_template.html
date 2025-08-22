@@ -66,38 +66,12 @@ function calculateNodeRadius(text) {
     return Math.min(requiredRadius, maxRadius);
 }
 
-function wrapText(text, maxRadius) {
-    if (!text) return [text || ''];
-    const charsPerLine = Math.floor((maxRadius * 2 - 10) / 6);
-    if (text.length <= charsPerLine) return [text];
-    const words = text.split(/[\/\-_\s]+/);
-    const lines = [];
-    let currentLine = '';
-    for (const word of words) {
-        if ((currentLine + word).length <= charsPerLine) {
-            currentLine += (currentLine ? ' ' : '') + word;
-        } else {
-            if (currentLine) lines.push(currentLine);
-            currentLine = word;
-        }
-    }
-    if (currentLine) lines.push(currentLine);
-    if (lines.length > 3) {
-        lines[2] = lines[2].substring(0, charsPerLine - 3) + '...';
-        return lines.slice(0, 3);
-    }
-    return lines;
-}
-
 function createSimpleVisualization() {
     const containerElement = document.querySelector("#simple_visualizer").parentNode;
     const width = Math.max(containerElement.clientWidth || 800, 400);
     const height = Math.max(containerElement.clientHeight || 600, 300);
     const arrowSize = 4;
     const manyNodes = nodes.length >= 50;
-
-    console.log('Creating visualization with dimensions:', width, 'x', height);
-    console.log('Number of nodes:', nodes.length, 'Number of links:', links.length);
 
     const minRadius = manyNodes ? 5 : 15;
     const maxRadius = manyNodes ? 25 : 60;
@@ -186,33 +160,25 @@ function createSimpleVisualization() {
 
     // Setup force simulation
     const simulation = d3.forceSimulation(nodeData)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(200))
-        .force("charge", d3.forceManyBody().strength(-400))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(50))
+        .force("charge", d3.forceManyBody().strength(-100))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.radius + 3));
+        .force("collision", d3.forceCollide().radius(d => d.radius + 30));
 
     // Wait for interaction manager and then register simulation
     function registerInteractions() {
         if (window.graphInteractionManager) {
-            console.log('Registering interactions with manager');
             window.graphInteractionManager.setActiveSimulation(simulation);
 
             // Apply drag behavior from interaction manager
             const dragBehavior = window.graphInteractionManager.createDragBehavior(simulation);
             if (dragBehavior) {
                 node.call(dragBehavior);
-                console.log('Drag behavior applied to nodes');
             }
 
             // Apply zoom behavior from interaction manager
             const zoomBehavior = window.graphInteractionManager.createZoomBehavior(svg, container, labels);
-            if (zoomBehavior) {
-                console.log('Zoom behavior applied to SVG');
-            } else {
-                console.error('Failed to create zoom behavior');
-            }
         } else {
-            console.log('Interaction manager not ready, retrying in 100ms...');
             setTimeout(registerInteractions, 100);
         }
     }
@@ -321,17 +287,14 @@ if (!window.simpleVisualizerAPI.restart) {
 }
 // Initialize visualization when DOM is ready
 function initializeVisualization() {
-    console.log('Initializing simple visualization...');
     if (nodes && nodes.length > 0) {
         try {
             const instance = createSimpleVisualization();
             window.simpleVisualizerAPI[INSTANCE_ID].instance = instance;
-            console.log('Simple visualization created successfully');
         } catch (error) {
             console.error('Error creating simple visualization:', error);
         }
     } else {
-        console.log('No graph data to display');
         d3.select("#simple_visualizer")
             .append("text")
             .attr("x", 50)

@@ -34,6 +34,7 @@ console.log('Graph data:', graphData);
 function wrapText(textSelection, maxWidth) {
     textSelection.each(function() {
         const text = d3.select(this);
+        console.log("text: ", text);
         const words = text.text().split(/\s+/).reverse();
         let word, line = [], lineNumber = 0;
         const lineHeight = 1.1; // ems
@@ -291,8 +292,8 @@ function renderBlockGraph(data) {
             .text(attr => `${attr[0]}: ${attr[1] != null ? attr[1].toString() : ''}`)
             .attr("font-size", "12px")
             .attr("fill", "#000")
-            .each(function() { 
-                wrapText(d3.select(this), d.blockWidth - 10); 
+            .each(function() {
+                wrapText(d3.select(this), d.blockWidth - 10);
             });
     });
 
