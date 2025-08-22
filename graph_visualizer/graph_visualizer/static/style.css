@@ -1,3 +1,15 @@
+.messages {
+  margin: 1em 0;
+  padding: 0;
+}
+
+.message {
+  padding: 10px 15px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+  color: #fff;
+  font-weight: bold;
+}
 
 html, body {
             margin: 0;
@@ -84,3 +96,251 @@ html, body {
         .visualizer-content.hidden {
             display: none !important;
         }
+.message.success {
+  background-color: #28a745; /* green */
+}
+
+.message.error {
+  background-color: #dc3545; /* red */
+}
+
+.message.warning {
+  background-color: #ffc107; /* yellow */
+  color: #333;
+}
+
+.message.info {
+  background-color: #17a2b8; /* blue */
+}
+
+.popup-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+}
+
+.popup {
+  background: #333;
+  color: #fff;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  min-width: 200px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.popup.success { background: #28a745; } /* green */
+.popup.error   { background: #dc3545; } /* red */
+.popup.warning { background: #ffc107; color: #333; } /* yellow */
+.popup.info    { background: #17a2b8; } /* blue */
+
+.popup-close {
+  margin-left: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* General body styles */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f5f6fa;
+    color: #333;
+    margin: 0;
+    padding: 0 2rem;
+}
+
+/* Workspace Management Bar */
+.workspace-management {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0;
+    flex-wrap: wrap;
+}
+
+.workspace-management select,
+.workspace-management input,
+.workspace-management button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+}
+
+.workspace-management select:focus,
+.workspace-management input:focus {
+    outline: none;
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74,144,226,0.5);
+}
+
+.workspace-management button {
+    background-color: #4a90e2;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.workspace-management button:hover {
+    background-color: #357ABD;
+}
+
+/* Modal overlay */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Modal content */
+.modal-content {
+    background: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    min-width: 300px;
+    max-width: 500px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    position: relative;
+    animation: slideDown 0.3s ease;
+}
+
+/* Modal heading */
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+    color: #4a90e2;
+}
+
+/* Modal buttons */
+.modal-content button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    transition: background 0.2s;
+}
+
+.modal-content button[type="submit"] {
+    background-color: #28a745;
+    color: #fff;
+}
+
+.modal-content button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+.modal-content button[type="button"] {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.modal-content button[type="button"]:hover {
+    background-color: #c82333;
+}
+
+/* Form elements inside modal */
+.modal-content label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+}
+
+.modal-content input,
+.modal-content select {
+    width: 100%;
+    margin-bottom: 1rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+}
+
+/* Modal animation */
+@keyframes slideDown {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .workspace-management {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .workspace-management button {
+        width: 100%;
+    }
+
+    .modal-content {
+        width: 90%;
+        min-width: auto;
+    }
+}
+
+/* General dropdown styling */
+.workspace-management select,
+.modal-content select {
+    appearance: none;       /* Remove default arrow */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+}
+
+/* Hover and focus */
+.workspace-management select:hover,
+.modal-content select:hover,
+.workspace-management select:focus,
+.modal-content select:focus {
+    border-color: #4a90e2;
+    box-shadow: 0 0 5px rgba(74,144,226,0.5);
+    outline: none;
+}
+
+/* Custom arrow using a pseudo-element */
+.workspace-management select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='12' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%23333' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 12px;
+    padding-right: 2rem;
+}
+
+/* Modal dropdown */
+.modal-content select {
+    background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg width='12' height='12' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5 7L10 12L15 7' stroke='%23333' stroke-width='2'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    background-size: 12px;
+    padding-right: 2rem;
+}
