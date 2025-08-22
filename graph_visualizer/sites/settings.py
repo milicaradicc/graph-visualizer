@@ -124,7 +124,7 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = [
     BASE_DIR / "static",
-    BASE_DIR / "block_visualizer/src/block_visualizer/static",
+    BASE_DIR / "graph_visualizer/graph_visualizer/static",
 ]
 
 # Default primary key field type

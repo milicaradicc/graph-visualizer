@@ -90,27 +90,74 @@ function normalizeEdges(nodes, edges) {
     return links;
 }
 
+function fitGraphToView(svg, container, nodes, width, height, padding = 50) {
+    // Wait for the simulation to settle
+    setTimeout(() => {
+        if (nodes.length === 0) return;
+
+        // Calculate bounding box of all nodes
+        const nodeBounds = nodes.map(n => ({
+            x: n.x,
+            y: n.y,
+            width: n.blockWidth,
+            height: n.blockHeight
+        }));
+
+        const minX = Math.min(...nodeBounds.map(n => n.x - n.width/2));
+        const maxX = Math.max(...nodeBounds.map(n => n.x + n.width/2));
+        const minY = Math.min(...nodeBounds.map(n => n.y - n.height/2));
+        const maxY = Math.max(...nodeBounds.map(n => n.y + n.height/2));
+
+        const graphWidth = maxX - minX;
+        const graphHeight = maxY - minY;
+
+        // Calculate scale to fit the graph with padding
+        const scaleX = (width - 2 * padding) / graphWidth;
+        const scaleY = (height - 2 * padding) / graphHeight;
+        const scale = Math.min(scaleX, scaleY, 1); // Don't zoom in beyond 100%
+
+        // Calculate center position
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+
+        // Calculate translation to center the graph
+        const translateX = width / 2 - centerX * scale;
+        const translateY = height / 2 - centerY * scale;
+
+        // Apply the transformation
+        const transform = d3.zoomIdentity
+            .translate(translateX, translateY)
+            .scale(scale);
+
+        svg.call(svg.__zoom.transform, transform);
+    }, 2000); // Wait for simulation to stabilize
+}
+
 function renderBlockGraph(data) {
     const width = 1000, height = 600;
 
     // precompute node sizes
     data.nodes.forEach(n => {
         n.attrs = Object.entries(n.data || {});
-        n.blockWidth = 150;
-        n.blockHeight = 20 * (n.attrs.length + 1) + 10;
+        n.blockWidth = 200;
+        n.blockHeight = 20 * (n.attrs.length + 1) + 20;
         n.blockDiagonal = Math.sqrt(n.blockWidth**2 + n.blockHeight**2);
     });
 
     const links = normalizeEdges(data.nodes, data.edges);
 
+    const zoom = d3.zoom()
+        .scaleExtent([0.1, 4])
+        .on("zoom", (event) => container.attr("transform", event.transform));
+
     const svg = d3.select("#block-graph")
         .append("svg")
         .attr("viewBox", `0 0 ${width} ${height}`)
         .attr("preserveAspectRatio", "xMidYMid meet")
-        .call(d3.zoom()
-            .scaleExtent([0.1, 4])
-            .on("zoom", (event) => container.attr("transform", event.transform))
-        );
+        .call(zoom);
+
+    // Store zoom behavior for later use
+    svg.__zoom = zoom;
 
     const container = svg.append("g");
 
@@ -130,10 +177,10 @@ function renderBlockGraph(data) {
     }
 
     const simulation = d3.forceSimulation(data.nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-        .force("charge", d3.forceManyBody().strength(-400))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(200))
+        .force("charge", d3.forceManyBody().strength(-800))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.blockDiagonal / 2 + 10));
+        .force("collision", d3.forceCollide().radius(d => d.blockDiagonal / 2 + 20));
 
     const link = container.append("g")
         .attr("class", "links")
@@ -194,7 +241,7 @@ function renderBlockGraph(data) {
             .text(attr => `${attr[0]}: ${attr[1]}`)
             .attr("font-size", "12px")
             .attr("fill", "#000")
-            .each(function() { wrapText(d3.select(this), d.blockWidth - 10); });
+            .each(function() { wrapText(d3.select(this), d.blockWidth+ 40); });
     });
 
     simulation.on("tick", () => {
@@ -206,6 +253,9 @@ function renderBlockGraph(data) {
 
         node.attr("transform", d => `translate(${d.x},${d.y})`);
     });
+
+    // Also fit after a delay as backup
+    fitGraphToView(svg, container, data.nodes, width, height);
 
     function drag(simulation) {
         return d3.drag()

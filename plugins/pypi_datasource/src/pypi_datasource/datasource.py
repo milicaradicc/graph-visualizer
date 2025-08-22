@@ -6,7 +6,7 @@ import requests
 from dateutil.parser import parse as parse_date
 from packaging.requirements import Requirement
 
-from api.components import DataSourcePlugin
+from api.components import DataSourcePlugin, DataSourceParameter
 from api.model import Edge, Graph, Node
 
 from .models import Package
@@ -25,6 +25,20 @@ class PyPIDatasource(DataSourcePlugin):
 
     def identifier(self) -> str:
         return "pypi_datasource"
+
+    def get_parameters(self) -> List[DataSourceParameter]:
+        return [
+            DataSourceParameter(
+                'start_package',
+                str,
+                'Start package',
+            ),
+            DataSourceParameter(
+                'depth',
+                int,
+                'Depth',
+            )
+        ]
 
     def load(self, **kwargs) -> Graph:
         start_package = kwargs.get("start_package", "requests")

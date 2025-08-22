@@ -1,20 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'tree_view.css' %}">
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<!-- Workspace management -->
+{% include "workspace_management.html" %}
+
+<!-- Popups -->
+{% if messages %}
+<div class="popup-container">
+  {% for message in messages %}
+    <div class="popup {{ message.tags }}">
+      <span class="popup-text">{{ message }}</span>
+      <span class="popup-close" onclick="this.parentElement.remove()">×</span>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<script>
+    // Auto-close popups after 5 seconds
+    setTimeout(() => {
+      document.querySelectorAll(".popup").forEach(popup => popup.remove());
+    }, 5000);
+</script>
+
 <div class="graph-container">
-    <div class="views">
-<main>
-    {{ block_visualizer_html | safe }}
-</main>
 
-        <!-- Tree view -->
-        <div id="tree-view" class="graph-view">
-            <h3>Tree View</h3>
-            {% if tree_html %}
-                {{ tree_html | safe }}
-            {% else %}
-                <svg id="tree-svg"></svg>
-            {% endif %}
-        </div>
+    <!-- Controls for visualizer switch -->
+    <div class="controls">
+        <label for="visualizer-select">Choose visualizer:</label>
+        <select id="visualizer-select">
+            <option value="block">Block Visualizer</option>
+            <option value="simple">Simple Visualizer</option>
+        </select>
+    </div>
 
-        <!-- Main view -->
+    <!-- Views container -->
+    <div class="views-container">
+
+        <!-- Tree View -->
+            <div class="view tree-view">
+                <div class="view-header">Tree View</div>
+                <div class="view-content" id="tree-container"></div>
+            </div>
+
+        <!-- Additional Views from kolega -->
         <div id="main-view" class="graph-view">
             <h3>Main View</h3>
             {% if graph_html %}
@@ -24,7 +59,6 @@
             {% endif %}
         </div>
 
-        <!-- Bird view -->
         <div id="bird-view" class="graph-view">
             <h3>Bird View</h3>
             {% if bird_html %}
@@ -36,3 +70,30 @@
 
     </div>
 </div>
+
+<script>
+    window.graphData = {{ graph_json|safe }};
+    const select = document.getElementById("visualizer-select");
+    const mainBlockDiv = document.getElementById("main-block-visualizer");
+    const mainSimpleDiv = document.getElementById("main-simple-visualizer");
+
+    function switchVisualizer(type) {
+        if(type === "block") {
+            mainBlockDiv.classList.remove("hidden");
+            mainSimpleDiv.classList.add("hidden");
+        } else {
+            mainBlockDiv.classList.add("hidden");
+            mainSimpleDiv.classList.remove("hidden");
+        }
+    }
+
+    select.addEventListener("change", e => switchVisualizer(e.target.value));
+    switchVisualizer(select.value);
+</script>
+
+<script src="{% static 'tree_view.js' %}"></script>
+
+{% block content %}{% endblock %}
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 from api.model import Graph, Node, Edge
-from api.components.data_source_plugin import DataSourcePlugin
+from api.components.data_source_plugin import DataSourcePlugin, DataSourceParameter
 from rdflib import Graph as RdfGraph, RDF, Literal, XSD
-
+from typing import List
 
 def _convert_literal(literal: Literal):
     """Convert RDF literal into int, float, date, or string"""
@@ -23,6 +23,15 @@ class RdfDataSource(DataSourcePlugin):
 
     def identifier(self) -> str:
         return "datasource_rdf"
+
+    def get_parameters(self) -> List[DataSourceParameter]:
+        return [
+            DataSourceParameter(
+                'file_path',
+                str,
+                'File path'
+            )
+        ]
 
     def load(self, **kwargs) -> Graph:
         file_path = kwargs['file_path']
