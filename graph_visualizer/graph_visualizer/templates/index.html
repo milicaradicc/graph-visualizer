@@ -32,9 +32,14 @@
     <div class="controls">
         <label for="visualizer-select">Choose visualizer:</label>
         <select id="visualizer-select">
-            <option value="block">Block Visualizer</option>
-            <option value="simple">Simple Visualizer</option>
+            {% for plugin in visualizer_plugins %}
+                <option value="{{ plugin.identifier }}" {% if forloop.first %}selected{% endif %}>
+                    {{ plugin.name }}
+                </option>
+            {% endfor %}
         </select>
+        <div class="loading-indicator" id="loading-indicator">Loading visualization...</div>
+        <div class="error-message" id="error-message"></div>
     </div>
 
     <!-- Views container -->
@@ -60,18 +65,136 @@
         <!-- Main View -->
             <div id="main-view" class="graph-view">
                 <h3>Main View</h3>
-                {% if graph_html %}
-                    {{ graph_html | safe }}
-                {% else %}
-                    <svg id="main-svg"></svg>
-                {% endif %}
+                <div class="visualizer-content" id="visualizer-content">
+                    {% if visualizer_html %}
+                        {% for plugin in visualizer_plugins %}
+                            <div id="visualizer-{{ plugin.identifier }}"
+                                 data-plugin-id="{{ plugin.identifier }}"
+                                 {% if forloop.first %}class="active"{% endif %}>
+                                {% for html_plugin_id, html_content in visualizer_html.items %}
+                                    {% if html_plugin_id == plugin.identifier %}
+                                        {{ html_content|safe }}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        {% empty %}
+                            <div>
+                                <p>No visualizer plugins available.</p>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div>
+                            <svg id="main-svg"></svg>
+                        </div>
+                    {% endif %}
+                </div>
             </div>
         </div>
     </div>
 </div>
+<script>
+    window.graphData = {{ graph_json|safe }};
+
+    // Add this script temporarily to debug visualizer issues
+// Place it at the bottom of your index.html template
+
+console.log('=== VISUALIZER DIAGNOSTIC SCRIPT ===');
+
+// Check if all required dependencies are loaded
+setTimeout(() => {
+    console.log('1. Checking dependencies...');
+    console.log('   D3.js loaded:', typeof d3 !== 'undefined');
+    console.log('   jQuery loaded:', typeof $ !== 'undefined');
+    console.log('   Graph data available:', typeof window.graphData !== 'undefined');
+
+    if (window.graphData) {
+        try {
+            const parsed = typeof window.graphData === 'string' ? JSON.parse(window.graphData) : window.graphData;
+            console.log('   Graph data structure:', {
+                hasNodes: !!(parsed.nodes),
+                nodeCount: parsed.nodes ? parsed.nodes.length : 0,
+                hasEdges: !!(parsed.edges),
+                edgeCount: parsed.edges ? parsed.edges.length : 0,
+                directed: parsed.directed
+            });
+        } catch (e) {
+            console.error('   Error parsing graph data:', e);
+        }
+    }
+
+    console.log('2. Checking DOM elements...');
+    const visualizerContent = document.getElementById('visualizer-content');
+    console.log('   Visualizer content container:', !!visualizerContent);
+
+    if (visualizerContent) {
+        const children = visualizerContent.children;
+        console.log('   Number of child containers:', children.length);
+
+        for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+            console.log(`   Container ${i + 1}:`, {
+                id: child.id,
+                pluginId: child.getAttribute('data-plugin-id'),
+                hasClass: child.className,
+                visible: child.style.display !== 'none',
+                hasContent: child.innerHTML.trim().length > 0,
+                contentPreview: child.innerHTML.substring(0, 100) + '...'
+            });
+        }
+    }
+
+    console.log('3. Checking visualizer APIs...');
+    console.log('   simpleVisualizerAPI:', typeof window.simpleVisualizerAPI);
+    console.log('   blockVisualizerAPI:', typeof window.blockVisualizerAPI);
+    console.log('   graphInteractionManager:', typeof window.graphInteractionManager);
+    console.log('   visualizerSwitcher:', typeof window.visualizerSwitcher);
+
+    console.log('4. Checking SVG elements...');
+    const svgs = document.querySelectorAll('svg');
+    console.log('   Total SVG elements found:', svgs.length);
+    svgs.forEach((svg, index) => {
+        console.log(`   SVG ${index + 1}:`, {
+            id: svg.id,
+            width: svg.getAttribute('width') || svg.style.width,
+            height: svg.getAttribute('height') || svg.style.height,
+            viewBox: svg.getAttribute('viewBox'),
+            childElementCount: svg.childElementCount,
+            visible: svg.style.display !== 'none'
+        });
+    });
+
+    console.log('5. Testing visualizer switching...');
+    const selectElement = document.getElementById('visualizer-select');
+    if (selectElement) {
+        console.log('   Select element found, options:', selectElement.options.length);
+        for (let i = 0; i < selectElement.options.length; i++) {
+            console.log(`     Option ${i + 1}: ${selectElement.options[i].value} - ${selectElement.options[i].text}`);
+        }
+        console.log('   Currently selected:', selectElement.value);
+    }
+
+    console.log('=== END DIAGNOSTIC ===');
+
+    // Try to force visualizer refresh
+    console.log('6. Attempting to refresh visualizers...');
+    window.dispatchEvent(new Event('resize'));
+
+}, 2000); // Wait 2 seconds for everything to load
+
+// Add a manual test function you can call from browser console
+window.testVisualizerSwitch = function(pluginId) {
+    console.log(`Testing switch to: ${pluginId}`);
+    if (window.visualizerSwitcher) {
+        window.visualizerSwitcher.switchTo(pluginId);
+    } else {
+        console.error('visualizerSwitcher not available');
+    }
+};
+</script>
 {% load static %}
 <script src="{% static 'tree_view.js' %}"></script>
-<script src="{% static 'graph_interactions.js' %}"></script>
+<script src="{% static 'graph-interactions.js' %}"></script>
+<script src="{% static 'visualizer-switching.js' %}"></script>
 {% endblock %}
 
 

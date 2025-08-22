@@ -3,7 +3,7 @@
 (function() {
     const container = document.getElementById("tree-container");
     console.log(container)
-    const graph = graphData;
+    const graph = window.graphData;
 
     if (!graph) {
         container.innerHTML = "<p>No graph data available.</p>";

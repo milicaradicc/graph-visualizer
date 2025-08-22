@@ -2,20 +2,26 @@
 function createGraphInteractionManager() {
     let activeSimulation = null;
 
-    // Universal drag handler
+    // Universal drag handler with D3 v4/v5 compatibility
     function createDragBehavior(simulation) {
-        function dragstarted(event, d) {
+        function dragstarted(d) {
+            // D3 v4/v5 compatibility
+            const event = d3.event;
             if (!event.active) simulation.alphaTarget(0.3).restart();
             d.fx = d.x;
             d.fy = d.y;
         }
 
-        function dragged(event, d) {
+        function dragged(d) {
+            // D3 v4/v5 compatibility
+            const event = d3.event;
             d.fx = event.x;
             d.fy = event.y;
         }
 
-        function dragended(event, d) {
+        function dragended(d) {
+            // D3 v4/v5 compatibility
+            const event = d3.event;
             if (!event.active) simulation.alphaTarget(0);
             d.fx = null;
             d.fy = null;
@@ -27,38 +33,62 @@ function createGraphInteractionManager() {
             .on("end", dragended);
     }
 
-    // Universal zoom handler
+    // Universal zoom handler with D3 v4/v5 compatibility
     function createZoomBehavior(svg, container, labels = null) {
+        // Ensure we have proper D3 selections
+        const svgSelection = svg.node ? svg : d3.select(svg);
+        const containerSelection = container.node ? container : d3.select(container);
+
+        // Verify the container exists
+        if (containerSelection.empty()) {
+            console.error('Container element not found for zoom behavior');
+            return null;
+        }
+
         const zoom = d3.zoom()
-            .scaleExtent([0.1, 5])
-            .on("zoom", (event) => {
-                container.attr("transform", event.transform);
+            .scaleExtent([0.2, 4])
+            .on("zoom", function() {
+                // D3 v4/v5 compatibility - get transform from d3.event or event parameter
+                const transform = d3.event ? d3.event.transform : d3.zoomTransform(this);
+
+                if (!transform) {
+                    console.error('Could not get zoom transform');
+                    return;
+                }
+
+                // Apply transform to the container
+                containerSelection.attr("transform", transform);
 
                 // Handle label scaling if labels exist
                 if (labels) {
-                    labels.style("font-size", `${12 / event.transform.k}px`);
-                    labels.style("display", event.transform.k > 1.5 ? "block" : "none");
+                    const labelsSelection = labels.node ? labels : d3.select(labels);
+                    if (!labelsSelection.empty()) {
+                        const scale = transform.k;
+                        labelsSelection
+                            .style("font-size", `${Math.max(6, 10 / scale)}px`)
+                            .style("display", scale > 0.6 ? "block" : "none");
+                    }
                 }
             });
 
-        svg.call(zoom);
+        svgSelection.call(zoom);
         return zoom;
     }
 
-    // Pan to specific coordinates
+    // Pan to specific coordinates with D3 v4/v5 compatibility
     function panTo(svg, x, y, scale = 1) {
-        const zoom = d3.zoom();
-        svg.transition()
+        const svgSelection = svg.node ? svg : d3.select(svg);
+        svgSelection.transition()
             .duration(750)
-            .call(zoom.transform, d3.zoomIdentity.translate(x, y).scale(scale));
+            .call(d3.zoom().transform, d3.zoomIdentity.translate(x, y).scale(scale));
     }
 
-    // Reset view
+    // Reset view with D3 v4/v5 compatibility
     function resetView(svg) {
-        const zoom = d3.zoom();
-        svg.transition()
+        const svgSelection = svg.node ? svg : d3.select(svg);
+        svgSelection.transition()
             .duration(750)
-            .call(zoom.transform, d3.zoomIdentity);
+            .call(d3.zoom().transform, d3.zoomIdentity);
     }
 
     // Set active simulation for external control
@@ -68,7 +98,8 @@ function createGraphInteractionManager() {
 
     // Get current view transform
     function getCurrentTransform(svg) {
-        return d3.zoomTransform(svg.node());
+        const svgSelection = svg.node ? svg : d3.select(svg);
+        return d3.zoomTransform(svgSelection.node());
     }
 
     // Public API
@@ -92,6 +123,7 @@ function initializeVisualizerSwitching() {
 
     selectElement.addEventListener('change', function(e) {
         const selectedVisualizer = e.target.value;
+        console.log('Switching to visualizer:', selectedVisualizer);
 
         // Hide all visualizers
         document.querySelectorAll('.graph-view svg').forEach(svg => {
@@ -108,120 +140,7 @@ function initializeVisualizerSwitching() {
     });
 }
 
-// Keyboard shortcuts for interactions
-function initializeKeyboardShortcuts() {
-    document.addEventListener('keydown', function(e) {
-        const svg = document.querySelector('.graph-view svg:not([style*="display: none"])');
-        if (!svg) return;
-
-        switch(e.key) {
-            case 'r':
-            case 'R':
-                // Reset view
-                window.graphInteractionManager.resetView(d3.select(svg));
-                break;
-            case '=':
-            case '+':
-                // Zoom in
-                const zoomIn = d3.zoom().scaleBy;
-                d3.select(svg).transition().call(zoomIn, 1.2);
-                break;
-            case '-':
-            case '_':
-                // Zoom out
-                const zoomOut = d3.zoom().scaleBy;
-                d3.select(svg).transition().call(zoomOut, 0.8);
-                break;
-        }
-    });
-}
-
-// Add visual feedback for interactions
-function addInteractionFeedback() {
-    // Add loading indicator styles
-    const style = document.createElement('style');
-    style.textContent = `
-        .graph-loading {
-            pointer-events: none;
-            opacity: 0.7;
-        }
-        .graph-loading::after {
-            content: "Loading...";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 1000;
-        }
-        .graph-controls {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 5px;
-            border-radius: 3px;
-            font-size: 12px;
-            z-index: 1000;
-        }
-    `;
-    document.head.appendChild(style);
-}
-
-// Utility functions for graph management
-function showGraphLoading(containerId) {
-    const container = document.getElementById(containerId);
-    if (container) {
-        container.classList.add('graph-loading');
-    }
-}
-
-function hideGraphLoading(containerId) {
-    const container = document.getElementById(containerId);
-    if (container) {
-        container.classList.remove('graph-loading');
-    }
-}
-
-function addGraphControls(containerId) {
-    const container = document.getElementById(containerId);
-    if (!container) return;
-
-    const controls = document.createElement('div');
-    controls.className = 'graph-controls';
-    controls.innerHTML = `
-        <div>Controls:</div>
-        <div>R - Reset view</div>
-        <div>+/- - Zoom in/out</div>
-        <div>Drag nodes to move</div>
-        <div>Mouse wheel to zoom</div>
-    `;
-
-    container.style.position = 'relative';
-    container.appendChild(controls);
-
-    // Hide controls after 5 seconds
-    setTimeout(() => {
-        controls.style.opacity = '0';
-        setTimeout(() => controls.remove(), 300);
-    }, 5000);
-}
-
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     initializeVisualizerSwitching();
-    initializeKeyboardShortcuts();
-    addInteractionFeedback();
-
-    // Add controls to main view
-    addGraphControls('main-view');
 });
-
-// Export for use in other scripts
-window.GraphInteractions = {
-    showLoading: showGraphLoading,
-    hideLoading: hideGraphLoading,
-    addControls: addGraphControls
-};
