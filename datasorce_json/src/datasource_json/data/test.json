@@ -1,0 +1,31 @@
+[
+  {
+    "name": "Alice",
+    "age": "30",
+    "birthdate": "1993-02-15",
+    "height": "1.65",
+    "friends": ["Bob", "Charlie"]
+  },
+  {
+    "name": "Bob",
+    "age": 28,
+    "birthdate": "1995-07-21",
+    "height": 1.82,
+    "friends": ["Alice"]
+  },
+  {
+    "name": "Charlie",
+    "age": "35",
+    "birthdate": "1988-11-05",
+    "height": "1.75",
+    "friends": []
+  },
+  {
+    "name": "Diana",
+    "age": "42",
+    "birthdate": "1981-01-30",
+    "height": "1.60",
+    "nickname": "Di",
+    "married": true
+  }
+]

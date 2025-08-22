@@ -1,3 +1,4 @@
+rdflib
 -e ./api
 -e ./core
 -e ./datasource_rdf
