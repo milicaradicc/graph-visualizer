@@ -40,8 +40,8 @@
     <svg id="simple_visualizer" width="800" height="600"></svg>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
+// Pure visualization logic - no interaction handling
 const nodes = {{ nodes | tojson }};
 const links = {{ edges | tojson }};
 const isDirected = {{ directed | tojson }};
@@ -80,28 +80,7 @@ function wrapText(text, maxRadius) {
     return lines;
 }
 
-function drag(simulation) {
-    function dragstarted(event, d) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-    }
-    function dragged(event, d) {
-        d.fx = event.x;
-        d.fy = event.y;
-    }
-    function dragended(event, d) {
-        if (!event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-    }
-    return d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
-}
-
-function createChart() {
+function createSimpleVisualization() {
     const width = 800, height = 600;
     const arrowSize = 4;
     const manyNodes = nodes.length >= 50;
@@ -109,6 +88,7 @@ function createChart() {
     const minRadius = manyNodes ? 5 : 15;
     const maxRadius = manyNodes ? 25 : 60;
 
+    // Calculate node degrees for sizing
     const degreeMap = {};
     links.forEach(l => {
         degreeMap[l.source] = (degreeMap[l.source] || 0) + 1;
@@ -123,6 +103,7 @@ function createChart() {
         .domain([minDeg, maxDeg])
         .range([minRadius, maxRadius]);
 
+    // Prepare node data
     const nodeData = nodes.map(node => {
         const displayText = node.id || 'Unknown';
         const degree = degreeMap[node.id] || 0;
@@ -130,6 +111,7 @@ function createChart() {
         return { ...node, radius, displayText, degree };
     });
 
+    // Setup SVG
     const svg = d3.select("#simple_visualizer")
         .attr("width", width)
         .attr("height", height)
@@ -137,6 +119,7 @@ function createChart() {
 
     svg.selectAll("*").remove();
 
+    // Setup arrow markers for directed graphs
     if (isDirected) {
         const defs = svg.append("defs");
         defs.append("marker")
@@ -152,8 +135,10 @@ function createChart() {
             .attr("class", "arrowhead");
     }
 
-    const container = svg.append("g");
+    // Create container for zoom/pan (handled by parent)
+    const container = svg.append("g").attr("class", "visualization-container");
 
+    // Create links
     const link = container.append("g")
         .attr("class", "links")
         .selectAll("line")
@@ -161,6 +146,7 @@ function createChart() {
         .join("line")
         .attr("class", d => isDirected ? "link directed" : "link");
 
+    // Create nodes
     const nodeGroup = container.append("g")
         .attr("class", "nodes");
 
@@ -171,8 +157,10 @@ function createChart() {
         .attr("class", "node")
         .attr("r", d => d.radius);
 
+    // Add tooltips
     node.append("title").text(d => d.displayText);
 
+    // Create labels
     const labels = nodeGroup.selectAll("text")
         .data(nodeData)
         .join("text")
@@ -181,15 +169,27 @@ function createChart() {
         .style("font-size", "8px")
         .text(d => d.id);
 
+    // Setup force simulation
     const simulation = d3.forceSimulation(nodeData)
         .force("link", d3.forceLink(links).id(d => d.id).distance(manyNodes ? 50 : 150))
         .force("charge", d3.forceManyBody().strength(manyNodes ? -150 : -400))
         .force("center", d3.forceCenter(width / 2, height / 2))
         .force("collision", d3.forceCollide().radius(d => d.radius + 3));
 
-    node.call(drag(simulation));
+    // Register simulation with interaction manager
+    if (window.graphInteractionManager) {
+        window.graphInteractionManager.setActiveSimulation(simulation);
 
+        // Apply drag behavior from interaction manager
+        node.call(window.graphInteractionManager.createDragBehavior(simulation));
+
+        // Apply zoom behavior from interaction manager
+        window.graphInteractionManager.createZoomBehavior(svg, container, labels);
+    }
+
+    // Update positions on simulation tick
     simulation.on("tick", () => {
+        // Update link positions
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
@@ -212,6 +212,7 @@ function createChart() {
                 return d.target.y - (dy / distance) * (targetRadius + 5);
             });
 
+        // Update node positions (constrained to boundaries)
         node
             .attr("cx", d => {
                 d.x = Math.max(d.radius, Math.min(width - d.radius, d.x));
@@ -222,25 +223,60 @@ function createChart() {
                 return d.y;
             });
 
+        // Update label positions
         labels
             .attr("x", d => d.x)
             .attr("y", d => d.y);
     });
 
-    const zoom = d3.zoom()
-        .scaleExtent([0.1, 5])
-        .on("zoom", (event) => {
-            container.attr("transform", event.transform);
-            labels.style("font-size", `${12 / event.transform.k}px`);
-            labels.style("display", event.transform.k > 1.5 ? "block" : "none");
-        });
-
-    svg.call(zoom);
+    return {
+        simulation,
+        svg,
+        container,
+        nodeData,
+        links: link,
+        nodes: node,
+        labels
+    };
 }
 
+// Public API for external control
+window.simpleVisualizerAPI = {
+    restart: function() {
+        if (this.instance && this.instance.simulation) {
+            this.instance.simulation.restart();
+        }
+    },
+
+    stop: function() {
+        if (this.instance && this.instance.simulation) {
+            this.instance.simulation.stop();
+        }
+    },
+
+    getNodeData: function() {
+        return this.instance ? this.instance.nodeData : [];
+    },
+
+    highlightNode: function(nodeId) {
+        if (!this.instance) return;
+        this.instance.nodes
+            .style("stroke", d => d.id === nodeId ? "red" : "black")
+            .style("stroke-width", d => d.id === nodeId ? "4px" : "2px");
+    },
+
+    clearHighlights: function() {
+        if (!this.instance) return;
+        this.instance.nodes
+            .style("stroke", "black")
+            .style("stroke-width", "2px");
+    }
+};
+
+// Initialize visualization when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
     if (nodes && nodes.length > 0) {
-        createChart();
+        window.simpleVisualizerAPI.instance = createSimpleVisualization();
     } else {
         d3.select("#simple_visualizer")
             .append("text")
