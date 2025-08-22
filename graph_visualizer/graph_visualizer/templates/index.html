@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'base.html' %}
+{% block head_content %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'tree_view.css' %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
 
+{% endblock %}
+{% block content %}
 <!-- Workspace management -->
 {% include "workspace_management.html" %}
 
@@ -30,7 +28,6 @@
 </script>
 
 <div class="graph-container">
-
     <!-- Controls for visualizer switch -->
     <div class="controls">
         <label for="visualizer-select">Choose visualizer:</label>
@@ -42,24 +39,15 @@
 
     <!-- Views container -->
     <div class="views-container">
-
+        <div class="left-view">
         <!-- Tree View -->
             <div class="view tree-view">
                 <div class="view-header">Tree View</div>
                 <div class="view-content" id="tree-container"></div>
             </div>
+        <!-- Bird View -->
 
-        <!-- Additional Views from kolega -->
-        <div id="main-view" class="graph-view">
-            <h3>Main View</h3>
-            {% if graph_html %}
-                {{ graph_html | safe }}
-            {% else %}
-                <svg id="main-svg"></svg>
-            {% endif %}
-        </div>
-
-        <div id="bird-view" class="graph-view">
+            <div id="bird-view" class="graph-view">
             <h3>Bird View</h3>
             {% if bird_html %}
                 {{ bird_html | safe }}
@@ -67,33 +55,22 @@
                 <svg id="bird-svg"></svg>
             {% endif %}
         </div>
-
+        </div>
+        <div class="right-view">
+        <!-- Main View -->
+            <div id="main-view" class="graph-view">
+                <h3>Main View</h3>
+                {% if graph_html %}
+                    {{ graph_html | safe }}
+                {% else %}
+                    <svg id="main-svg"></svg>
+                {% endif %}
+            </div>
+        </div>
     </div>
 </div>
-
-<script>
-    window.graphData = {{ graph_json|safe }};
-    const select = document.getElementById("visualizer-select");
-    const mainBlockDiv = document.getElementById("main-block-visualizer");
-    const mainSimpleDiv = document.getElementById("main-simple-visualizer");
-
-    function switchVisualizer(type) {
-        if(type === "block") {
-            mainBlockDiv.classList.remove("hidden");
-            mainSimpleDiv.classList.add("hidden");
-        } else {
-            mainBlockDiv.classList.add("hidden");
-            mainSimpleDiv.classList.remove("hidden");
-        }
-    }
-
-    select.addEventListener("change", e => switchVisualizer(e.target.value));
-    switchVisualizer(select.value);
-</script>
-
+{% load static %}
 <script src="{% static 'tree_view.js' %}"></script>
+{% endblock %}
 
-{% block content %}{% endblock %}
 
-</body>
-</html>
