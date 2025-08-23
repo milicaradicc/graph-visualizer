@@ -1,10 +1,10 @@
 from datetime import datetime
-from typing import Union
+from typing import Union, List
 import json
 import uuid
 
 from api.model import Graph, Node, Edge
-from api.components import DataSourcePlugin
+from api.components import DataSourcePlugin, DataSourceParameter
 
 
 def convert_json_value(value) -> Union[int, float, str, datetime]:
@@ -23,6 +23,9 @@ def convert_json_value(value) -> Union[int, float, str, datetime]:
 
 class JsonDataSource(DataSourcePlugin):
     def __init__(self):
+        self._initialize_graph()
+
+    def _initialize_graph(self):
         self.nodes: dict[str, Node] = {}
         self.edges: set[tuple[str, str]] = set()
         self.id_index: dict[str, str] = {}
@@ -33,8 +36,18 @@ class JsonDataSource(DataSourcePlugin):
     def identifier(self) -> str:
         return "JsonDataSource"
 
+    def get_parameters(self) -> List[DataSourceParameter]:
+        return [
+            DataSourceParameter(
+                'file_path',
+                str,
+                'File path'
+            )
+        ]
+
     def load(self, **kwargs) -> Graph:
         """Load JSON data, parse nodes and edges into a Graph."""
+        self._initialize_graph()
         file_path = kwargs["file_path"]
         with open(file_path, "r", encoding="utf-8") as f:
             data = json.load(f)
