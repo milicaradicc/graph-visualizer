@@ -1,4 +1,3 @@
-// Enhanced Visualizer switching functionality with on-demand loading
 class VisualizerSwitcher {
     constructor() {
         this.selectElement = document.getElementById('visualizer-select');
@@ -26,34 +25,6 @@ class VisualizerSwitcher {
             const selectedVisualizer = e.target.value;
             this.switchToVisualizer(selectedVisualizer);
         });
-
-        console.log(`Initialized with visualizer: ${this.currentVisualizer}`);
-    }
-
-    showLoading() {
-        if (this.loadingIndicator) {
-            this.loadingIndicator.style.display = 'block';
-        }
-    }
-
-    hideLoading() {
-        if (this.loadingIndicator) {
-            this.loadingIndicator.style.display = 'none';
-        }
-    }
-
-    showError(message) {
-        if (this.errorMessage) {
-            this.errorMessage.textContent = message;
-            this.errorMessage.style.display = 'block';
-        }
-        console.error('Visualizer error:', message);
-    }
-
-    hideError() {
-        if (this.errorMessage) {
-            this.errorMessage.style.display = 'none';
-        }
     }
 
     async switchToVisualizer(pluginId) {
@@ -62,21 +33,15 @@ class VisualizerSwitcher {
             return;
         }
 
-        this.hideError();
-
         try {
             // Check if visualizer is already loaded
             if (this.loadedVisualizers.has(pluginId)) {
                 // Just show the existing visualizer
-                console.log(`Switching to already loaded visualizer: ${pluginId}`);
                 this.showVisualizer(pluginId, false);
                 return;
             }
 
             // Load the visualizer via AJAX
-            console.log(`Loading new visualizer: ${pluginId}`);
-            this.showLoading();
-
             const response = await fetch(`/get_visualizer_html/${pluginId}/`);
 
             if (!response.ok) {
@@ -94,20 +59,15 @@ class VisualizerSwitcher {
             this.loadedVisualizers.add(pluginId);
             this.showVisualizer(pluginId, true);
 
-            console.log(`Successfully loaded and switched to: ${pluginId}`);
-
         } catch (error) {
-            this.showError(`Failed to load visualizer: ${error.message}`);
-
             // Revert select to previous value
             this.selectElement.value = this.currentVisualizer;
-        } finally {
-            this.hideLoading();
         }
     }
 
     createVisualizerContainer(pluginId, htmlContent) {
         // Create new container div
+        console.log(pluginId)
         const container = document.createElement('div');
         container.id = `visualizer-${pluginId}`;
         container.setAttribute('data-plugin-id', pluginId);
@@ -116,13 +76,9 @@ class VisualizerSwitcher {
 
         // Add to content container
         this.contentContainer.appendChild(container);
-
-        console.log(`Created container for visualizer: ${pluginId}`);
     }
 
     showVisualizer(pluginId, isNewlyLoaded = false) {
-        console.log(`Showing visualizer: ${pluginId}, newly loaded: ${isNewlyLoaded}`);
-
         // Hide all visualizers
         const allVisualizers = this.contentContainer.querySelectorAll('[data-plugin-id]');
         allVisualizers.forEach((viz) => {
@@ -145,16 +101,12 @@ class VisualizerSwitcher {
                 // For existing visualizers, trigger refresh
                 this.refreshVisualizer(visualizerElement, pluginId);
             }
-
-            console.log(`Successfully showed visualizer: ${pluginId}`);
-        } else {
-            this.showError(`Visualizer container not found: ${pluginId}`);
         }
+
+
     }
 
     initializeNewVisualizer(container, pluginId) {
-        console.log(`Initializing new visualizer: ${pluginId}`);
-
         // Execute any scripts in the newly loaded content
         const scripts = container.querySelectorAll('script');
         scripts.forEach((oldScript, index) => {
@@ -174,8 +126,6 @@ class VisualizerSwitcher {
     }
 
     refreshVisualizer(container, pluginId) {
-        console.log(`Refreshing visualizer: ${pluginId}`);
-
         // Check for specific visualizer refresh methods
         if (pluginId.includes('simple') && window.simpleVisualizerAPI) {
             window.simpleVisualizerAPI.restart();
@@ -208,7 +158,6 @@ class VisualizerSwitcher {
     // Public method to preload a visualizer
     async preloadVisualizer(pluginId) {
         if (!this.loadedVisualizers.has(pluginId)) {
-            console.log(`Preloading visualizer: ${pluginId}`);
             await this.switchToVisualizer(pluginId);
         }
     }
@@ -222,8 +171,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Make it globally available
     window.visualizerSwitcher = visualizerSwitcher;
-
-    console.log('VisualizerSwitcher initialized and available globally');
 });
 
 // Enhanced graph interaction manager integration

@@ -55,17 +55,6 @@ const nodes = {{ nodes | tojson }};
 const links = {{ edges | tojson }};
 const isDirected = {{ directed | tojson }};
 
-function calculateNodeRadius(text) {
-    const charWidth = 6;
-    const padding = 10;
-    const minRadius = 20;
-    const maxRadius = 60;
-    if (!text) return minRadius;
-    const textWidth = text.length * charWidth;
-    const requiredRadius = Math.max(textWidth / 2 + padding, minRadius);
-    return Math.min(requiredRadius, maxRadius);
-}
-
 function createSimpleVisualization() {
     const containerElement = document.querySelector("#simple_visualizer").parentNode;
     const width = Math.max(containerElement.clientWidth || 800, 400);
@@ -158,12 +147,12 @@ function createSimpleVisualization() {
         .style("font-size", "8px")
         .text(d => d.id);
 
-    // Setup force simulation
+    // Setup improved force simulation
     const simulation = d3.forceSimulation(nodeData)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(50))
-        .force("charge", d3.forceManyBody().strength(-100))
+        .force("link", d3.forceLink(links).id(d => d.id).distance(manyNodes ? 50 : 100))
+        .force("charge", d3.forceManyBody().strength(manyNodes ? -50 : -200))
         .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.radius + 30));
+        .force("collision", d3.forceCollide().radius(d => d.radius + 10));
 
     // Wait for interaction manager and then register simulation
     function registerInteractions() {
@@ -178,8 +167,37 @@ function createSimpleVisualization() {
 
             // Apply zoom behavior from interaction manager
             const zoomBehavior = window.graphInteractionManager.createZoomBehavior(svg, container, labels);
+            if (zoomBehavior) {
+                svg.call(zoomBehavior);
+            }
         } else {
-            setTimeout(registerInteractions, 100);
+            // Fallback behaviors when interaction manager is not available
+            const drag = d3.drag()
+                .on("start", function(event, d) {
+                    if (!event.active) simulation.alphaTarget(0.3).restart();
+                    d.fx = d.x;
+                    d.fy = d.y;
+                })
+                .on("drag", function(event, d) {
+                    d.fx = event.x;
+                    d.fy = event.y;
+                })
+                .on("end", function(event, d) {
+                    if (!event.active) simulation.alphaTarget(0);
+                    d.fx = null;
+                    d.fy = null;
+                });
+
+            node.call(drag);
+
+            // Add zoom behavior
+            const zoom = d3.zoom()
+                .scaleExtent([0.1, 4])
+                .on("zoom", function(event) {
+                    container.attr("transform", event.transform);
+                });
+
+            svg.call(zoom);
         }
     }
 
@@ -230,13 +248,10 @@ function createSimpleVisualization() {
 
     return {
         simulation,
-        svg,
-        container,
         nodeData,
-        links: link,
         nodes: node,
-        labels,
-        instanceId: INSTANCE_ID
+        links: link,
+        labels
     };
 }
 
@@ -285,6 +300,7 @@ if (!window.simpleVisualizerAPI.restart) {
         });
     };
 }
+
 // Initialize visualization when DOM is ready
 function initializeVisualization() {
     if (nodes && nodes.length > 0) {
@@ -293,6 +309,12 @@ function initializeVisualization() {
             window.simpleVisualizerAPI[INSTANCE_ID].instance = instance;
         } catch (error) {
             console.error('Error creating simple visualization:', error);
+            d3.select("#simple_visualizer")
+                .append("text")
+                .attr("x", 50)
+                .attr("y", 50)
+                .attr("fill", "red")
+                .text("Error creating visualization: " + error.message);
         }
     } else {
         d3.select("#simple_visualizer")
@@ -313,11 +335,12 @@ if (document.readyState === 'loading') {
 
 // Handle window resize
 window.addEventListener('resize', function() {
-    if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.instance) {
+    if (window.simpleVisualizerAPI && window.simpleVisualizerAPI[INSTANCE_ID] && window.simpleVisualizerAPI[INSTANCE_ID].instance) {
         // Restart simulation on resize to recalculate forces
         setTimeout(() => {
-            window.simpleVisualizerAPI.restart();
+            window.simpleVisualizerAPI[INSTANCE_ID].restart();
         }, 100);
     }
 });
+
 </script>
