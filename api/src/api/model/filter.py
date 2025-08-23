@@ -26,23 +26,31 @@ class Filter:
             return False
         attr_value = node.data[self._attribute]
 
-        # Allow for comparisons between same types or between numeric types
-        if not isinstance(attr_value, (type(self._value), int, float)) or \
-           (isinstance(attr_value, (int, float)) and not isinstance(self._value, (int, float))):
+        try:
+            if isinstance(attr_value, datetime):
+                compare_value = datetime.strptime(self._value, "%Y-%m-%d")
+                if attr_value.tzinfo is not None and compare_value.tzinfo is None:
+                    compare_value = compare_value.replace(tzinfo=attr_value.tzinfo)
+            else:
+                if isinstance(self._value, str):
+                    compare_value = type(attr_value)(self._value.strip())
+                else:
+                    compare_value = type(attr_value)(self._value)
+        except (ValueError, TypeError):
             raise ValueError(f"Cannot compare values of types: {type(attr_value)} and {type(self._value)}")
 
         if self._operator == FilterOperator.EQUAL:
-            return attr_value == self._value
+            return attr_value == compare_value
         elif self._operator == FilterOperator.NOT_EQUAL:
-            return attr_value != self._value
+            return attr_value != compare_value
         elif self._operator == FilterOperator.GREATER_THAN:
-            return attr_value > self._value
+            return attr_value > compare_value
         elif self._operator == FilterOperator.GREATER_THAN_OR_EQUAL:
-            return attr_value >= self._value
+            return attr_value >= compare_value
         elif self._operator == FilterOperator.LESS_THAN:
-            return attr_value < self._value
+            return attr_value < compare_value
         elif self._operator == FilterOperator.LESS_THAN_OR_EQUAL:
-            return attr_value <= self._value
+            return attr_value <= compare_value
         else:
             raise ValueError(f"Unsupported operator: {self._operator}")
 
