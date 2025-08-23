@@ -9,4 +9,6 @@ urlpatterns = [
     path("workspace/add/", views.add_workspace, name="add_workspace"),
     path("workspace/set/", views.set_workspace, name="set_workspace"),
     path("workspace/edit/", views.edit_workspace, name="edit_workspace"),
+    path('search/', views.add_search, name='add_search'),
+    path('remove-search/', views.remove_search, name='remove_search'),
 ]

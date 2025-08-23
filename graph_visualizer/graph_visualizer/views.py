@@ -1,10 +1,11 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from core.use_cases import WorkspaceService, PluginService
 from django.apps import apps
-from django.shortcuts import redirect
 from django.contrib import messages
-from .apps import datasource_group,visualizer_group
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+
+from core.use_cases import WorkspaceService, PluginService
+from .apps import datasource_group, visualizer_group
 from .util import serialize_to_json
 
 
@@ -12,7 +13,8 @@ def index(request):
     plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
     datasource_plugins = plugin_service.plugins[datasource_group]
     workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
-    graph = workspace_service.get_current_workspace().graph
+    workspace = workspace_service.get_current_workspace()
+    graph = workspace.graph
     visualizer_plugins = plugin_service.plugins[visualizer_group]
 
     graph_json = 'null'
@@ -23,9 +25,10 @@ def index(request):
         'title': 'Index',
         'datasource_plugins': datasource_plugins,
         'workspaces': workspace_service.get_workspaces(),
-        'current_workspace': workspace_service.get_current_workspace(),
+        'current_workspace': workspace,
         'graph_html': '' if graph is None else visualizer_plugins[0].visualize(graph),
         'graph_json': graph_json,
+        'active_searches': [search.to_dict() for search in workspace.searches],
     })
 
 def get_plugin_params(request, plugin_identifier):
@@ -148,3 +151,37 @@ def set_workspace(request):
 
     return redirect("index")
 
+def add_search(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    query = request.POST.get("query").strip()
+    print(f"Query: '{query}'")
+    if not query:
+        messages.error(request, "Search query cannot be empty")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    current_workspace.add_search(query)
+    messages.success(request, f"Search '{query}' added successfully")
+
+    return redirect("index")
+
+def remove_search(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    search_id = request.POST.get("search_id")
+    if not search_id:
+        messages.error(request, "No search specified")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    current_workspace.remove_search(int(search_id))
+    messages.success(request, "Search removed successfully")
+
+    return redirect("index")
