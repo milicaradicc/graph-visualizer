@@ -1,0 +1,46 @@
+<div class="filter-bar">
+    <div>
+        <form method="post" action="{% url 'add_search' %}" class="filter-form" style="display:inline-flex; gap:0.5rem;">
+            {% csrf_token %}
+            <input type="text" name="query" class="filter-input" placeholder="Add search..." required>
+            <button type="submit" class="filter-btn" title="Add search">+</button>
+        </form>
+        <form method="post" action="{% url 'add_filter' %}" class="filter-form" style="display:inline-flex; gap:0.5rem; margin-left:1rem;">
+            {% csrf_token %}
+            <input type="text" name="attribute" class="filter-input" placeholder="Attribute" required>
+            <select name="operator" class="filter-select" required>
+                {% for op in filter_operators %}
+                <option value="{{ op.value }}">{{ op.value }}</option>
+                {% endfor %}
+            </select>
+            <input type="text" name="value" class="filter-input" placeholder="Value" required>
+            <button type="submit" class="filter-btn" title="Add filter">+</button>
+        </form>
+    </div>
+
+    <div style="margin-top:1rem;">
+        {% for search in active_searches %}
+        <span class="filter-bean">
+            "{{ search.query }}"
+            <form method="post" action="{% url 'remove_search' %}" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="search_id" value="{{ search.id }}">
+                <button type="submit" class="filter-bean-x" title="Remove search">&times;</button>
+            </form>
+        </span>
+        {% endfor %}
+        {% for filter in active_filters %}
+        <span class="filter-bean">
+            {{ filter.attribute }} {{ filter.operator.name }} {{ filter.value }}
+            <form method="post" action="{% url 'remove_filter' %}" style="display:inline;">
+                {% csrf_token %}
+                <input type="hidden" name="filter_id" value="{{ filter.id }}">
+                <button type="submit" class="filter-bean-x" title="Remove filter">&times;</button>
+            </form>
+        </span>
+        {% endfor %}
+        {% if not active_filters and not active_searches %}
+        <span style="color:#888;">No filters or searches applied.</span>
+        {% endif %}
+    </div>
+</div>
