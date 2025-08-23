@@ -14,8 +14,14 @@ def index(request):
     datasource_plugins = plugin_service.plugins[datasource_group]
     workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
     workspace = workspace_service.get_current_workspace()
-    graph = workspace.graph
     visualizer_plugins = plugin_service.plugins[visualizer_group]
+
+    try:
+        graph = workspace.graph
+    except ValueError as e:
+        messages.error(request, str(e))
+        graph = None
+
 
     graph_json = 'null'
     if graph is not None:
