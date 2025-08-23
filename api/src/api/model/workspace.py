@@ -22,23 +22,30 @@ class Workspace(object):
     @property
     def graph(self) -> Graph:
         """
-        Returns a subgraph of the current graph filtered by the workspace's filters.
+        Returns a subgraph of the current graph filtered by the workspace's filters and searches.
         """
-        if not self._filters:
-            return self._graph
+        nodes = self._graph.nodes
 
-        filtered_nodes = [
-            node for node in self._graph.nodes
-            if all(filter_obj(node) for filter_obj in self._filters)
-        ]
-        filtered_node_ids = {node.id for node in filtered_nodes}
+        if self._filters:
+            nodes = [
+                node for node in nodes
+                if all(filter_obj(node) for filter_obj in self._filters)
+            ]
+
+        if self._searches:
+            nodes = [
+                node for node in nodes
+                if any(search_obj(node) for search_obj in self._searches)
+            ]
+
+        filtered_node_ids = {node.id for node in nodes}
 
         filtered_edges = [
             edge for edge in self._graph.edges
             if edge.src.id in filtered_node_ids and edge.dest.id in filtered_node_ids
         ]
 
-        return Graph(filtered_nodes, filtered_edges, self._graph.directed)
+        return Graph(nodes, filtered_edges, self._graph.directed)
 
     @graph.setter
     def graph(self, value: Graph):
@@ -74,3 +81,10 @@ class Workspace(object):
 
     def remove_filter(self, filter_id):
         self._filters = [f for f in self._filters if f.id != filter_id]
+
+    def add_search(self, query: str):
+        from . import Search
+        self._searches.append(Search(query))
+
+    def remove_search(self, search_id):
+        self._searches = [s for s in self._searches if s.id != search_id]
