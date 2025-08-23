@@ -48,3 +48,11 @@ class Filter:
 
     def __str__(self):
         return f"{self._attribute} {self._operator.name} {self._value}"
+
+    def to_dict(self):
+        return {
+            "id": self._id,
+            "attribute": self._attribute,
+            "operator": self._operator.value,
+            "value": self._value.isoformat() if isinstance(self._value, datetime) else self._value
+        }

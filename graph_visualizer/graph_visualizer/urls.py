@@ -11,4 +11,6 @@ urlpatterns = [
     path("workspace/edit/", views.edit_workspace, name="edit_workspace"),
     path('search/', views.add_search, name='add_search'),
     path('remove-search/', views.remove_search, name='remove_search'),
+    path('filter/', views.add_filter, name='add_filter'),
+    path('remove-filter/', views.remove_filter, name='remove_filter'),
 ]

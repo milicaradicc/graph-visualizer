@@ -24,6 +24,9 @@ class Workspace(object):
         """
         Returns a subgraph of the current graph filtered by the workspace's filters and searches.
         """
+        if not self._graph:
+            return None
+
         nodes = self._graph.nodes
 
         if self._filters:

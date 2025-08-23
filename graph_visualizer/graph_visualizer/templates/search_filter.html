@@ -31,7 +31,7 @@
         {% endfor %}
         {% for filter in active_filters %}
         <span class="filter-bean">
-            {{ filter.attribute }} {{ filter.operator.name }} {{ filter.value }}
+            {{ filter.attribute }} {{ filter.operator }} {{ filter.value }}
             <form method="post" action="{% url 'remove_filter' %}" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="filter_id" value="{{ filter.id }}">

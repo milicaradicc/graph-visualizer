@@ -28,7 +28,9 @@ def index(request):
         'current_workspace': workspace,
         'graph_html': '' if graph is None else visualizer_plugins[0].visualize(graph),
         'graph_json': graph_json,
+        'filter_operators': WorkspaceService.get_filter_operators(),
         'active_searches': [search.to_dict() for search in workspace.searches],
+        'active_filters': [f.to_dict() for f in workspace.filters],
     })
 
 def get_plugin_params(request, plugin_identifier):
@@ -183,5 +185,45 @@ def remove_search(request):
     current_workspace = workspace_service.get_current_workspace()
     current_workspace.remove_search(int(search_id))
     messages.success(request, "Search removed successfully")
+
+    return redirect("index")
+
+def add_filter(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    attribute = request.POST.get("attribute").strip()
+    operator = request.POST.get("operator")
+    value = request.POST.get("value").strip()
+
+    if not attribute or not operator or not value:
+        messages.error(request, "All filter fields are required")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    try:
+        current_workspace.add_filter(attribute, operator, value)
+        messages.success(request, f"Filter on '{attribute} {operator} {value}' added successfully")
+    except ValueError as e:
+        messages.error(request, e)
+
+    return redirect("index")
+
+def remove_filter(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    filter_id = request.POST.get("filter_id")
+    if not filter_id:
+        messages.error(request, "No filter specified")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    current_workspace.remove_filter(int(filter_id))
+    messages.success(request, "Filter removed successfully")
 
     return redirect("index")
