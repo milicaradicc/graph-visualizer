@@ -20,8 +20,8 @@
 
     <div style="margin-top:1rem;">
         {% for search in active_searches %}
-        <span class="filter-bean">
-            "{{ search.query }}"
+        <span class="filter-bean search-pill">
+            {{ search.query }}
             <form method="post" action="{% url 'remove_search' %}" style="display:inline;">
                 {% csrf_token %}
                 <input type="hidden" name="search_id" value="{{ search.id }}">
@@ -30,7 +30,7 @@
         </span>
         {% endfor %}
         {% for filter in active_filters %}
-        <span class="filter-bean">
+        <span class="filter-bean filter-pill">
             {{ filter.attribute }} {{ filter.operator }} {{ filter.value }}
             <form method="post" action="{% url 'remove_filter' %}" style="display:inline;">
                 {% csrf_token %}

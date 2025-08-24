@@ -165,7 +165,6 @@ def add_search(request):
         return redirect("index")
 
     query = request.POST.get("query").strip()
-    print(f"Query: '{query}'")
     if not query:
         messages.error(request, "Search query cannot be empty")
         return redirect("index")
