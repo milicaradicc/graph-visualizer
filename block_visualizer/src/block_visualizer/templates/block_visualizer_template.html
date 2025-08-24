@@ -21,8 +21,7 @@
 </div>
 
 <script>
-const BLOCK_INSTANCE_ID = 'block_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-const graphData = {
+let graphData = {
      nodes: {{ nodes | tojson | safe }},
      edges: {{ edges | tojson | safe }},
      directed: {{ directed | tojson }}
@@ -184,7 +183,7 @@ function renderBlockGraph(data) {
     setTimeout(registerInteractions, 50);
 
     // add arrow marker only if directed
-    const markerId = `arrow_${BLOCK_INSTANCE_ID}`;
+    const markerId = `arrow`;
     if (data.directed) {
         svg.append("defs").append("marker")
             .attr("id", markerId)
@@ -320,17 +319,15 @@ function renderBlockGraph(data) {
         nodeData: data.nodes,
         links: link,
         nodes: node,
-        instanceId: BLOCK_INSTANCE_ID
     };
 }
 
 // API setup
 window.blockVisualizerAPI = window.blockVisualizerAPI || {};
-window.blockVisualizerAPI[BLOCK_INSTANCE_ID] = {
+window.blockVisualizerAPI = {
     instance: null,
 
     restart: function() {
-        console.log('Restarting block visualizer:', BLOCK_INSTANCE_ID);
         if (this.instance && this.instance.simulation) {
             this.instance.simulation.restart();
         }
@@ -388,8 +385,7 @@ function initializeBlockGraph() {
     try {
         const instance = renderBlockGraph(graphData);
         if (instance) {
-            window.blockVisualizerAPI[BLOCK_INSTANCE_ID].instance = instance;
-            console.log('Block visualization created successfully with ID:', BLOCK_INSTANCE_ID);
+            window.blockVisualizerAPI.instance = instance;
         } else {
             console.error('Failed to create block visualization instance');
         }
@@ -415,9 +411,9 @@ if (document.readyState === 'loading') {
 
 // Handle window resize
 window.addEventListener('resize', function() {
-    if (window.blockVisualizerAPI && window.blockVisualizerAPI[BLOCK_INSTANCE_ID] && window.blockVisualizerAPI[BLOCK_INSTANCE_ID].instance) {
+    if (window.blockVisualizerAPI && window.blockVisualizerAPI && window.blockVisualizerAPI.instance) {
         setTimeout(() => {
-            window.blockVisualizerAPI[BLOCK_INSTANCE_ID].restart();
+            window.blockVisualizerAPI.restart();
         }, 100);
     }
 });

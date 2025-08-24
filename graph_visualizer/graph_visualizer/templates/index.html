@@ -52,11 +52,9 @@
 
             <div id="bird-view" class="graph-view">
             <h3>Bird View</h3>
-            {% if bird_html %}
-                {{ bird_html | safe }}
-            {% else %}
+            <div class="view-content">
                 <svg id="bird-svg"></svg>
-            {% endif %}
+            </div>
         </div>
         </div>
         <div class="right-view">

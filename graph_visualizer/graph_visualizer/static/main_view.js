@@ -1,260 +1,98 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const svg = d3.select("svg[id^='svg-']");
+    console.log("Main view DOM loaded");
 
-  const nodeElements = svg.selectAll("g.node[enabled='true']").nodes();
-  const linkElements = svg.selectAll("path.link[enabled='true']").nodes();
+    const svg = d3.select("svg");
 
-  const nodes = nodeElements.map((elem) => {
-    const data = elem.__data__;
-    const radius = 34; // Default radius from your template
-    return {
-      id: elem.id,
-      radius: radius,
-      ...data,
-    };
-  });
+    // Early exit if no SVG found
+    if (svg.empty()) {
+        console.warn("No SVG element found in main view");
+        return;
+    }
 
-  const links = linkElements.map((elem) => {
-    const data = elem.__data__;
-    return {
-      ...data,
-      source: nodes.find((n) => n.id === elem.__data__.source.id),
-      target: nodes.find((n) => n.id === elem.__data__.target.id),
-    };
-  });
+    const nodeElements = svg.selectAll("g.node[enabled='true']").nodes();
+    const linkElements = svg.selectAll("path.link[enabled='true']").nodes();
 
-  // Get SVG dimensions
-  const svgNode = svg.node();
-  const width = svgNode.clientWidth || 1000;
-  const height = svgNode.clientHeight || 800;
+    // Only proceed if we have pre-existing nodes and links (not for simple visualizer)
+    if (nodeElements.length === 0 && linkElements.length === 0) {
+        console.log("No traditional graph elements found - checking for simple visualizer");
 
-  // Setup force simulation with improved parameters
-  const simulation = d3
-    .forceSimulation(nodes)
-    .force("link", d3.forceLink(links).id(d => d.id).distance(150))
-    .force("charge", d3.forceManyBody().strength(-300))
-    .force("center", d3.forceCenter(width / 2, height / 2))
-    .force("collision", d3.forceCollide().radius(d => (d.radius || 34) + 30))
-    .force("gravity", d3.forceManyBody().strength(-100))
-    .on("tick", tick);
-
-  function tick() {
-    // Update curved link paths for bidirectional links
-    svg
-      .selectAll("path.link")
-      .data(links)
-      .attr("d", function (d) {
-        const reverse = links.find(
-          (l) => l.source.id === d.target.id && l.target.id === d.source.id
-        );
-
-        if (reverse && reverse !== d) {
-          const offset = 20;
-          const dx = d.target.x - d.source.x;
-          const dy = d.target.y - d.source.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist === 0) return `M${d.source.x},${d.source.y}`;
-
-          const nx = -dy / dist;
-          const ny = dx / dist;
-
-          const mx = (d.source.x + d.target.x) / 2 + nx * offset;
-          const my = (d.source.y + d.target.y) / 2 + ny * offset;
-
-          return `M${d.source.x},${d.source.y} Q${mx},${my} ${d.target.x},${d.target.y}`;
-        } else {
-          return `M${d.source.x},${d.source.y} L${d.target.x},${d.target.y}`;
+        // Check if interactions are already enabled to prevent double initialization
+        if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.interactiveInstance) {
+            console.log("Simple visualizer interactions already enabled - skipping");
+            return;
         }
-      });
 
-    // Update node positions with boundary constraints
-    svg
-      .selectAll("g.node")
-      .data(nodes)
-      .attr("transform", (d) => {
-        // Constrain nodes to stay within SVG boundaries
-        d.x = Math.max(d.radius || 34, Math.min(width - (d.radius || 34), d.x));
-        d.y = Math.max(d.radius || 34, Math.min(height - (d.radius || 34), d.y));
-        return `translate(${d.x},${d.y})`;
-      });
-  }
+        // Optimized simple visualizer detection with single timeout
+        const checkForSimpleVisualizer = () => {
+            if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.instance) {
+                // Double-check that interactions aren't already added
+                if (window.simpleVisualizerAPI.interactiveInstance) {
+                    console.log("Interactions already exist - skipping duplicate initialization");
+                    return;
+                }
 
-  // Wait for interaction manager and then register simulation
-  function registerInteractions() {
-    if (window.graphInteractionManager) {
-      window.graphInteractionManager.setActiveSimulation(simulation);
+                console.log("Simple visualizer detected - adding interactions from main_view");
 
-      // Apply drag behavior from interaction manager
-      const dragBehavior = window.graphInteractionManager.createDragBehavior(simulation);
-      if (dragBehavior) {
-        d3.selectAll("g.node[drag='true']").call(dragBehavior);
-      } else {
-        // Fallback to original drag behavior
-        d3.selectAll("g.node[drag='true']").call(
-          d3
-            .drag()
-            .on("start", (event, d) => {
-              if (!event.active) simulation.alphaTarget(0.3).restart();
-              d.fx = d.x;
-              d.fy = d.y;
-            })
-            .on("drag", (event, d) => {
-              d.fx = event.x;
-              d.fy = event.y;
-            })
-            .on("end", (event, d) => {
-              if (!event.active) simulation.alphaTarget(0);
-              d.fx = null;
-              d.fy = null;
-            })
-        );
-      }
+                const mainView = document.getElementById('main-view');
+                const visualizerContent = document.getElementById('visualizer-content');
+                const simpleVisualizerSvg = document.getElementById('simple_visualizer');
 
-      // Apply zoom behavior from interaction manager
-      const g = d3.select("svg[zoom='true'] g");
-      const zoomBehavior = window.graphInteractionManager.createZoomBehavior(svg, g);
-      if (zoomBehavior) {
-        d3.selectAll("svg[zoom='true']").call(zoomBehavior);
-      }
-    } else {
-      // Fallback to original behaviors if interaction manager not available
-      d3.selectAll("g.node[drag='true']").call(
-        d3
-          .drag()
-          .on("start", (event, d) => {
-            if (!event.active) simulation.alphaTarget(0.3).restart();
-            d.fx = d.x;
-            d.fy = d.y;
-          })
-          .on("drag", (event, d) => {
-            d.fx = event.x;
-            d.fy = event.y;
-          })
-          .on("end", (event, d) => {
-            if (!event.active) simulation.alphaTarget(0);
-            d.fx = null;
-            d.fy = null;
-          })
-      );
+                if (mainView && visualizerContent && simpleVisualizerSvg &&
+                    mainView.contains(simpleVisualizerSvg) && window.graphInteractionManager) {
 
-      var g = d3.select("svg[zoom='true'] g");
-      const handleZoom = (e) => g.attr("transform", e.transform);
-      const zoom = d3.zoom().on("zoom", handleZoom);
-      d3.selectAll("svg[zoom='true']").call(zoom);
+                    console.log("Enabling simple visualizer interactions from main_view");
+
+                    const interactiveInstance = window.graphInteractionManager
+                        .enableSimpleVisualizerInteractions(window.simpleVisualizerAPI.instance, true, true);
+
+                    if (interactiveInstance) {
+                        console.log("Interactive instance created successfully from main_view");
+                        window.simpleVisualizerAPI.interactiveInstance = interactiveInstance;
+                    } else {
+                        console.warn("Failed to create interactive instance from main_view");
+                    }
+                } else {
+                    console.log("Simple visualizer not in main view or required elements missing");
+                }
+            } else {
+                console.log("Simple visualizer API not ready yet - will retry");
+
+                // Retry once more after a longer delay if first attempt fails
+                setTimeout(checkForSimpleVisualizer, 200);
+            }
+        };
+
+        // Single timeout instead of immediate execution
+        setTimeout(checkForSimpleVisualizer, 150);
+        return;
     }
-  }
 
-  // Register interactions after a brief delay
-  setTimeout(registerInteractions, 50);
+    console.log(`Found ${nodeElements.length} nodes and ${linkElements.length} links`);
 
-  // Node click focus functionality
-  d3.selectAll("g.node[click-focus='true']").on("click", function (event, d) {
-    dispatchNodeFocusEvent(d.id);
-    handleNodeFocus(d.id);
-  });
+    // Traditional graph processing would go here if needed
+    // (The commented-out code from original would be here)
 
-  function handleNodeFocus(nodeId) {
-    d3.selectAll(".active-node")
-      .selectAll("*:not(text)")
-      .style("stroke", "#04446fff")
-      .style("stroke-width", "1.5px");
-    d3.selectAll(".active-node").classed("active-node", false);
+    // Optimized resize handler - debounced
+    let resizeTimeout;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimeout);
+        resizeTimeout = setTimeout(() => {
+            console.log("Handling resize event");
 
-    const g = d3.select("svg[zoom='true'] g");
-    const focusedNode = g.selectAll(".node").filter((d) => d.id === nodeId);
-    focusedNode.classed("active-node", true);
-    focusedNode
-      .selectAll("*:not(text)")
-      .style("stroke", "#04446fff")
-      .style("stroke-width", "4px");
-    focusedNode.select("text").style("fill", "#04446fff");
+            const svgNode = svg.node();
+            if (!svgNode) return;
 
-    if (!focusedNode.empty()) {
-      const svg = d3.select("svg[zoom='true']");
-      const svgNode = svg.node();
-      const transform = d3.zoomTransform(svgNode);
+            const newWidth = svgNode.clientWidth || 1000;
+            const newHeight = svgNode.clientHeight || 800;
 
-      const svgWidth = svgNode.clientWidth;
-      const svgHeight = svgNode.clientHeight;
-
-      const nodeDatum = focusedNode.datum();
-      const targetX = nodeDatum.x;
-      const targetY = nodeDatum.y;
-
-      const newTransform = d3.zoomIdentity
-        .translate(
-          svgWidth / 2 - targetX * transform.k,
-          svgHeight / 2 - targetY * transform.k
-        )
-        .scale(transform.k);
-
-      const zoom = d3.zoom();
-      svg.transition().duration(750).call(zoom.transform, newTransform);
-    }
-  }
-
-  // Tooltip functionality
-  const tooltip = d3
-    .select("body")
-    .append("div")
-    .attr("class", "tooltip")
-    .style("position", "absolute")
-    .style("padding", "6px")
-    .style("background", "rgba(0,0,0,0.7)")
-    .style("color", "white")
-    .style("border-radius", "4px")
-    .style("pointer-events", "none")
-    .style("opacity", 0);
-
-  d3.selectAll("g.node[tooltip='true']")
-    .on("mouseover", (event, d) => {
-      tooltip.transition().duration(200).style("opacity", 0.9);
-
-      let formattedData = "N/A";
-      if (d.data && typeof d.data === "object") {
-        formattedData = Object.entries(d.data)
-          .map(([key, value]) => `${key}: ${value}`)
-          .join("<br/>");
-      }
-      tooltip
-        .html(
-          `
-                    ${d.id}<br/>
-                    ${formattedData}
-                `
-        )
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY + 10 + "px");
-    })
-    .on("mousemove", (event) => {
-      tooltip
-        .style("left", event.pageX + 10 + "px")
-        .style("top", event.pageY + 10 + "px");
-    })
-    .on("mouseout", () => {
-      tooltip.transition().duration(500).style("opacity", 0);
+            // Update any active simulations
+            if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.interactiveInstance) {
+                const { simulation } = window.simpleVisualizerAPI.interactiveInstance;
+                if (simulation) {
+                    simulation.force("center", d3.forceCenter(newWidth / 2, newHeight / 2));
+                    simulation.alpha(0.3).restart();
+                }
+            }
+        }, 150); // Debounce resize events
     });
-
-  // External event listener for node focus
-  document.addEventListener("node-focus", (e) => {
-    const nodeId = e.detail;
-    handleNodeFocus(nodeId);
-  });
-
-  // Helper function to dispatch node focus events
-  function dispatchNodeFocusEvent(nodeId) {
-    const event = new CustomEvent("node-focus", { detail: nodeId });
-    document.dispatchEvent(event);
-  }
-
-  // Handle window resize
-  window.addEventListener('resize', function() {
-    const newWidth = svgNode.clientWidth || 1000;
-    const newHeight = svgNode.clientHeight || 800;
-
-    // Update center force
-    simulation.force("center", d3.forceCenter(newWidth / 2, newHeight / 2));
-    simulation.alpha(0.3).restart();
-  });
 });

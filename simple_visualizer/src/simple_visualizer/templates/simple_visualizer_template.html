@@ -47,15 +47,11 @@
 </div>
 
 <script>
-    // Unique ID for this instance
-const INSTANCE_ID = 'simple_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-
-// Pure visualization logic - no interaction handling
-const nodes = {{ nodes | tojson }};
-const links = {{ edges | tojson }};
-const isDirected = {{ directed | tojson }};
 
 function createSimpleVisualization() {
+    const nodes = {{ nodes | tojson }};
+    const links = {{ edges | tojson }};
+    const isDirected = {{ directed | tojson }};
     const containerElement = document.querySelector("#simple_visualizer").parentNode;
     const width = Math.max(containerElement.clientWidth || 800, 400);
     const height = Math.max(containerElement.clientHeight || 600, 300);
@@ -64,7 +60,15 @@ function createSimpleVisualization() {
 
     const minRadius = manyNodes ? 5 : 15;
     const maxRadius = manyNodes ? 25 : 60;
-
+    if (!nodes && nodes.length == 0) {
+        d3.select("#simple_visualizer")
+            .append("text")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("fill", "red")
+            .text("No graph data to display");
+        return;
+    }
     // Calculate node degrees for sizing
     const degreeMap = {};
     links.forEach(l => {
@@ -81,12 +85,30 @@ function createSimpleVisualization() {
         .range([minRadius, maxRadius]);
 
     // Prepare node data
-    const nodeData = nodes.map(node => {
+    const nodeData = nodes.map((node, i) => {
         const displayText = node.id || 'Unknown';
         const degree = degreeMap[node.id] || 0;
         const radius = scaleRadius(degree);
-        return { ...node, radius, displayText, degree };
-    });
+        // Simple circular layout for static positioning ?????????????????
+        const angle = (i / nodes.length) * 2 * Math.PI;
+        const padding = 60; // Padding from edges
+        const maxRadius = Math.min(width, height) * 0.35; // Use more conservative radius
+        const centerRadius = Math.max(50, maxRadius - maxRadius); // Conservative sizing
+                const x = width / 2 + centerRadius * Math.cos(angle);
+        const y = height / 2 + centerRadius * Math.sin(angle);
+
+        const boundedX = Math.max(radius + padding, Math.min(width - radius - padding, x));
+        const boundedY = Math.max(radius + padding, Math.min(height - radius - padding, y));
+
+        return { ...node, radius, displayText, degree, x: boundedX, y: boundedY };
+        });
+
+    // Prepare link data
+    const linkData = links.map(link => ({
+        ...link,
+        source: nodeData.find(n => n.id === link.source),
+        target: nodeData.find(n => n.id === link.target)
+    })).filter(link => link.source && link.target);
 
     // Setup SVG
     const svg = d3.select("#simple_visualizer")
@@ -113,200 +135,96 @@ function createSimpleVisualization() {
             .attr("class", "arrowhead");
     }
 
-    // Create container for zoom/pan
+    // Create container
     const container = svg.append("g").attr("class", "visualization-container");
 
-    // Create links
-    const link = container.append("g")
+    // Create links with static positions
+
+    const linkSelection = container.append("g")
         .attr("class", "links")
         .selectAll("line")
-        .data(links)
+        .data(linkData)
         .join("line")
-        .attr("class", d => isDirected ? "link directed" : "link");
-
+        .attr("class", d => isDirected ? "link directed" : "link")
+        .attr("x1", d => d.source.x)
+        .attr("y1", d => d.source.y)
+        .attr("x2", d => {
+            if (!isDirected) return d.target.x;
+            const dx = d.target.x - d.source.x;
+            const dy = d.target.y - d.source.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance === 0) return d.target.x;
+            const targetRadius = d.target.radius || 10;
+            return d.target.x - (dx / distance) * (targetRadius + 5);
+        })
+        .attr("y2", d => {
+            if (!isDirected) return d.target.y;
+            const dx = d.target.x - d.source.x;
+            const dy = d.target.y - d.source.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+            if (distance === 0) return d.target.y;
+            const targetRadius = d.target.radius || 10;
+            return d.target.y - (dy / distance) * (targetRadius + 5);
+        });
     // Create nodes
     const nodeGroup = container.append("g")
         .attr("class", "nodes");
 
-    const node = nodeGroup
+    const nodeSelection = nodeGroup
         .selectAll("circle")
         .data(nodeData)
         .join("circle")
         .attr("class", "node")
-        .attr("r", d => d.radius);
+        .attr("r", d => d.radius)
+        .attr("cx", d => d.x)
+        .attr("cy", d => d.y);
 
     // Add tooltips
-    node.append("title").text(d => d.displayText);
+    nodeSelection.append("title").text(d => d.displayText);
 
     // Create labels
-    const labels = nodeGroup.selectAll("text")
+    const labelSelection = nodeGroup.selectAll("text")
         .data(nodeData)
         .join("text")
         .attr("class", "node-label")
         .attr("dy", -3)
         .style("font-size", "8px")
-        .text(d => d.id);
-
-    // Setup improved force simulation
-    const simulation = d3.forceSimulation(nodeData)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(manyNodes ? 50 : 100))
-        .force("charge", d3.forceManyBody().strength(manyNodes ? -50 : -200))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.radius + 10));
-
-    // Wait for interaction manager and then register simulation
-    function registerInteractions() {
-        if (window.graphInteractionManager) {
-            window.graphInteractionManager.setActiveSimulation(simulation);
-
-            // Apply drag behavior from interaction manager
-            const dragBehavior = window.graphInteractionManager.createDragBehavior(simulation);
-            if (dragBehavior) {
-                node.call(dragBehavior);
-            }
-
-            // Apply zoom behavior from interaction manager
-            const zoomBehavior = window.graphInteractionManager.createZoomBehavior(svg, container, labels);
-            if (zoomBehavior) {
-                svg.call(zoomBehavior);
-            }
-        } else {
-            // Fallback behaviors when interaction manager is not available
-            const drag = d3.drag()
-                .on("start", function(event, d) {
-                    if (!event.active) simulation.alphaTarget(0.3).restart();
-                    d.fx = d.x;
-                    d.fy = d.y;
-                })
-                .on("drag", function(event, d) {
-                    d.fx = event.x;
-                    d.fy = event.y;
-                })
-                .on("end", function(event, d) {
-                    if (!event.active) simulation.alphaTarget(0);
-                    d.fx = null;
-                    d.fy = null;
-                });
-
-            node.call(drag);
-
-            // Add zoom behavior
-            const zoom = d3.zoom()
-                .scaleExtent([0.1, 4])
-                .on("zoom", function(event) {
-                    container.attr("transform", event.transform);
-                });
-
-            svg.call(zoom);
-        }
-    }
-
-    // Register interactions after a brief delay
-    setTimeout(registerInteractions, 50);
-
-    // Update positions on simulation tick
-    simulation.on("tick", () => {
-        // Update link positions
-        link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => {
-                if (!isDirected) return d.target.x;
-                const dx = d.target.x - d.source.x;
-                const dy = d.target.y - d.source.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance === 0) return d.target.x;
-                const targetRadius = d.target.radius || 10;
-                return d.target.x - (dx / distance) * (targetRadius + 5);
-            })
-            .attr("y2", d => {
-                if (!isDirected) return d.target.y;
-                const dx = d.target.x - d.source.x;
-                const dy = d.target.y - d.source.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance === 0) return d.target.y;
-                const targetRadius = d.target.radius || 10;
-                return d.target.y - (dy / distance) * (targetRadius + 5);
-            });
-
-        // Update node positions (constrained to boundaries)
-        node
-            .attr("cx", d => {
-                d.x = Math.max(d.radius, Math.min(width - d.radius, d.x));
-                return d.x;
-            })
-            .attr("cy", d => {
-                d.y = Math.max(d.radius, Math.min(height - d.radius, d.y));
-                return d.y;
-            });
-
-        // Update label positions
-        labels
-            .attr("x", d => d.x)
-            .attr("y", d => d.y);
-    });
+        .text(d => d.id)
+        .attr("x", d => d.x)
+        .attr("y", d => d.y);
 
     return {
-        simulation,
+        svg,
+        nodeSelection,
+        linkSelection,
+        labelSelection,
+        container,
         nodeData,
-        nodes: node,
-        links: link,
-        labels
-    };
-}
-
-// Public API for external control
-window.simpleVisualizerAPI = window.simpleVisualizerAPI || {};
-window.simpleVisualizerAPI[INSTANCE_ID] = {
-    instance: null,
-    restart: function() {
-        if (this.instance && this.instance.simulation) {
-            this.instance.simulation.restart();
-        }
-    },
-
-    stop: function() {
-        if (this.instance && this.instance.simulation) {
-            this.instance.simulation.stop();
-        }
-    },
-
-    getNodeData: function() {
-        return this.instance ? this.instance.nodeData : [];
-    },
-
-    highlightNode: function(nodeId) {
-        if (!this.instance) return;
-        this.instance.nodes
-            .style("stroke", d => d.id === nodeId ? "red" : "black")
-            .style("stroke-width", d => d.id === nodeId ? "4px" : "2px");
-    },
-
-    clearHighlights: function() {
-        if (!this.instance) return;
-        this.instance.nodes
-            .style("stroke", "black")
-            .style("stroke-width", "2px");
-    }
-};
-
-// Global simple visualizer API (for backward compatibility)
-if (!window.simpleVisualizerAPI.restart) {
-    window.simpleVisualizerAPI.restart = function() {
-        Object.values(window.simpleVisualizerAPI).forEach(api => {
-            if (api && typeof api.restart === 'function') {
-                api.restart();
-            }
-        });
+        linkData
     };
 }
 
 // Initialize visualization when DOM is ready
 function initializeVisualization() {
-    if (nodes && nodes.length > 0) {
         try {
+            window.simpleVisualizerAPI = window.simpleVisualizerAPI || {};
+
             const instance = createSimpleVisualization();
-            window.simpleVisualizerAPI[INSTANCE_ID].instance = instance;
+            window.simpleVisualizerAPI.instance = instance;
+            // If this is in main view and interaction manager is available, add interactions
+        setTimeout(() => {
+            const mainView = document.getElementById('main-view');
+            const visualizerElement = document.querySelector('#simple_visualizer');
+
+            if (mainView && visualizerElement && mainView.contains(visualizerElement) && window.graphInteractionManager) {
+                const interactiveInstance = window.graphInteractionManager
+                    .enableSimpleVisualizerInteractions(instance, true, true);
+
+                if (interactiveInstance) {
+                    window.simpleVisualizerAPI.interactiveInstance = interactiveInstance;
+                }
+            }
+        }, 50);
         } catch (error) {
             console.error('Error creating simple visualization:', error);
             d3.select("#simple_visualizer")
@@ -316,14 +234,7 @@ function initializeVisualization() {
                 .attr("fill", "red")
                 .text("Error creating visualization: " + error.message);
         }
-    } else {
-        d3.select("#simple_visualizer")
-            .append("text")
-            .attr("x", 50)
-            .attr("y", 50)
-            .attr("fill", "red")
-            .text("No graph data to display");
-    }
+
 }
 
 // Initialize when DOM is ready
@@ -333,14 +244,5 @@ if (document.readyState === 'loading') {
     initializeVisualization();
 }
 
-// Handle window resize
-window.addEventListener('resize', function() {
-    if (window.simpleVisualizerAPI && window.simpleVisualizerAPI[INSTANCE_ID] && window.simpleVisualizerAPI[INSTANCE_ID].instance) {
-        // Restart simulation on resize to recalculate forces
-        setTimeout(() => {
-            window.simpleVisualizerAPI[INSTANCE_ID].restart();
-        }, 100);
-    }
-});
 
 </script>

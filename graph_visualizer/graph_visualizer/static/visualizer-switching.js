@@ -2,8 +2,6 @@ class VisualizerSwitcher {
     constructor() {
         this.selectElement = document.getElementById('visualizer-select');
         this.contentContainer = document.getElementById('visualizer-content');
-        this.loadingIndicator = document.getElementById('loading-indicator');
-        this.errorMessage = document.getElementById('error-message');
         this.currentVisualizer = null;
         this.loadedVisualizers = new Set(); // Track which visualizers are already loaded
 
@@ -11,6 +9,10 @@ class VisualizerSwitcher {
     }
 
     init() {
+        if (!this.selectElement || !this.contentContainer) {
+            console.warn('Required elements not found for visualizer switching');
+            return;
+        }
         // Set initial visualizer
         this.currentVisualizer = this.selectElement.value;
 
@@ -60,6 +62,7 @@ class VisualizerSwitcher {
             this.showVisualizer(pluginId, true);
 
         } catch (error) {
+            console.error('Error loading visualizer:', error);
             // Revert select to previous value
             this.selectElement.value = this.currentVisualizer;
         }
@@ -67,7 +70,6 @@ class VisualizerSwitcher {
 
     createVisualizerContainer(pluginId, htmlContent) {
         // Create new container div
-        console.log(pluginId)
         const container = document.createElement('div');
         container.id = `visualizer-${pluginId}`;
         container.setAttribute('data-plugin-id', pluginId);
@@ -101,6 +103,8 @@ class VisualizerSwitcher {
                 // For existing visualizers, trigger refresh
                 this.refreshVisualizer(visualizerElement, pluginId);
             }
+        }else {
+            console.warn(`Visualizer element not found: visualizer-${pluginId}`);
         }
 
 
@@ -113,8 +117,15 @@ class VisualizerSwitcher {
             const newScript = document.createElement('script');
             if (oldScript.src) {
                 newScript.src = oldScript.src;
+                newScript.onload = () => {
+                    // After script loads, check if it's a simple visualizer that needs interactions
+                    this.checkForInteractions(pluginId);
+                };
             } else {
                 newScript.textContent = oldScript.textContent;
+                setTimeout(() => {
+                    this.checkForInteractions(pluginId);
+                }, 100);
             }
             oldScript.parentNode.replaceChild(newScript, oldScript);
         });
@@ -124,16 +135,23 @@ class VisualizerSwitcher {
             window.dispatchEvent(new Event('resize'));
         }, 100);
     }
+    checkForInteractions(pluginId) {
+        // If this is a simple visualizer in main view, add interactions
+        if (pluginId.includes('simple') && window.simpleVisualizerAPI && window.graphInteractionManager) {
+            const mainView = document.getElementById('main-view');
+            const currentContainer = document.getElementById(`visualizer-${pluginId}`);
 
-    refreshVisualizer(container, pluginId) {
-        // Check for specific visualizer refresh methods
-        if (pluginId.includes('simple') && window.simpleVisualizerAPI) {
-            window.simpleVisualizerAPI.restart();
-        } else if (pluginId.includes('block') && window.blockVisualizerAPI) {
-            window.blockVisualizerAPI.restart();
+            if (mainView && currentContainer && mainView.contains(currentContainer)) {
+                const interactiveInstance = window.graphInteractionManager
+                    .enableSimpleVisualizerInteractions(window.simpleVisualizerAPI.instance, true, true);
+
+                if (interactiveInstance) {
+                    window.simpleVisualizerAPI.interactiveInstance = interactiveInstance;
+                }
+            }
         }
-
-        // Generic refresh - trigger resize event
+    }
+    refreshVisualizer(container, pluginId) {
         setTimeout(() => {
             window.dispatchEvent(new Event('resize'));
         }, 100);
