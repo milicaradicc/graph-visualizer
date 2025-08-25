@@ -61,11 +61,12 @@ function createGraphInteractionManager() {
     }
 
     // Enable interactions for visualizer
-    function enableSimpleVisualizerInteractions(visualizerInstance, enableDrag = true, enableZoom = true) {
+    function enableGenericPluginInteractions(visualizerInstance, enableDrag = true, enableZoom = true) {
         if (!visualizerInstance || !visualizerInstance.nodeData) {
-            console.warn('Invalid visualizer instance');
+            console.warn('Invalid visualizer instance', visualizerInstance);
             return null;
         }
+        console.log(visualizerInstance)
 
         const { svg, container, nodeSelection, linkSelection, labelSelection, nodeData, linkData } = visualizerInstance;
         const width = svg.node().clientWidth || 800;
@@ -272,7 +273,7 @@ function createGraphInteractionManager() {
     return {
         createDragBehavior,
         createZoomBehavior,
-        enableSimpleVisualizerInteractions,
+        enableGenericPluginInteractions,
         fitGraphToView,
         initializeBirdView,
         isInitialized: () => isInitialized,
@@ -281,10 +282,14 @@ function createGraphInteractionManager() {
 }
 
 // Initialize global instance
+    console.log('1')
+
 window.graphInteractionManager = createGraphInteractionManager();
 
 // Initialize visualizer switching
 function initializeVisualizerSwitching() {
+    console.log('1')
+
     const selectElement = document.getElementById('visualizer-select');
     if (!selectElement) return;
 
@@ -315,6 +320,8 @@ function initializeVisualizerSwitching() {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
+    console.log('1')
+
     if (!window.graphInteractionManager.isInitialized()) {
         initializeVisualizerSwitching();
         window.graphInteractionManager.setInitialized(true);

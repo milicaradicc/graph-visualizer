@@ -145,6 +145,7 @@ function createSimpleVisualization() {
         .selectAll("line")
         .data(linkData)
         .join("line")
+        .attr("enabled", "true")
         .attr("class", d => isDirected ? "link directed" : "link")
         .attr("x1", d => d.source.x)
         .attr("y1", d => d.source.y)
@@ -175,6 +176,7 @@ function createSimpleVisualization() {
         .data(nodeData)
         .join("circle")
         .attr("class", "node")
+        .attr("enabled", "true")
         .attr("r", d => d.radius)
         .attr("cx", d => d.x)
         .attr("cy", d => d.y);
@@ -187,62 +189,13 @@ function createSimpleVisualization() {
         .data(nodeData)
         .join("text")
         .attr("class", "node-label")
+        .attr("enabled", "true")
         .attr("dy", -3)
         .style("font-size", "8px")
         .text(d => d.id)
         .attr("x", d => d.x)
         .attr("y", d => d.y);
 
-    return {
-        svg,
-        nodeSelection,
-        linkSelection,
-        labelSelection,
-        container,
-        nodeData,
-        linkData
-    };
 }
-
-// Initialize visualization when DOM is ready
-function initializeVisualization() {
-        try {
-            window.simpleVisualizerAPI = window.simpleVisualizerAPI || {};
-
-            const instance = createSimpleVisualization();
-            window.simpleVisualizerAPI.instance = instance;
-            // If this is in main view and interaction manager is available, add interactions
-        setTimeout(() => {
-            const mainView = document.getElementById('main-view');
-            const visualizerElement = document.querySelector('#simple_visualizer');
-
-            if (mainView && visualizerElement && mainView.contains(visualizerElement) && window.graphInteractionManager) {
-                const interactiveInstance = window.graphInteractionManager
-                    .enableSimpleVisualizerInteractions(instance, true, true);
-
-                if (interactiveInstance) {
-                    window.simpleVisualizerAPI.interactiveInstance = interactiveInstance;
-                }
-            }
-        }, 50);
-        } catch (error) {
-            console.error('Error creating simple visualization:', error);
-            d3.select("#simple_visualizer")
-                .append("text")
-                .attr("x", 50)
-                .attr("y", 50)
-                .attr("fill", "red")
-                .text("Error creating visualization: " + error.message);
-        }
-
-}
-
-// Initialize when DOM is ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeVisualization);
-} else {
-    initializeVisualization();
-}
-
-
+createSimpleVisualization()
 </script>

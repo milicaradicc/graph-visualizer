@@ -5,6 +5,8 @@ class VisualizerPlugin(Plugin):
     """
     Base class for visualization plugins.
     """
+
+    # todo: restrictions
     @abstractmethod
     def visualize(self, data):
         """
