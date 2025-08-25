@@ -72,4 +72,53 @@
     </div>
 </div>
 
+<script>
+    function openModal() {
+        document.getElementById("dataModal").style.display = "flex";
+    }
+
+    function closeModal() {
+        document.getElementById("dataModal").style.display = "none";
+    }
+
+    function loadParams(pluginName) {
+        if (!pluginName) {
+            document.getElementById("plugin-params").innerHTML = "";
+            return;
+        }
+
+        fetch(`/plugin/${pluginName}/params/`)
+            .then(response => response.json())
+            .then(data => {
+                let html = "";
+                data.forEach(p => {
+                    html += `<label>${p.display_name}:</label>`;
+                    if (p.type === "int") {
+                        html += `<input type="number" step="1" name="${p.name}" required><br>`;
+                    } else if (p.type === "str") {
+                        html += `<input type="text" name="${p.name}" required><br>`;
+                    } else {
+                        html += `<input type="text" name="${p.name}" required><br>`;
+                    }
+                });
+                document.getElementById("plugin-params").innerHTML = html;
+            });
+    }
+
+    function openCreateWorkspaceModal() {
+    document.getElementById("createWorkspaceModal").style.display = "flex";
+}
+
+    function closeCreateWorkspaceModal() {
+        document.getElementById("createWorkspaceModal").style.display = "none";
+    }
+
+    function openEditWorkspaceModal() {
+    document.getElementById("editWorkspaceModal").style.display = "flex";
+}
+
+    function closeEditWorkspaceModal() {
+        document.getElementById("editWorkspaceModal").style.display = "none";
+    }
+</script>
 
