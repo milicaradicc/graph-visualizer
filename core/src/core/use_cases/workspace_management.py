@@ -1,4 +1,4 @@
-from api.model import Workspace
+from api.model import Workspace, FilterOperator
 
 INITIAL_WORKSPACE_NAME = 'workspace1'
 
@@ -29,3 +29,7 @@ class WorkspaceService(object):
 
     def get_current_workspace(self):
         return self._current_workspace
+
+    @staticmethod
+    def get_filter_operators():
+        return [op for op in FilterOperator]

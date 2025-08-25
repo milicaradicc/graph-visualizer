@@ -1,10 +1,11 @@
-from django.http import JsonResponse
-from django.shortcuts import render
-from core.use_cases import WorkspaceService, PluginService
 from django.apps import apps
-from django.shortcuts import redirect
 from django.contrib import messages
-from .apps import datasource_group,visualizer_group
+from django.http import JsonResponse
+from django.shortcuts import redirect
+from django.shortcuts import render
+
+from core.use_cases import WorkspaceService, PluginService
+from .apps import datasource_group, visualizer_group
 from .util import serialize_to_json
 
 
@@ -12,8 +13,15 @@ def index(request):
     plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
     datasource_plugins = plugin_service.plugins[datasource_group]
     workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
-    graph = workspace_service.get_current_workspace().graph
+    workspace = workspace_service.get_current_workspace()
     visualizer_plugins = plugin_service.plugins[visualizer_group]
+
+    try:
+        graph = workspace.graph
+    except ValueError as e:
+        messages.error(request, str(e))
+        graph = None
+
 
     graph_json = 'null'
     if graph is not None:
@@ -23,9 +31,12 @@ def index(request):
         'title': 'Index',
         'datasource_plugins': datasource_plugins,
         'workspaces': workspace_service.get_workspaces(),
-        'current_workspace': workspace_service.get_current_workspace(),
+        'current_workspace': workspace,
         'graph_html': '' if graph is None else visualizer_plugins[0].visualize(graph),
         'graph_json': graph_json,
+        'filter_operators': WorkspaceService.get_filter_operators(),
+        'active_searches': [search.to_dict() for search in workspace.searches],
+        'active_filters': [f.to_dict() for f in workspace.filters],
     })
 
 def get_plugin_params(request, plugin_identifier):
@@ -148,3 +159,76 @@ def set_workspace(request):
 
     return redirect("index")
 
+def add_search(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    query = request.POST.get("query").strip()
+    if not query:
+        messages.error(request, "Search query cannot be empty")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    current_workspace.add_search(query)
+    messages.success(request, f"Search '{query}' added successfully")
+
+    return redirect("index")
+
+def remove_search(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    search_id = request.POST.get("search_id")
+    if not search_id:
+        messages.error(request, "No search specified")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    current_workspace.remove_search(int(search_id))
+    messages.success(request, "Search removed successfully")
+
+    return redirect("index")
+
+def add_filter(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    attribute = request.POST.get("attribute").strip()
+    operator = request.POST.get("operator")
+    value = request.POST.get("value").strip()
+
+    if not attribute or not operator or not value:
+        messages.error(request, "All filter fields are required")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    try:
+        current_workspace.add_filter(attribute, operator, value)
+        messages.success(request, f"Filter on '{attribute} {operator} {value}' added successfully")
+    except ValueError as e:
+        messages.error(request, e)
+
+    return redirect("index")
+
+def remove_filter(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    filter_id = request.POST.get("filter_id")
+    if not filter_id:
+        messages.error(request, "No filter specified")
+        return redirect("index")
+
+    workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+    current_workspace = workspace_service.get_current_workspace()
+    current_workspace.remove_filter(int(filter_id))
+    messages.success(request, "Filter removed successfully")
+
+    return redirect("index")
