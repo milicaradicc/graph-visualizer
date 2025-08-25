@@ -50,7 +50,7 @@
             </div>
 
         <!-- Additional Views from kolega -->
-        <div id="main-view" class="graph-view">
+        <div id="main-view" class="main-view">
             <h3>Main View</h3>
             {% if graph_html %}
                 {{ graph_html | safe }}
@@ -59,7 +59,7 @@
             {% endif %}
         </div>
 
-        <div id="bird-view" class="graph-view">
+        <div id="bird-view" class="bird-view">
             <h3>Bird View</h3>
             {% if bird_html %}
                 {{ bird_html | safe }}
@@ -69,6 +69,15 @@
         </div>
 
     </div>
+
+   <div id="cliTerminal" class="cli-container">
+        <div id="cliHistory" class="cli-history"></div>
+        <div class="cli-input-wrapper">
+            <input type="text" id="cliInput" placeholder="Type command...">
+        </div>
+   </div>
+    <script src="{% static 'cli.js' %}"></script>
+
 </div>
 
 <script>

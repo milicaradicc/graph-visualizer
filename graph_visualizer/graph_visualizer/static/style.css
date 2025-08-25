@@ -13,9 +13,8 @@
 
 html, body {
             margin: 0;
-            padding: 0;
+            padding: 5px;
             height: 100%;
-            width: 100%;
             overflow: hidden;
             font-family: Arial, sans-serif;
         }
@@ -23,8 +22,48 @@ html, body {
         .graph-container {
             display: flex;
             flex-direction: column;
-            height: 100vh;
-            width: 100vw;
+            height: 85%;
+            width: 99%;
+        }
+
+        .cli-container{
+            width: 99%;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #1e1e1e;
+            gap: 0.5rem;
+            .cli-history {
+                height: 150px;
+                overflow-y: auto;
+                background-color: #1e1e1e;
+                color: #f1f1f1;
+                font-family: monospace;
+                font-size: 0.9rem;
+                padding: 0.5rem;
+                border-radius: 6px;
+                margin-bottom: 0.5rem;
+            }
+
+            .cli-input-wrapper {
+                display: flex;
+                gap: 0.5rem;
+            }
+
+            input {
+                flex: 1;
+                padding: 0.5rem;
+                border: none;
+                font-family: monospace;
+                font-size: 0.95rem;
+                background-color: #1e1e1e;
+                color: #f1f1f1;
+            }
+            input:focus{
+                outline:none
+            }
         }
 
         .controls {
@@ -38,7 +77,8 @@ html, body {
             flex: 1;
             gap: 10px;
             padding: 0;
-            height: calc(100% - 55px);
+            height: calc(100% - 200px);
+            align-items: flex-start;
         }
 
         .view {
@@ -46,12 +86,12 @@ html, body {
             border-radius: 8px;
             display: flex;
             flex-direction: column;
-            height: 100%;
+            height: 95%;
             overflow: hidden;
             background: white;
         }
 
-        .main-view { flex: 2; border-color: #4CAF50; }
+        .main-view { flex: 2; border-color: #4CAF50; width: -webkit-fill-available;}
         .bird-view { flex: 1; border-color: #FF9800; background: #f9f9f9; pointer-events: none; }
         .tree-view .view-content {
             overflow-y: auto;
@@ -155,8 +195,8 @@ body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f5f6fa;
     color: #333;
-    margin: 0;
-    padding: 0 2rem;
+    margin: 0 15px;
+    padding: 0;
 }
 
 /* Workspace Management Bar */
@@ -164,7 +204,7 @@ body {
     display: flex;
     align-items: center;
     gap: 1rem;
-    margin: 2rem 0;
+    margin: 10px 0;
     flex-wrap: wrap;
 }
 
