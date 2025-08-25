@@ -21,19 +21,10 @@
 </div>
 
 <script>
-let graphData = {
-     nodes: {{ nodes | tojson | safe }},
-     edges: {{ edges | tojson | safe }},
-     directed: {{ directed | tojson }}
- };
-
-console.log('Graph data:', graphData);
-
 // helper: wrap text within maxWidth
 function wrapText(textSelection, maxWidth) {
     textSelection.each(function() {
         const text = d3.select(this);
-        console.log("text: ", text);
         const words = text.text().split(/\s+/).reverse();
         let word, line = [], lineNumber = 0;
         const lineHeight = 1.1; // ems
@@ -61,7 +52,7 @@ function wrapText(textSelection, maxWidth) {
 }
 
 // normalize edges (avoid duplicates)
-function normalizeEdges(nodes, edges) {
+function normalizeEdges(nodes, edges, isDirected) {
     const links = [];
     const seen = new Set();
 
@@ -77,7 +68,7 @@ function normalizeEdges(nodes, edges) {
             links.push({source: src, target: tgt});
             seen.add(key1);
         }
-        if (graphData.directed === false && !seen.has(key2) &&
+        if (isDirected === false && !seen.has(key2) &&
             edges.find(x => x.source === tgt.id && x.target === src.id)) {
             links.push({source: tgt, target: src});
             seen.add(key2);
@@ -87,53 +78,12 @@ function normalizeEdges(nodes, edges) {
     return links;
 }
 
-function fitGraphToView(svg, container, nodes, width, height, padding = 50) {
-    // Wait for the simulation to settle
-    setTimeout(() => {
-        if (nodes.length === 0) return;
-
-        // Calculate bounding box of all nodes
-        const nodeBounds = nodes.map(n => ({
-            x: n.x,
-            y: n.y,
-            width: n.blockWidth,
-            height: n.blockHeight
-        }));
-
-        const minX = Math.min(...nodeBounds.map(n => n.x - n.width/2));
-        const maxX = Math.max(...nodeBounds.map(n => n.x + n.width/2));
-        const minY = Math.min(...nodeBounds.map(n => n.y - n.height/2));
-        const maxY = Math.max(...nodeBounds.map(n => n.y + n.height/2));
-
-        const graphWidth = maxX - minX;
-        const graphHeight = maxY - minY;
-
-        // Calculate scale to fit the graph with padding
-        const scaleX = (width - 2 * padding) / graphWidth;
-        const scaleY = (height - 2 * padding) / graphHeight;
-        const scale = Math.min(scaleX, scaleY, 1); // Don't zoom in beyond 100%
-
-        // Calculate center position
-        const centerX = (minX + maxX) / 2;
-        const centerY = (minY + maxY) / 2;
-
-        // Calculate translation to center the graph
-        const translateX = width / 2 - centerX * scale;
-        const translateY = height / 2 - centerY * scale;
-
-        // Apply the transformation
-        if (svg.__zoom) {
-            const transform = d3.zoomIdentity
-                .translate(translateX, translateY)
-                .scale(scale);
-            svg.call(svg.__zoom.transform, transform);
-        }
-    }, 2000); // Wait for simulation to stabilize
-}
-
-function renderBlockGraph(data) {
-    console.log('Starting renderBlockGraph with data:', data);
-    
+function renderBlockGraph() {
+    const data = {
+         nodes: {{ nodes | tojson | safe }},
+         edges: {{ edges | tojson | safe }},
+         directed: {{ directed | tojson }}
+     };
     const width = 1000, height = 600;
     
     // Check if we have valid data
@@ -150,8 +100,7 @@ function renderBlockGraph(data) {
         n.blockDiagonal = Math.sqrt(n.blockWidth**2 + n.blockHeight**2);
     });
 
-    const links = normalizeEdges(data.nodes, data.edges || []);
-    console.log('Normalized links:', links);
+    const links = normalizeEdges(data.nodes, data.edges || [], data.directed);
 
     const svg = d3.select("#block_visualizer")
         .attr("viewBox", `0 0 ${width} ${height}`)
@@ -159,28 +108,11 @@ function renderBlockGraph(data) {
         .style("width", "100%")
         .style("height", "100%");
 
-    console.log('SVG selected:', svg.node());
-
     // Clear any existing content
     svg.selectAll("*").remove();
 
     // Create main container - ONLY ONCE
-    const container = svg.append("g").attr("class", "main-container");
-    console.log('Container created:', container.node());
-
-    // Setup interactions
-    let zoom = null;
-    function registerInteractions() {
-        if (window.graphInteractionManager) {
-            zoom = window.graphInteractionManager.createZoomBehavior(svg, container, null, 'block');
-            svg.__zoom = zoom;  // Store for fitGraphToView
-            console.log('Block visualizer zoom behavior registered');
-        } else {
-            console.log('Waiting for graphInteractionManager...');
-            setTimeout(registerInteractions, 100);
-        }
-    }
-    setTimeout(registerInteractions, 50);
+    const container = svg.append("g").attr("class", "visualization-container");
 
     // add arrow marker only if directed
     const markerId = `arrow`;
@@ -198,55 +130,31 @@ function renderBlockGraph(data) {
             .attr("fill", "#999");
     }
 
-    const simulation = d3.forceSimulation(data.nodes)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(200))
-        .force("charge", d3.forceManyBody().strength(-800))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.blockDiagonal / 2 + 20));
-
-    console.log('Simulation created:', simulation);
-
-    // Register simulation with interaction manager
-    setTimeout(() => {
-        if (window.graphInteractionManager) {
-            window.graphInteractionManager.setActiveSimulation(simulation, 'block');
-        }
-    }, 100);
-
     // Create links
-    const link = container.append("g")
+    const linkSelection = container.append("g")
         .attr("class", "links")
         .selectAll("line")
         .data(links)
         .enter()
         .append("line")
+        .attr("enabled", "true")
+        .attr("class", data.directed ? "link directed" : "link")
         .attr("stroke-width", 2)
         .attr("stroke", "#999")
         .attr("marker-end", data.directed ? `url(#${markerId})` : null);
 
-    console.log('Links created:', link.size());
-
     // Create nodes
-    const node = container.append("g")
+    const nodeSelection = container.append("g")
         .attr("class", "nodes")
         .selectAll("g")
         .data(data.nodes)
         .enter()
-        .append("g");
-
-    console.log('Node groups created:', node.size());
-
-    // Setup drag behavior
-    setTimeout(() => {
-        if (window.graphInteractionManager) {
-            const dragBehavior = window.graphInteractionManager.createDragBehavior(simulation, 'block');
-            node.call(dragBehavior);
-            console.log('Block visualizer drag behavior applied');
-        }
-    }, 100);
+        .append("g")
+        .attr("class", "node")
+        .attr("enabled", "true");
 
     // Draw node rectangles and text
-    node.each(function(d) {
+    nodeSelection.each(function(d) {
         const g = d3.select(this);
 
         // Main rectangle
@@ -272,6 +180,8 @@ function renderBlockGraph(data) {
 
         // ID text
         g.append("text")
+            .attr("class", "node-label")
+            .attr("enabled", "true")
             .attr("x", 0)
             .attr("y", -d.blockHeight/2 + 17)
             .text(`ID: ${d.id}`)
@@ -296,125 +206,11 @@ function renderBlockGraph(data) {
             });
     });
 
-    console.log('Node elements drawn');
-
-    // Animation tick handler
-    simulation.on("tick", () => {
-        link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => d.target.x)
-            .attr("y2", d => d.target.y);
-
-        node.attr("transform", d => `translate(${d.x},${d.y})`);
-    });
-
-    // Fit graph to view after initialization
-    fitGraphToView(svg, container, data.nodes, width, height);
-
-    return {
-        simulation,
-        svg,
-        container,
-        nodeData: data.nodes,
-        links: link,
-        nodes: node,
-    };
+    // Create labelSelection equivalent (all text elements in nodes)
+    const labelSelection = nodeSelection.selectAll("text")
+        .attr("enabled", "true");
 }
 
-// API setup
-window.blockVisualizerAPI = window.blockVisualizerAPI || {};
-window.blockVisualizerAPI = {
-    instance: null,
+renderBlockGraph();
 
-    restart: function() {
-        if (this.instance && this.instance.simulation) {
-            this.instance.simulation.restart();
-        }
-    },
-
-    stop: function() {
-        if (this.instance && this.instance.simulation) {
-            this.instance.simulation.stop();
-        }
-    },
-
-    getNodeData: function() {
-        return this.instance ? this.instance.nodeData : [];
-    },
-
-    fitToView: function() {
-        if (this.instance) {
-            const { svg, container, nodeData } = this.instance;
-            const containerElement = document.querySelector("#block_visualizer").parentNode;
-            const width = containerElement.clientWidth || 1000;
-            const height = containerElement.clientHeight || 500;
-            fitGraphToView(svg, container, nodeData, width, height);
-        }
-    }
-};
-
-// Global block visualizer API (for backward compatibility)
-if (!window.blockVisualizerAPI.restart) {
-    window.blockVisualizerAPI.restart = function() {
-        Object.values(window.blockVisualizerAPI).forEach(api => {
-            if (api && typeof api.restart === 'function') {
-                api.restart();
-            }
-        });
-    };
-}
-
-// Initialize block graph
-function initializeBlockGraph() {
-    console.log('Initializing block visualization...');
-    console.log('D3 available:', typeof d3 !== 'undefined');
-    console.log('Graph data:', graphData);
-    
-    if (!graphData || !graphData.nodes || graphData.nodes.length === 0) {
-        console.log('No graph data to display in block visualizer');
-        d3.select("#block_visualizer")
-            .append("text")
-            .attr("x", 50)
-            .attr("y", 50)
-            .attr("fill", "red")
-            .text("No graph data to display");
-        return;
-    }
-
-    try {
-        const instance = renderBlockGraph(graphData);
-        if (instance) {
-            window.blockVisualizerAPI.instance = instance;
-        } else {
-            console.error('Failed to create block visualization instance');
-        }
-    } catch (error) {
-        console.error('Error creating block visualization:', error);
-        // Show error in the SVG
-        d3.select("#block_visualizer")
-            .append("text")
-            .attr("x", 50)
-            .attr("y", 50)
-            .attr("fill", "red")
-            .text(`Error: ${error.message}`);
-    }
-}
-
-// Initialize when ready
-if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initializeBlockGraph);
-} else {
-    // DOM already loaded
-    setTimeout(initializeBlockGraph, 100);
-}
-
-// Handle window resize
-window.addEventListener('resize', function() {
-    if (window.blockVisualizerAPI && window.blockVisualizerAPI && window.blockVisualizerAPI.instance) {
-        setTimeout(() => {
-            window.blockVisualizerAPI.restart();
-        }, 100);
-    }
-});
 </script>

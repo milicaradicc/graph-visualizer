@@ -1,6 +1,5 @@
 class VisualizerSwitcher {
     constructor() {
-    console.log('1')
         this.selectElement = document.getElementById('visualizer-select');
         this.contentContainer = document.getElementById('visualizer-content');
         this.currentVisualizer = null;
@@ -10,8 +9,6 @@ class VisualizerSwitcher {
     }
 
     init() {
-    console.log('2')
-
         if (!this.selectElement || !this.contentContainer) {
             console.warn('Required elements not found for visualizer switching');
             return;
@@ -31,8 +28,6 @@ class VisualizerSwitcher {
     }
 
     async switchToVisualizer(pluginId) {
-    console.log('3')
-
         if (this.currentVisualizer === pluginId) return;
 
         try {
@@ -69,8 +64,6 @@ class VisualizerSwitcher {
 
     showVisualizer(pluginId, isNewlyLoaded = false) {
         // Hide all visualizers
-    console.log('1')
-
         this.contentContainer.querySelectorAll('[data-plugin-id]').forEach(viz => {
             viz.classList.remove('active');
             viz.style.display = 'none';
@@ -83,12 +76,8 @@ class VisualizerSwitcher {
             this.currentVisualizer = pluginId;
 
             if (isNewlyLoaded) {
-    console.log('1')
-
                 this.initializeNewVisualizer(visualizerElement, pluginId);
             } else {
-    console.log('1')
-
                 this.refreshVisualizer();
             }
         } else {
@@ -97,8 +86,6 @@ class VisualizerSwitcher {
     }
 
     initializeNewVisualizer(container, pluginId) {
-    console.log('1')
-
         // Re-run scripts inside dynamic HTML
         const scripts = container.querySelectorAll('script');
         scripts.forEach(oldScript => {
@@ -118,31 +105,28 @@ class VisualizerSwitcher {
     }
 
     enableGenericInteractions(pluginId) {
-    console.log('1')
 
         if (!window.graphInteractionManager) return;
 
         // Prepare pluginAPI structure
-        window.simpleVisualizerAPI = window.simpleVisualizerAPI || {};
-//        window.simpleVisualizerAPI[pluginId] = window.simpleVisualizerAPI[pluginId] || {};
+        window.pluginAPI = window.pluginAPI || {};
+        window.pluginAPI[pluginId] = window.pluginAPI[pluginId] || {};
 
         // The plugin instance must exist or be initialized by plugin script
-        const pluginInstance = window.simpleVisualizerAPI.instance;
+        const pluginInstance = window.pluginAPI[pluginId].instance;
         if (!pluginInstance) {
-//6
             console.warn(`No plugin instance found for ${pluginId}`);
             return;
         }
 
         try {
-    console.log('1')
 
             // Call with the correct arguments: (instance, enableEvents=true, enableControl=true)
             const interactiveInstance = window.graphInteractionManager
                 .enableGenericPluginInteractions(pluginInstance, true, true);
 
             if (interactiveInstance) {
-                window.simpleVisualizerAPI.interactiveInstance = interactiveInstance;
+                window.pluginAPI[pluginId].interactiveInstance = interactiveInstance;
             }
         } catch (error) {
             console.warn(`Generic interactions failed for ${pluginId}:`, error);
@@ -150,26 +134,20 @@ class VisualizerSwitcher {
     }
 
     refreshVisualizer() {
-    console.log('1')
-
         setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     }
 
     // Public helpers
     getCurrentVisualizer() {
-    console.log('1')
     return this.currentVisualizer; }
     switchTo(pluginId) {
-    console.log('1')
 
         this.selectElement.value = pluginId;
         this.switchToVisualizer(pluginId);
     }
     getLoadedVisualizers() {
-    console.log('1')
     return Array.from(this.loadedVisualizers); }
     async preloadVisualizer(pluginId) {
-    console.log('1')
 
         if (!this.loadedVisualizers.has(pluginId)) {
             await this.switchToVisualizer(pluginId);
@@ -180,16 +158,12 @@ class VisualizerSwitcher {
 // Initialize
 let visualizerSwitcher = null;
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('1')
-
     visualizerSwitcher = new VisualizerSwitcher();
     window.visualizerSwitcher = visualizerSwitcher;
 });
 
 // Enhance graph interaction manager
 function enhanceGraphInteractionManager() {
-    console.log('1')
-
     if (!window.graphInteractionManager) {
         console.warn('graphInteractionManager not found, skipping enhancement');
         return;
@@ -229,8 +203,6 @@ function enhanceGraphInteractionManager() {
 }
 
 if (window.graphInteractionManager) {
-    console.log('1')
-
     enhanceGraphInteractionManager();
 } else {
     document.addEventListener('DOMContentLoaded', () => setTimeout(enhanceGraphInteractionManager, 100));

@@ -1,6 +1,11 @@
-document.addEventListener("DOMContentLoaded", () => {
-    console.log("Main view DOM loaded");
+function getCurrentSelectedPlugin() {
+    const selectElement = document.getElementById('visualizer-select');
+    return selectElement ? selectElement.value : null;
+}
 
+// Usage anywhere in main.js
+const pluginId = getCurrentSelectedPlugin();
+document.addEventListener("DOMContentLoaded", () => {
     const svg = d3.select("svg");
 
     // Early exit if no SVG found
@@ -10,28 +15,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     const nodeElements = svg.selectAll("g.node[enabled='true']").nodes();
-    console.log("cvorovi", nodeElements);
 
     const linkElements = svg.selectAll("path.link[enabled='true']").nodes();
 
-    // Only proceed if we have pre-existing nodes and links (not for simple visualizer)
+    // Only proceed if we have pre-existing nodes and links (not for visualizer)
     if (nodeElements.length === 0 && linkElements.length === 0) {
-        console.log("No traditional graph elements found - checking for simple visualizer");
+        console.log("No traditional graph elements found - checking for visualizer");
 
         // Separate function to initialize bird view regardless of interaction state
         const initializeBirdViewIfNeeded = () => {
-        console.log("inicijalizuje bird");
-//8
             // Check if bird view is already initialized
-            if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.birdViewManager) {
-     //9
-                console.log("Bird view already initialized - skipping", window.simpleVisualizerAPI);
+            if (window.pluginAPI && window.pluginAPI[pluginId] && window.pluginAPI[pluginId].birdViewManager) {
+                console.log("Bird view already initialized - skipping", window.pluginAPI[pluginId]);
                 return;
             }
 
             // Verify bird view SVG exists
             const birdSvg = document.getElementById('bird-svg');
-        console.log("inicijalizuje bird u", birdSvg);
 
             if (!birdSvg) {
                 console.error("Bird view SVG not found in DOM");
@@ -39,71 +39,60 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             const birdViewManager = window.graphInteractionManager
-                .initializeBirdView('#simple_visualizer', 'bird-svg');
-            console.log("Initializing bird view independent of interactions", birdViewManager);
+                .initializeBirdView(`#${pluginId}`, 'bird-svg');
 
             if (birdViewManager) {
-                console.log("Bird view initialized successfully");
-                window.simpleVisualizerAPI = window.simpleVisualizerAPI || {};
-                window.simpleVisualizerAPI.birdViewManager = birdViewManager;
+                window.pluginAPI = window.pluginAPI || {};
+                window.pluginAPI[pluginId] = window.pluginAPI[pluginId] || {};
+                window.pluginAPI[pluginId].birdViewManager = birdViewManager;
 
                 // Force an initial update
                 setTimeout(() => {
-                    console.log("Forcing initial bird view update");
                     birdViewManager.updateBirdView();
                 }, 100);
             } else {
                 console.error("Failed to initialize bird view manager");
             }
         };
-//2
         // Function to handle interactions
         const setupInteractionsIfNeeded = () => {
-        console.log("usao u setup inter ako treba");
-
-            if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.interactiveInstance) {
-                console.log("Simple visualizer interactions already enabled - skipping interactions");
+            console.log(pluginId)
+            if (window.pluginAPI[pluginId] && window.pluginAPI[pluginId].interactiveInstance) {
+                console.log(`#${pluginId} visualizer interactions already enabled - skipping interactions`);
                 return;
             }
-
-            if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.instance) {
-      //3
-                console.log("Simple visualizer detected - adding interactions from main_view");
-
+            console.log(window.pluginAPI)
+            if (window.pluginAPI[pluginId] && window.pluginAPI[pluginId].instance) {
+            console.log(window.pluginAPI[pluginId])
                 const mainView = document.getElementById('main-view');
                 const visualizerContent = document.getElementById('visualizer-content');
-                const simpleVisualizerSvg = document.getElementById('simple_visualizer');
+                const visualizerSvg = document.getElementById(`#${pluginId}`);
 
-                if (mainView && visualizerContent && simpleVisualizerSvg &&
-                    mainView.contains(simpleVisualizerSvg) && window.graphInteractionManager) {
-//4
-                    console.log("Enabling simple visualizer interactions from main_view", window.graphInteractionManager);
+                if (mainView && visualizerContent && visualizerSvg &&
+                    mainView.contains(visualizerSvg) && window.graphInteractionManager) {
 
                     const interactiveInstance = window.graphInteractionManager
-                        .enableGenericPluginInteractions(window.simpleVisualizerAPI.instance, true, true);
-//5
+                        .enableGenericPluginInteractions(window.pluginAPI[pluginId].instance, true, true);
                     if (interactiveInstance) {
-                        window.simpleVisualizerAPI.interactiveInstance = interactiveInstance;
+                        window.pluginAPI[pluginId].interactiveInstance = interactiveInstance;
                         console.log("Interactive instance created successfully from main_view", interactiveInstance);
                     } else {
                         console.warn("Failed to create interactive instance from main_view");
                     }
                 } else {
-                    console.log("Simple visualizer not in main view or required elements missing");
+                    console.log("visualizer not in main view or required elements missing");
                 }
             }
         };
-//1
         // Check for visualizer and set up both interactions and bird view
         // In main_view.js - replace the checkForVisualizer function with:
 
 function checkForVisualizer() {
-    // Look for simple visualizer elements with enabled="true"
-    const svg = document.querySelector('#simple_visualizer');
-
+    // Look for visualizer elements with enabled="true"
+    const svg = document.querySelector(`#${pluginId}`);
+    console.log(`#${pluginId}`);
+    console.log(svg);
     if (svg) {
-        console.log("Found simple visualizer elements - creating API instance");
-
         // Create the API instance in Django app code
         const container = svg.querySelector('.visualization-container');
         const nodeData = window.graphData ? window.graphData.nodes : [];
@@ -114,7 +103,7 @@ function checkForVisualizer() {
         }));
 
         // Create D3 selections from existing DOM elements
-        const svgSelection = d3.select('#simple_visualizer');
+        const svgSelection = d3.select(`#${pluginId}`);
         const containerSelection = d3.select(container);
 
         // CRITICAL FIX: Bind data to the selections for drag functionality
@@ -147,8 +136,10 @@ function checkForVisualizer() {
             if (d.radius === undefined) d.radius = 8; // default radius
         });
 
+        window.pluginAPI = window.pluginAPI || {};
+        window.pluginAPI[pluginId] = window.pluginAPI[pluginId] || {};
         // Create the API instance
-        window.simpleVisualizerAPI = {
+        window.pluginAPI[pluginId] = {
             instance: {
                 svg: svgSelection,
                 container: containerSelection,
@@ -160,7 +151,7 @@ function checkForVisualizer() {
             }
         };
 
-        console.log("Simple visualizer API instance created with data binding", window.simpleVisualizerAPI.instance);
+        console.log("visualizer API instance created with data binding", window.pluginAPI[pluginId].instance);
 
         // Now enable interactions
         setupInteractionsIfNeeded();
@@ -171,15 +162,12 @@ function checkForVisualizer() {
         }, 200);
 
     } else {
-        console.log("Simple visualizer elements not ready yet - will retry");
         setTimeout(checkForVisualizer, 300);
     }
 }
         // Also try to initialize bird view even if interactions already exist
         setTimeout(() => {
             if (window.graphInteractionManager) {
-                console.log('bird pokusaj 2')
-
                 initializeBirdViewIfNeeded();
             }
         }, 800); // Try bird view initialization after a delay regardless
@@ -189,15 +177,11 @@ function checkForVisualizer() {
         return;
     }
 
-    console.log(`Found ${nodeElements.length} nodes and ${linkElements.length} links`);
-
     // Optimized resize handler - debounced
     let resizeTimeout;
     window.addEventListener('resize', function() {
         clearTimeout(resizeTimeout);
         resizeTimeout = setTimeout(() => {
-            console.log("Handling resize event");
-
             const svgNode = svg.node();
             if (!svgNode) return;
 
@@ -205,22 +189,18 @@ function checkForVisualizer() {
             const newHeight = svgNode.clientHeight || 800;
 
             // Update any active simulations
-            if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.interactiveInstance) {
-            console.log('update aktivnr')
-                const { simulation } = window.simpleVisualizerAPI.interactiveInstance;
+            if (window.pluginAPI[pluginId] && window.pluginAPI[pluginId].interactiveInstance) {
+                const { simulation } = window.pluginAPI[pluginId].interactiveInstance;
                 if (simulation) {
-                console.log('simulacija')
-
                     simulation.force("center", d3.forceCenter(newWidth / 2, newHeight / 2));
                     simulation.alpha(0.3).restart();
                 }
             }
 
             // Update bird view after resize
-            if (window.simpleVisualizerAPI && window.simpleVisualizerAPI.birdViewManager) {
+            if (window.pluginAPI[pluginId] && window.pluginAPI[pluginId].birdViewManager) {
                 setTimeout(() => {
-                console.log('bird nakon resize')
-                    window.simpleVisualizerAPI.birdViewManager.updateBirdView();
+                    window.pluginAPI[pluginId].birdViewManager.updateBirdView();
                 }, 100);
             }
         }, 150);
