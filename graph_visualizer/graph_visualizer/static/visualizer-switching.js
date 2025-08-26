@@ -33,6 +33,7 @@ class VisualizerSwitcher {
         try {
             if (this.loadedVisualizers.has(pluginId)) {
                 this.showVisualizer(pluginId, false);
+                window.graphInteractionManager.initializeBirdView(`#${pluginId}`, 'bird-svg');
                 return;
             }
 
@@ -92,10 +93,10 @@ class VisualizerSwitcher {
             const newScript = document.createElement('script');
             if (oldScript.src) {
                 newScript.src = oldScript.src;
-                newScript.onload = () => this.enableGenericInteractions(pluginId);
+                newScript.onload = () => this.setupVisualizerInstance(pluginId);
             } else {
                 newScript.textContent = oldScript.textContent;
-                setTimeout(() => this.enableGenericInteractions(pluginId), 100);
+                setTimeout(() => this.setupVisualizerInstance(pluginId), 100);
             }
             oldScript.parentNode.replaceChild(newScript, oldScript);
         });
@@ -103,6 +104,19 @@ class VisualizerSwitcher {
         // Trigger resize
         setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     }
+
+    async setupVisualizerInstance(pluginId) {
+        console.log(`Setting up visualizer instance for ${pluginId}`);
+
+        // Method 1: Use global checkForVisualizer if available
+        if (window.checkForVisualizer(pluginId)) {
+            const success = window.checkForVisualizer(pluginId);
+            if (success) {
+                this.enableGenericInteractions(pluginId);
+                return;
+            }
+        }
+        }
 
     enableGenericInteractions(pluginId) {
 
