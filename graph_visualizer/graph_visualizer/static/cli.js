@@ -22,6 +22,10 @@ function addToHistory(text, type = 'info') {
 
 function runCommand(command) {
     if(!command) return;
+    if (command==="clear"){
+        cliHistory.innerHTML = ''
+        return;
+    }
 
     addToHistory("> " + command);
     commandHistory.push(command);

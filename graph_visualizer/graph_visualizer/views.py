@@ -5,6 +5,7 @@ from django.shortcuts import redirect
 from django.shortcuts import render
 
 from core.cli_manager.cli_manager import CLIHandler
+from core.cli_manager.status import Status
 from core.use_cases import WorkspaceService, PluginService
 from .apps import datasource_group, visualizer_group
 from .util import serialize_to_json
@@ -243,15 +244,17 @@ def run_cli_command(request):
         cli = CLIHandler(workspace)
 
         if not data:
-            return JsonResponse({"status": "error", "message": "No command entered."})
-
+            return JsonResponse({"status":Status.ERROR.value, "message": "No command entered."})
+        if data == "clear":
+            return JsonResponse({"status": Status.WARNING.value, "message": "Clear command entered."})
         try:
-            message, new_workspace = cli.run_command(data)
+            status, message, new_workspace = cli.run_command(data)
             return JsonResponse({
-                "status": "success",
+                "status": status.value,
                 "message": message,
                 "workspace": new_workspace.to_dict()
             })
 
         except Exception as e:
-            return JsonResponse({"status": "error", "message": str(e)})
+            return JsonResponse({"status": Status.ERROR.value, "message": str(e)})
+    return None
