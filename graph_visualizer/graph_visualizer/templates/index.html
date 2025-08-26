@@ -46,10 +46,10 @@
     <div class="views-container">
 
         <!-- Tree View -->
-            <div class="view tree-view">
-                <div class="view-header">Tree View</div>
-                <div class="view-content" id="tree-container"></div>
-            </div>
+        <div class="view tree-view">
+            <div class="view-header">Tree View</div>
+            <div class="view-content" id="tree-container"></div>
+        </div>
 
         <!-- Additional Views from kolega -->
         <div id="main-view" class="main-view">
@@ -74,13 +74,23 @@
 
    <div id="cliTerminal" class="cli-container">
         <div id="cliHistory" class="cli-history" style="white-space: pre;"></div>
-        {% csrf_token %}
-        <div class="cli-input-wrapper">
-            <input type="text" id="cliInput" placeholder="Type command...">
-        </div>
-   </div>
+        <form method="POST" action="{% url 'run_cli_command' %}" id="cliForm">
+            {% csrf_token %}
+            <div class="cli-input-wrapper">
+                <input type="text" name="command" id="cliInput" placeholder="Type command..." autocomplete="off">
+            </div>
+        </form>
+    </div>
 
+   {{ cli_history|json_script:"cliHistoryData" }}
+
+    <script>
+        const cliHistoryData = JSON.parse(
+            document.getElementById("cliHistoryData").textContent
+        );
+    </script>
     <script src="{% static 'cli.js' %}"></script>
+
 
 </div>
 

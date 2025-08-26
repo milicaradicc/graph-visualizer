@@ -1,8 +1,6 @@
 from typing import Tuple, Dict
 from api.model import Node, Workspace
-import json
 import datetime
-import shlex
 
 from core.cli_manager.status import Status
 
@@ -83,15 +81,26 @@ def parse_flags(args: list[str]) -> Dict[str, str]:
 
 def parse_data_json(data_str: str) -> Dict:
     """Parse JSON string and convert supported types."""
-    try:
-        raw_data = json.loads(data_str.replace("'", '"'))
-    except json.JSONDecodeError as e:
-        raise ValueError(f"Invalid JSON data: {e}")
+    data_str = data_str.strip()
+    if data_str.startswith("{") and data_str.endswith("}"):
+        data_str = data_str[1:-1].strip()
+    else:
+        raise ValueError("Data must be enclosed in {}")
 
-    parsed_data = {}
-    for k, v in raw_data.items():
-        parsed_data[k] = convert_value(v)
-    return parsed_data
+    if not data_str:
+        return {}
+
+    result = {}
+    pairs = data_str.split(",")
+    for pair in pairs:
+        if ":" not in pair:
+            raise ValueError(f"Invalid pair: {pair}")
+        key, value = pair.split(":", 1)
+        key = key.strip()
+        value = convert_value(value)
+        result[key] = value
+
+    return result
 
 class CLIHandler:
     INSTRUCTION="""
@@ -127,10 +136,10 @@ class CLIHandler:
     def __init__(self, workspace: Workspace):
         self.manager = CommandHandler(workspace)
 
-    def run_command(self, command: str) -> Tuple[Status,str,Workspace]:
-        parts = shlex.split(command.strip())
+    def run_command(self, command: str) -> Tuple[Status,str]:
+        parts = command.strip().split()
         if not parts:
-            return Status.ERROR,"No command entered.", self.manager.workspace
+            return Status.ERROR,"No command entered."
 
         cmd = parts[0].lower()
 
@@ -142,7 +151,7 @@ class CLIHandler:
                     raise ValueError("Missing --id")
                 data = parse_data_json(flags.get("data", "{}"))
                 status, message = self.manager.add_node(node_id, **data)
-                return status,message, self.manager.workspace
+                return status,message
 
             elif cmd == "edit-node":
                 flags = parse_flags(parts[1:])
@@ -151,7 +160,7 @@ class CLIHandler:
                     raise ValueError("Missing --id")
                 data = parse_data_json(flags.get("data", "{}"))
                 status, message = self.manager.edit_node(node_id, **data)
-                return status,message, self.manager.workspace
+                return status,message
 
             elif cmd == "delete-node":
                 flags = parse_flags(parts[1:])
@@ -159,7 +168,7 @@ class CLIHandler:
                 if not node_id:
                     raise ValueError("Missing --id")
                 status, message = self.manager.delete_node(node_id)
-                return status,message, self.manager.workspace
+                return status,message
 
             elif cmd == "add-edge":
                 flags = parse_flags(parts[1:])
@@ -168,7 +177,7 @@ class CLIHandler:
                 if not parent or not child:
                     raise ValueError("Missing --parent or --child")
                 status, message = self.manager.add_edge(parent, child)
-                return status,message, self.manager.workspace
+                return status,message
 
             elif cmd == "edit-edge":
                 flags = parse_flags(parts[1:])
@@ -179,7 +188,7 @@ class CLIHandler:
                 if not all([old_parent, old_child, new_parent, new_child]):
                     raise ValueError("Missing flags for edit-edge")
                 status,message = self.manager.edit_edge(old_parent, old_child, new_parent, new_child)
-                return status,message, self.manager.workspace
+                return status,message
 
             elif cmd == "delete-edge":
                 flags = parse_flags(parts[1:])
@@ -188,17 +197,17 @@ class CLIHandler:
                 if not parent or not child:
                     raise ValueError("Missing --parent or --child")
                 status,message = self.manager.delete_edge(parent, child)
-                return status,message, self.manager.workspace
+                return status,message
 
             elif cmd == "clear-start":
                 status,message = self.manager.clean_start()
-                return status,message, self.manager.workspace
+                return status,message
 
             elif cmd == "help":
-                return Status.SUCCESS, self.INSTRUCTION, self.manager.workspace
+                return Status.SUCCESS, self.INSTRUCTION
 
             else:
-                return Status.ERROR,f"Unknown command: {cmd}", self.manager.workspace
+                return Status.ERROR,f"Unknown command: {cmd}"
 
         except Exception as e:
-            return Status.ERROR,f"Error: {e}", self.manager.workspace
+            return Status.ERROR,f"Error: {e}"

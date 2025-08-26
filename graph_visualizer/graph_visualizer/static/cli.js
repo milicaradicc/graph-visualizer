@@ -1,6 +1,6 @@
 const cliInput = document.getElementById('cliInput');
 const cliHistory = document.getElementById('cliHistory');
-const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+const cliForm = document.getElementById('cliForm');
 
 const commandHistory = [];
 let historyIndex = -1;
@@ -20,45 +20,14 @@ function addToHistory(text, type = 'info') {
     cliHistory.scrollTop = cliHistory.scrollHeight;
 }
 
-function runCommand(command) {
-    if(!command) return;
-    if (command==="clear"){
-        cliHistory.innerHTML = ''
-        return;
-    }
-
-    addToHistory("> " + command);
-    commandHistory.push(command);
-    historyIndex = commandHistory.length;
-
-    fetch(`/workspace/cli/`, {
-        method: "POST",
-        body: new URLSearchParams({ command: command }),
-        headers: {
-            "X-CSRFToken": csrftoken
-        }
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.status === "success") {
-            addToHistory(data.message, "success");
-            console.log("Workspace:", data.workspace);
-        } else {
-            addToHistory(data.message, "error");
-        }
-    })
-    .catch(err => {
-        addToHistory("Error: " + err, "error");
+if (typeof cliHistoryData !== 'undefined') {
+    cliHistoryData.forEach(item => {
+        addToHistory("> " + item.command);
+        addToHistory(item.response, item.status);
+        commandHistory.push(item.command);
     });
-
+    historyIndex = commandHistory.length;
 }
-
-cliInput.addEventListener('keypress', (e) => {
-    if(e.key === 'Enter') {
-        runCommand(cliInput.value.trim());
-        cliInput.value = '';
-    }
-});
 
 cliInput.addEventListener('keydown', (e) => {
     if(e.key === 'ArrowUp') {
@@ -74,6 +43,13 @@ cliInput.addEventListener('keydown', (e) => {
             historyIndex = commandHistory.length;
             cliInput.value = '';
         }
+    }
+});
+
+cliInput.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') {
+        e.preventDefault();
+        cliForm.submit();
     }
 });
 

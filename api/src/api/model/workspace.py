@@ -13,6 +13,7 @@ class Workspace(object):
         self._searches = searches
         self._name = name
         self._id = id
+        self._cli_history=[] #always initialize
 
     @property
     def id(self) -> int:
@@ -76,6 +77,10 @@ class Workspace(object):
     @searches.setter
     def searches(self, value: List['Search']):
         self._searches = value
+
+    @property
+    def cli_history(self) -> List[str]:
+        return self._cli_history
 
     def add_node(self,node:Node):
         if any(n.id == node.id for n in self._graph.nodes):
