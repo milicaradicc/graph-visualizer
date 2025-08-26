@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 
+from core.cli_manager.cli_manager import CLIHandler
 from core.use_cases import WorkspaceService, PluginService
 from .apps import datasource_group, visualizer_group
 from .util import serialize_to_json
@@ -232,3 +233,25 @@ def remove_filter(request):
     messages.success(request, "Filter removed successfully")
 
     return redirect("index")
+
+def run_cli_command(request):
+    #TODO: update views
+    if request.method == "POST":
+        data = request.POST.get("command", "").strip()
+        workspace_service: WorkspaceService = apps.get_app_config('graph_visualizer').workspace_service
+        workspace = workspace_service.get_current_workspace()
+        cli = CLIHandler(workspace)
+
+        if not data:
+            return JsonResponse({"status": "error", "message": "No command entered."})
+
+        try:
+            message, new_workspace = cli.run_command(data)
+            return JsonResponse({
+                "status": "success",
+                "message": message,
+                "workspace": new_workspace.to_dict()
+            })
+
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})

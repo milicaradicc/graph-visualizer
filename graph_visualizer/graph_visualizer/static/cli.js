@@ -1,6 +1,6 @@
-
 const cliInput = document.getElementById('cliInput');
 const cliHistory = document.getElementById('cliHistory');
+const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
 
 const commandHistory = [];
 let historyIndex = -1;
@@ -10,17 +10,10 @@ function addToHistory(text, type = 'info') {
     line.textContent = text;
 
     switch(type) {
-        case 'success':
-            line.style.color = '#28a745';
-            break;
-        case 'error':
-            line.style.color = '#dc3545';
-            break;
-        case 'warning':
-            line.style.color = '#ffc107';
-            break;
-        default:
-            line.style.color = '#f1f1f1';
+        case 'success': line.style.color = '#28a745'; break;
+        case 'error': line.style.color = '#dc3545'; break;
+        case 'warning': line.style.color = '#ffc107'; break;
+        default: line.style.color = '#f1f1f1';
     }
 
     cliHistory.appendChild(line);
@@ -34,20 +27,26 @@ function runCommand(command) {
     commandHistory.push(command);
     historyIndex = commandHistory.length;
 
-    switch(command.toLowerCase()) {
-        case 'help':
-            addToHistory("Available commands: help, clear, echo [text]", 'info');
-            break;
-        case 'clear':
-            cliHistory.innerHTML = '';
-            break;
-        default:
-            if(command.startsWith('echo ')) {
-                addToHistory(command.slice(5), 'success');
-            } else {
-                addToHistory("Unknown command: " + command, 'error');
-            }
-    }
+    fetch(`/workspace/cli/`, {
+        method: "POST",
+        body: new URLSearchParams({ command: command }),
+        headers: {
+            "X-CSRFToken": csrftoken
+        }
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.status === "success") {
+            addToHistory(data.message, "success");
+            console.log("Workspace:", data.workspace);
+        } else {
+            addToHistory(data.message, "error");
+        }
+    })
+    .catch(err => {
+        addToHistory("Error: " + err, "error");
+    });
+
 }
 
 cliInput.addEventListener('keypress', (e) => {

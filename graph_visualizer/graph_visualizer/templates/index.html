@@ -74,10 +74,12 @@
 
    <div id="cliTerminal" class="cli-container">
         <div id="cliHistory" class="cli-history"></div>
+        {% csrf_token %}
         <div class="cli-input-wrapper">
             <input type="text" id="cliInput" placeholder="Type command...">
         </div>
    </div>
+
     <script src="{% static 'cli.js' %}"></script>
 
 </div>
