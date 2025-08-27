@@ -1,113 +1,74 @@
 <style>
-.node {
-    cursor: pointer;
-    fill: white;
-    stroke: black;
-    stroke-width: 2px;
-}
+#simple_visualizer {
+    width: 100%;
+    height: 100%;
+    display: block !important;
+    .node {
+        cursor: pointer;
+        fill: white;
+        stroke: black;
+        stroke-width: 2px;
+    }
 
-.node:hover {
-    fill: #f5f5f5;
-    stroke-width: 3px;
-}
+    .node:hover {
+        fill: #f5f5f5;
+        stroke-width: 3px;
+    }
 
-.link {
-    fill: none;
-    stroke: black;
-    stroke-width: 1.5px;
-}
+    .link {
+        fill: none !important;
+        stroke: black;
+        stroke-width: 1.5px;
+    }
 
-.link.directed {
-    marker-end: url(#arrowhead);
-}
+    .link.directed {
+        marker-end: url(#arrowhead);
+    }
 
-.node-label {
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    font-weight: bold;
-    fill: red;
-    text-anchor: middle;
-    pointer-events: none;
-    dominant-baseline: central;
-}
+    .node-label {
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: bold;
+        fill: red;
+        text-anchor: middle;
+        pointer-events: none;
+        dominant-baseline: central;
+    }
 
-.arrowhead {
-    fill: red;
+    .arrowhead {
+        fill: red;
+    }
 }
 </style>
 
-<div>
-    <svg id="simple_visualizer" width="800" height="600"></svg>
+<div style="width: 100%; height: 100%; position: relative;">
+    <svg id="simple_visualizer"></svg>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
 <script>
-const nodes = {{ nodes | tojson }};
-const links = {{ edges | tojson }};
-const isDirected = {{ directed | tojson }};
 
-function calculateNodeRadius(text) {
-    const charWidth = 6;
-    const padding = 10;
-    const minRadius = 20;
-    const maxRadius = 60;
-    if (!text) return minRadius;
-    const textWidth = text.length * charWidth;
-    const requiredRadius = Math.max(textWidth / 2 + padding, minRadius);
-    return Math.min(requiredRadius, maxRadius);
-}
-
-function wrapText(text, maxRadius) {
-    if (!text) return [text || ''];
-    const charsPerLine = Math.floor((maxRadius * 2 - 10) / 6);
-    if (text.length <= charsPerLine) return [text];
-    const words = text.split(/[\/\-_\s]+/);
-    const lines = [];
-    let currentLine = '';
-    for (const word of words) {
-        if ((currentLine + word).length <= charsPerLine) {
-            currentLine += (currentLine ? ' ' : '') + word;
-        } else {
-            if (currentLine) lines.push(currentLine);
-            currentLine = word;
-        }
-    }
-    if (currentLine) lines.push(currentLine);
-    if (lines.length > 3) {
-        lines[2] = lines[2].substring(0, charsPerLine - 3) + '...';
-        return lines.slice(0, 3);
-    }
-    return lines;
-}
-
-function drag(simulation) {
-    function dragstarted(event, d) {
-        if (!event.active) simulation.alphaTarget(0.3).restart();
-        d.fx = d.x;
-        d.fy = d.y;
-    }
-    function dragged(event, d) {
-        d.fx = event.x;
-        d.fy = event.y;
-    }
-    function dragended(event, d) {
-        if (!event.active) simulation.alphaTarget(0);
-        d.fx = null;
-        d.fy = null;
-    }
-    return d3.drag()
-        .on("start", dragstarted)
-        .on("drag", dragged)
-        .on("end", dragended);
-}
-
-function createChart() {
-    const width = 800, height = 600;
-    const arrowSize = 4;
+function createSimpleVisualization() {
+    const nodes = {{ nodes | tojson }};
+    const links = {{ edges | tojson }};
+    const isDirected = {{ directed | tojson }};
+    const containerElement = document.querySelector("#simple_visualizer").parentNode;
+    const width = Math.max(containerElement.clientWidth || 800, 400);
+    const height = Math.max(containerElement.clientHeight || 600, 300);
+    const arrowSize = 9;
     const manyNodes = nodes.length >= 50;
 
     const minRadius = manyNodes ? 5 : 15;
     const maxRadius = manyNodes ? 25 : 60;
+
+    if (!nodes || nodes.length === 0) {
+        d3.select("#simple_visualizer")
+            .append("text")
+            .attr("x", 50)
+            .attr("y", 50)
+            .attr("fill", "red")
+            .text("No graph data to display");
+        return;
+    }
 
     const degreeMap = {};
     links.forEach(l => {
@@ -127,13 +88,21 @@ function createChart() {
         const displayText = node.id || 'Unknown';
         const degree = degreeMap[node.id] || 0;
         const radius = scaleRadius(degree);
-        return { ...node, radius, displayText, degree };
+
+        return { ...node, radius, displayText, degree, x: width / 2, y: height / 2 };
     });
 
+    const linkData = links.map(link => ({
+        ...link,
+        source: nodeData.find(n => n.id === link.source),
+        target: nodeData.find(n => n.id === link.target)
+    })).filter(link => link.source && link.target);
+
     const svg = d3.select("#simple_visualizer")
-        .attr("width", width)
-        .attr("height", height)
-        .attr("style", "max-width: 100%; height: auto;");
+        .attr("viewBox", `0 0 ${width} ${height}`)
+        .attr("preserveAspectRatio", "xMidYMid meet")
+        .style("width", "100%")
+        .style("height", "100%");
 
     svg.selectAll("*").remove();
 
@@ -142,112 +111,53 @@ function createChart() {
         defs.append("marker")
             .attr("id", "arrowhead")
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 10)
+            .attr("refX", 44)
             .attr("refY", 0)
             .attr("markerWidth", arrowSize)
             .attr("markerHeight", arrowSize)
             .attr("orient", "auto")
+            .attr("markerUnits", "userSpaceOnUse")
             .append("path")
             .attr("d", "M0,-5L10,0L0,5")
-            .attr("class", "arrowhead");
+            .attr("fill", "red");
     }
 
-    const container = svg.append("g");
+    const container = svg.append("g").attr("class", "visualization-container");
 
-    const link = container.append("g")
+    const linkSelection = container.selectAll(".link")
+        .data(linkData)
+        .enter()
+        .append("path")
         .attr("class", "links")
-        .selectAll("line")
-        .data(links)
-        .join("line")
-        .attr("class", d => isDirected ? "link directed" : "link");
+        .attr("enabled", "true")
+        .attr("fill", "white")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1.5)
+        .attr("marker-end", isDirected ? "url(#arrowhead)" : null);
 
-    const nodeGroup = container.append("g")
-        .attr("class", "nodes");
-
-    const node = nodeGroup
-        .selectAll("circle")
+    const nodeGroups = container.selectAll(".node-group")
         .data(nodeData)
-        .join("circle")
+        .enter()
+        .append("g")
+        .attr("class", "node-group")
+        .attr("enabled", "true")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+
+    const nodeSelection = nodeGroups
+        .append("circle")
         .attr("class", "node")
-        .attr("r", d => d.radius);
+        .attr("enabled", "true")
+        .attr("r", d => d.radius)
+        .attr("fill", "#fff")
+        .attr("stroke", "#000")
+        .attr("id", d => d.id);
 
-    node.append("title").text(d => d.displayText);
-
-    const labels = nodeGroup.selectAll("text")
-        .data(nodeData)
-        .join("text")
+    const textSelection = nodeGroups
+        .append("text")
         .attr("class", "node-label")
-        .attr("dy", -3)
-        .style("font-size", "8px")
-        .text(d => d.id);
-
-    const simulation = d3.forceSimulation(nodeData)
-        .force("link", d3.forceLink(links).id(d => d.id).distance(manyNodes ? 50 : 150))
-        .force("charge", d3.forceManyBody().strength(manyNodes ? -150 : -400))
-        .force("center", d3.forceCenter(width / 2, height / 2))
-        .force("collision", d3.forceCollide().radius(d => d.radius + 3));
-
-    node.call(drag(simulation));
-
-    simulation.on("tick", () => {
-        link
-            .attr("x1", d => d.source.x)
-            .attr("y1", d => d.source.y)
-            .attr("x2", d => {
-                if (!isDirected) return d.target.x;
-                const dx = d.target.x - d.source.x;
-                const dy = d.target.y - d.source.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance === 0) return d.target.x;
-                const targetRadius = d.target.radius || 10;
-                return d.target.x - (dx / distance) * (targetRadius + 5);
-            })
-            .attr("y2", d => {
-                if (!isDirected) return d.target.y;
-                const dx = d.target.x - d.source.x;
-                const dy = d.target.y - d.source.y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance === 0) return d.target.y;
-                const targetRadius = d.target.radius || 10;
-                return d.target.y - (dy / distance) * (targetRadius + 5);
-            });
-
-        node
-            .attr("cx", d => {
-                d.x = Math.max(d.radius, Math.min(width - d.radius, d.x));
-                return d.x;
-            })
-            .attr("cy", d => {
-                d.y = Math.max(d.radius, Math.min(height - d.radius, d.y));
-                return d.y;
-            });
-
-        labels
-            .attr("x", d => d.x)
-            .attr("y", d => d.y);
-    });
-
-    const zoom = d3.zoom()
-        .scaleExtent([0.1, 5])
-        .on("zoom", (event) => {
-            container.attr("transform", event.transform);
-            labels.style("font-size", `${12 / event.transform.k}px`);
-            labels.style("display", event.transform.k > 1.5 ? "block" : "none");
-        });
-
-    svg.call(zoom);
+        .text(d => d.displayText)
+        .attr("x", 0)
+        .attr("y", 0);
 }
-
-document.addEventListener('DOMContentLoaded', function() {
-    if (nodes && nodes.length > 0) {
-        createChart();
-    } else {
-        d3.select("#simple_visualizer")
-            .append("text")
-            .attr("x", 50)
-            .attr("y", 50)
-            .attr("fill", "red")
-            .text("No graph data to display");
-    }
-});
+createSimpleVisualization();
 </script>

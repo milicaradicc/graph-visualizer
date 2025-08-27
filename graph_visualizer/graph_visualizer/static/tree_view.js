@@ -2,6 +2,7 @@
 // TODO: graph change - detect change in main using observer and render new tree
 (function() {
     const container = document.getElementById("tree-container");
+    console.log(container)
     const graph = window.graphData;
 
     if (!graph) {

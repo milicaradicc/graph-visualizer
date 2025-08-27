@@ -1,3 +1,4 @@
+from idlelib import window
 from django.apps import apps
 from django.contrib import messages
 from django.http import JsonResponse
@@ -24,23 +25,62 @@ def index(request):
         messages.error(request, str(e))
         graph = None
 
-
     graph_json = 'null'
     if graph is not None:
         graph_json = serialize_to_json(graph)
 
+    visualizer_html = None
+    visualizer_plugin = plugin_service.get_current_visualizer()
+    if not visualizer_plugin:
+        return JsonResponse({"error": "No visualizer plugins"}, status=405)
+
+    if graph is not None:
+        try:
+            visualizer_html = visualizer_plugin.visualize(graph)
+        except Exception as e:
+            print(f"Error generating visualization for {visualizer_plugin.identifier()}: {e}")
+            visualizer_html = f"<p>Error loading visualization: {str(e)}</p>"
     return render(request, 'index.html', {
         'title': 'Index',
         'datasource_plugins': datasource_plugins,
         'workspaces': workspace_service.get_workspaces(),
-        'current_workspace': workspace,
-        'graph_html': '' if graph is None else visualizer_plugins[0].visualize(graph),
+        'current_workspace': workspace_service.get_current_workspace(),
+        'visualizer_plugins': visualizer_plugins,
+        'visualizer_html': visualizer_html,
+        'visualizer_plugin': visualizer_plugin,
         'graph_json': graph_json,
         'filter_operators': WorkspaceService.get_filter_operators(),
         'active_searches': [search.to_dict() for search in workspace.searches],
         'active_filters': [f.to_dict() for f in workspace.filters],
         'cli_history': workspace.cli_history,
     })
+
+def set_current_visualizer(request):
+    """AJAX endpoint to set current visualizer plugin"""
+    if request.method != "POST":
+        return JsonResponse({"error": "Invalid request method"}, status=405)
+
+    plugin_id = request.POST.get("plugin_identifier")
+    if not plugin_id:
+        messages.error(request, "No plugin selected")
+        return redirect("index")
+    plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
+    visualizer_plugins = plugin_service.plugins[visualizer_group]
+    if not visualizer_plugins or len(visualizer_plugins) == 0:
+        return JsonResponse({"error": "Plugin not found"}, status=404)
+
+    selected_plugin = None
+    for plugin in visualizer_plugins:
+        if plugin.identifier() == plugin_id:
+            selected_plugin = plugin
+            break
+    if not selected_plugin:
+        return JsonResponse({"error": "Plugin not found"}, status=404)
+
+    plugin_service.set_current_visualizer(selected_plugin)
+
+    return redirect("index")
+
 
 def get_plugin_params(request, plugin_identifier):
     plugin_service: PluginService = apps.get_app_config('graph_visualizer').plugin_service
