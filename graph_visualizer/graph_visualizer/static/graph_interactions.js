@@ -1,6 +1,5 @@
 function createGraphInteractionManager() {
     let activeSimulation = null;
-    let isInitialized = false;
 
     function createDragBehavior(simulation) {
         function dragStarted(d) {
@@ -39,14 +38,6 @@ function createGraphInteractionManager() {
                         .style("font-size", `${Math.max(6, 10 / scale)}px`)
                         .style("display", scale > 0.6 ? "block" : "none");
                 }
-
-                if (window.birdViewManager) {
-                    clearTimeout(window.birdViewTimeout);
-                    window.birdViewTimeout = setTimeout(() => {
-                        window.birdViewManager.updateBirdView();
-                        window.birdViewManager.updateViewport(svg);
-                    }, 50);
-                }
             });
 
         svg.call(zoom);
@@ -62,13 +53,13 @@ function createGraphInteractionManager() {
         const { svg, container, nodeSelection, linkSelection, nodeData, linkData } = visualizerInstance;
         const width = svg.node().clientWidth || 800;
         const height = svg.node().clientHeight || 600;
-
+        const isManyNodes = nodeData.length > 100;
         const simulation = d3.forceSimulation(nodeData)
-            .force("link", d3.forceLink(linkData).id(d => d.id).distance(200))
+            .force("link", d3.forceLink(linkData).id(d => d.id).distance(isManyNodes ? 400 : 200))
             .force("charge", d3.forceManyBody().strength(0))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collision", d3.forceCollide().radius(70))
-            .force("gravity", d3.forceManyBody().strength(-100))
+            .force("collision", d3.forceCollide().radius(isManyNodes ? 120 : 70))
+            .force("gravity", d3.forceManyBody().strength(isManyNodes ? -250 : -100))
             .on("tick", tick);
 
         function tick() {
@@ -151,7 +142,7 @@ function createGraphInteractionManager() {
             .call(zoom.transform, d3.zoomIdentity.translate(translateX, translateY).scale(scale));
     }
 
-    function initializeBirdView(mainViewSelector, birdViewSvgId) {
+    function createBirdViewManager(mainViewSelector, birdViewSvgId) {
         let isUpdating = false;
         const configuration = { attributes: true, childList: true, subtree: true };
 
@@ -258,7 +249,6 @@ function createGraphInteractionManager() {
         const mainViewSvg = d3.select(mainViewSelector);
         if (!mainViewSvg.empty()) {
             observer.observe(mainViewSvg.node(), configuration);
-            setTimeout(updateBirdView, 200);
         }
 
         return {
@@ -273,43 +263,6 @@ function createGraphInteractionManager() {
         createZoomBehavior,
         enableGenericPluginInteractions,
         fitGraphToView,
-        initializeBirdView,
-        isInitialized: () => isInitialized,
-        setInitialized: (value) => { isInitialized = value; }
+        createBirdViewManager,
     };
 }
-
-window.graphInteractionManager = createGraphInteractionManager();
-
-function initializeVisualizerSwitching() {
-    const selectElement = document.getElementById('visualizer-select');
-    if (!selectElement) return;
-
-    selectElement.addEventListener('change', function(e) {
-        const selectedVisualizer = e.target.value;
-
-        document.querySelectorAll('.visualizer-content > div').forEach(div => {
-            div.style.display = 'none';
-            div.classList.remove('active');
-        });
-
-        const targetDiv = document.getElementById(`visualizer-${selectedVisualizer}`);
-        if (targetDiv) {
-            targetDiv.style.display = 'block';
-            targetDiv.classList.add('active');
-
-            setTimeout(() => {
-                if (window.birdViewManager) {
-                    window.birdViewManager.updateBirdView();
-                }
-            }, 300);
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    if (!window.graphInteractionManager.isInitialized()) {
-        initializeVisualizerSwitching();
-        window.graphInteractionManager.setInitialized(true);
-    }
-});

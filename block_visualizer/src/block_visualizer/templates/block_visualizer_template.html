@@ -89,8 +89,9 @@ function renderBlockGraph() {
          edges: {{ edges | tojson | safe }},
          directed: {{ directed | tojson }}
      };
-    const width = 800;
-    const height = 600;
+    const containerElement = document.querySelector("#block_visualizer").parentNode;
+    const width = Math.max(containerElement.clientWidth || 800, 400);
+    const height = Math.max(containerElement.clientHeight || 600, 300);
     
     if (!data || !data.nodes || data.nodes.length === 0) {
         console.error('No valid node data provided to renderBlockGraph');

@@ -35,7 +35,7 @@
         <label for="visualizer-select">Choose visualizer:</label>
         <select id="visualizer-select">
             {% for plugin in visualizer_plugins %}
-                <option value="{{ plugin.identifier }}" {% if plugin.identifier == default_plugin.identifier %}selected{% endif %}>
+                <option value="{{ plugin.identifier }}" {% if plugin.identifier == visualizer_plugin.identifier %}selected{% endif %}>
                     {{ plugin.name }}
                 </option>
             {% endfor %}
@@ -63,11 +63,11 @@
             <div id="main-view" class="graph-view">
                 <h3>Main View</h3>
                 <div class="visualizer-content" id="visualizer-content">
-                    {% if initial_visualizer_html and default_plugin %}
-                        <div id="visualizer-{{ default_plugin.identifier }}"
-                             data-plugin-id="{{ default_plugin.identifier }}"
+                    {% if visualizer_html and visualizer_plugin %}
+                        <div id="visualizer-{{ visualizer_plugin.identifier }}"
+                             data-plugin-id="{{ visualizer_plugin.identifier }}"
                              class="active">
-                            {{ initial_visualizer_html|safe }}
+                            {{ visualizer_html|safe }}
                         </div>
                     {% else %}
                         <div>
@@ -87,6 +87,6 @@
 {% load static %}
 <script src="{% static 'tree_view.js' %}"></script>
 <script src="{% static 'main_view.js' %}"></script>
-<script src="{% static 'graph-interactions.js' %}"></script>
-<script src="{% static 'visualizer-switching.js' %}"></script>
+<script src="{% static 'graph_interactions.js' %}"></script>
+<script src="{% static 'visualizer_switcher.js' %}"></script>
 {% endblock %}

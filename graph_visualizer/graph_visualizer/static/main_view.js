@@ -1,4 +1,10 @@
+let graphInteractionManager = null;
+let visualizerSwitcher = null;
+let birdViewManager = null;
+let interactiveInstance = null;
 document.addEventListener("DOMContentLoaded", () => {
+    graphInteractionManager = createGraphInteractionManager();
+    visualizerSwitcher = new VisualizerSwitcher();
     const pluginId = document.getElementById('visualizer-select')
                         ? document.getElementById('visualizer-select').value
                         : null;
@@ -22,33 +28,30 @@ document.addEventListener("DOMContentLoaded", () => {
                 const svgNode = svg.node();
                 if (!svgNode) return;
 
-                const newWidth = svgNode.clientWidth || 1000;
-                const newHeight = svgNode.clientHeight || 800;
+                const width = svgNode.clientWidth || 800;
+                const height = svgNode.clientHeight || 600;
 
-                if (window.pluginAPI && window.pluginAPI[pluginId] && window.pluginAPI[pluginId].interactiveInstance) {
-                    const { simulation } = window.pluginAPI[pluginId].interactiveInstance;
-                    if (simulation) {
-                        simulation.force("center", d3.forceCenter(newWidth / 2, newHeight / 2));
-                        simulation.alpha(0.3).restart();
-                    }
-                }
-
-                if (window.pluginAPI[pluginId] && window.pluginAPI[pluginId].birdViewManager) {
-                    setTimeout(() => {
-                        window.pluginAPI[pluginId].birdViewManager.updateBirdView();
-                    }, 100);
+                if (!interactiveInstance) return;
+                const simulation = interactiveInstance.simulation;
+                if (!simulation) return;
+                simulation.force("center", d3.forceCenter(width / 2, height / 2));
+                simulation.alpha(0.3).restart();
+                if (birdViewManager) {
+                    setTimeout(() => birdViewManager.updateBirdView(), 100);
                 }
             }, 150);
         });
     }
+    setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
 });
 
-window.checkForVisualizer = function(pluginId) {
+function checkForVisualizer(pluginId) {
     const svg = document.querySelector(`#${pluginId}`);
     if (svg) {
         const container = svg.querySelector('.visualization-container');
         const nodeData = window.graphData ? window.graphData.nodes : [];
         const linkDataUnprocessed = window.graphData ? window.graphData.edges : [];
+        const isGraphDirected = window.graphData ? window.graphData.directed : true;
         const linkData = linkDataUnprocessed.map(link => ({
             source: link.src,
             target: link.dest
@@ -77,19 +80,15 @@ window.checkForVisualizer = function(pluginId) {
             if (d.radius === undefined) d.radius = 8;
         });
 
-        window.pluginAPI = window.pluginAPI || {};
-        window.pluginAPI[pluginId] = window.pluginAPI[pluginId] || {};
-        window.pluginAPI[pluginId] = {
-            instance: {
+        visualizerInstance = {
                 svg: svgSelection,
                 container: containerSelection,
                 nodeSelection: nodeSelection,
                 linkSelection: linkSelection,
                 nodeData: nodeData,
                 linkData: linkData
-            }
         };
-        setupInteractionsIfNeeded(pluginId);
+        setupInteractionsIfNeeded(pluginId, visualizerInstance, isGraphDirected);
         setTimeout(() => {
             initializeBirdViewIfNeeded(pluginId);
         }, 200);
@@ -97,22 +96,19 @@ window.checkForVisualizer = function(pluginId) {
     return;
 }
 
-function setupInteractionsIfNeeded(pluginId) {
-    if (window.pluginAPI && window.pluginAPI[pluginId] && window.pluginAPI[pluginId].interactiveInstance) {
-        return;
-    }
-    if (window.pluginAPI[pluginId] && window.pluginAPI[pluginId].instance) {
+function setupInteractionsIfNeeded(pluginId, visualizerInstance, isGraphDirected) {
+
+    if (visualizerInstance) {
         const mainView = document.getElementById('main-view');
         const visualizerContent = document.getElementById('visualizer-content');
         const visualizerSvg = document.getElementById(`${pluginId}`);
 
         if (mainView && visualizerContent && visualizerSvg &&
-            mainView.contains(visualizerSvg) && window.graphInteractionManager) {
-
-            const interactiveInstance = window.graphInteractionManager
-                .enableGenericPluginInteractions(window.pluginAPI[pluginId].instance, true, true, true);
-            if (interactiveInstance) {
-                window.pluginAPI[pluginId].interactiveInstance = interactiveInstance;
+            mainView.contains(visualizerSvg) && graphInteractionManager) {
+            const newInteractiveInstance = graphInteractionManager
+                .enableGenericPluginInteractions(visualizerInstance, true, true, isGraphDirected);
+            if (newInteractiveInstance) {
+                interactiveInstance = newInteractiveInstance;
             } else {
                 console.warn("Failed to create interactive instance from main_view");
             }
@@ -123,7 +119,7 @@ function setupInteractionsIfNeeded(pluginId) {
 }
 
 function initializeBirdViewIfNeeded(pluginId) {
-    if (window.pluginAPI && window.pluginAPI[pluginId] && window.pluginAPI[pluginId].birdViewManager) {
+    if (birdViewManager) {
         setTimeout(() => {
             birdViewManager.updateBirdView();
         }, 100);
@@ -136,14 +132,9 @@ function initializeBirdViewIfNeeded(pluginId) {
         console.error("Bird view SVG not found in DOM");
         return;
     }
-    const birdViewManager = window.graphInteractionManager
-        .initializeBirdView(`#${pluginId}`, 'bird-svg');
+    birdViewManager = graphInteractionManager.createBirdViewManager(`#${pluginId}`, 'bird-svg');
 
     if (birdViewManager) {
-        window.pluginAPI = window.pluginAPI || {};
-        window.pluginAPI[pluginId] = window.pluginAPI[pluginId] || {};
-        window.pluginAPI[pluginId].birdViewManager = birdViewManager;
-
         setTimeout(() => {
             birdViewManager.updateBirdView();
         }, 100);

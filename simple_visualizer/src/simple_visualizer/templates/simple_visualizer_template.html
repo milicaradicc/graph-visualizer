@@ -130,7 +130,7 @@ function createSimpleVisualization() {
         .append("path")
         .attr("class", "links")
         .attr("enabled", "true")
-        .attr("fill", "none")
+        .attr("fill", "white")
         .attr("stroke", "black")
         .attr("stroke-width", 1.5)
         .attr("marker-end", isDirected ? "url(#arrowhead)" : null);
@@ -148,6 +148,8 @@ function createSimpleVisualization() {
         .attr("class", "node")
         .attr("enabled", "true")
         .attr("r", d => d.radius)
+        .attr("fill", "#fff")
+        .attr("stroke", "#000")
         .attr("id", d => d.id);
 
     const textSelection = nodeGroups
