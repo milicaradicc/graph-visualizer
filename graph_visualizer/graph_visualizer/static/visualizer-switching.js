@@ -17,139 +17,39 @@ class VisualizerSwitcher {
         this.currentVisualizer = this.selectElement.value;
         this.loadedVisualizers.add(this.currentVisualizer);
 
-        this.showVisualizer(this.currentVisualizer, false);
-
         this.selectElement.addEventListener('change', (e) => {
             this.switchToVisualizer(e.target.value);
         });
+        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     }
 
     async switchToVisualizer(pluginId) {
         if (this.currentVisualizer === pluginId) return;
-
+        this.currentVisualizer = pluginId;
         try {
             if (this.loadedVisualizers.has(pluginId)) {
-                this.showVisualizer(pluginId, false);
                 window.graphInteractionManager.initializeBirdView(`#${pluginId}`, 'bird-svg');
                 return;
             }
 
-            const response = await fetch(`/get_visualizer_html/${pluginId}/`);
+            const response = await fetch(`plugin/visualizer/set`, {
+                method: 'POST',
+                headers: {
+                    'X-CSRFToken': getCookie('csrftoken'),
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                body: new URLSearchParams({ plugin_identifier: pluginId }),
+                redirect: 'manual' // prevent fetch from following redirect automatically
+            });
+
+            if (response.type === 'opaqueredirect' || response.status === 302) {
+                window.location.href = '';  // force browser redirect
+            }
             if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-
-            const data = await response.json();
-            if (data.error) throw new Error(data.error);
-
-            this.createVisualizerContainer(pluginId, data.html);
-            this.loadedVisualizers.add(pluginId);
-            this.showVisualizer(pluginId, true);
 
         } catch (error) {
             console.error('Error loading visualizer:', error);
             this.selectElement.value = this.currentVisualizer;
-        }
-    }
-
-    createVisualizerContainer(pluginId, htmlContent) {
-
-        const container = document.createElement('div');
-        container.id = `visualizer-${pluginId}`;
-        container.setAttribute('data-plugin-id', pluginId);
-        container.innerHTML = htmlContent;
-        container.style.display = 'none';
-        this.contentContainer.appendChild(container);
-    }
-
-    showVisualizer(pluginId, isNewlyLoaded = false) {
-        this.contentContainer.querySelectorAll('[data-plugin-id]').forEach(viz => {
-            viz.classList.remove('active');
-            viz.style.display = 'none';
-        });
-
-        const visualizerElement = document.getElementById(`visualizer-${pluginId}`);
-        if (visualizerElement) {
-            visualizerElement.classList.add('active');
-            visualizerElement.style.display = 'block';
-            this.currentVisualizer = pluginId;
-
-            if (isNewlyLoaded) {
-                this.initializeNewVisualizer(visualizerElement, pluginId);
-            } else {
-                this.refreshVisualizer();
-            }
-        } else {
-            console.warn(`Visualizer element not found: visualizer-${pluginId}`);
-        }
-    }
-
-    initializeNewVisualizer(container, pluginId) {
-        const scripts = container.querySelectorAll('script');
-        scripts.forEach(oldScript => {
-            const newScript = document.createElement('script');
-            if (oldScript.src) {
-                newScript.src = oldScript.src;
-                newScript.onload = () => this.setupVisualizerInstance(pluginId);
-            } else {
-                newScript.textContent = oldScript.textContent;
-                setTimeout(() => this.setupVisualizerInstance(pluginId), 100);
-            }
-            oldScript.parentNode.replaceChild(newScript, oldScript);
-        });
-
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
-    }
-
-    async setupVisualizerInstance(pluginId) {
-        if (window.checkForVisualizer(pluginId)) {
-            const success = window.checkForVisualizer(pluginId);
-            if (success) {
-                this.enableGenericInteractions(pluginId);
-                return;
-            }
-        }
-    }
-
-    enableGenericInteractions(pluginId) {
-
-        if (!window.graphInteractionManager) return;
-
-        window.pluginAPI = window.pluginAPI || {};
-        window.pluginAPI[pluginId] = window.pluginAPI[pluginId] || {};
-
-        const pluginInstance = window.pluginAPI[pluginId].instance;
-        if (!pluginInstance) {
-            console.warn(`No plugin instance found for ${pluginId}`);
-            return;
-        }
-
-        try {
-            const interactiveInstance = window.graphInteractionManager
-                .enableGenericPluginInteractions(pluginInstance, true, true, true);
-
-            if (interactiveInstance) {
-                window.pluginAPI[pluginId].interactiveInstance = interactiveInstance;
-            }
-        } catch (error) {
-            console.warn(`Generic interactions failed for ${pluginId}:`, error);
-        }
-    }
-
-    refreshVisualizer() {
-        setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
-    }
-
-    getCurrentVisualizer() { return this.currentVisualizer; }
-
-    switchTo(pluginId) {
-        this.selectElement.value = pluginId;
-        this.switchToVisualizer(pluginId);
-    }
-
-    getLoadedVisualizers() { return Array.from(this.loadedVisualizers); }
-
-    async preloadVisualizer(pluginId) {
-        if (!this.loadedVisualizers.has(pluginId)) {
-            await this.switchToVisualizer(pluginId);
         }
     }
 }
@@ -159,6 +59,12 @@ document.addEventListener('DOMContentLoaded', () => {
     visualizerSwitcher = new VisualizerSwitcher();
     window.visualizerSwitcher = visualizerSwitcher;
 });
+
+function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(';').shift();
+}
 
 function enhanceGraphInteractionManager() {
     if (!window.graphInteractionManager) {

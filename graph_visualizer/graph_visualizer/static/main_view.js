@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const newWidth = svgNode.clientWidth || 1000;
                 const newHeight = svgNode.clientHeight || 800;
 
-                if (window.pluginAPI[pluginId] && window.pluginAPI[pluginId].interactiveInstance) {
+                if (window.pluginAPI && window.pluginAPI[pluginId] && window.pluginAPI[pluginId].interactiveInstance) {
                     const { simulation } = window.pluginAPI[pluginId].interactiveInstance;
                     if (simulation) {
                         simulation.force("center", d3.forceCenter(newWidth / 2, newHeight / 2));

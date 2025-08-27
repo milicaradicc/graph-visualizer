@@ -35,7 +35,7 @@
         <label for="visualizer-select">Choose visualizer:</label>
         <select id="visualizer-select">
             {% for plugin in visualizer_plugins %}
-                <option value="{{ plugin.identifier }}" {% if forloop.first %}selected{% endif %}>
+                <option value="{{ plugin.identifier }}" {% if plugin.identifier == default_plugin.identifier %}selected{% endif %}>
                     {{ plugin.name }}
                 </option>
             {% endfor %}
