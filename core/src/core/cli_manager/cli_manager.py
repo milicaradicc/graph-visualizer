@@ -144,8 +144,8 @@ class CLIHandler:
             add-edge --parent <parent_id> --child <child_id>
                 e.g. add-edge --parent 1 --child 2
         edit edge:
-            edit-edge --parent <parent_id> --child <child_id> --new_parent <new_parent> --new_child <new_child>
-                e.g. edit-edge --parent 1 --child 1 --new_parent 2 --new_child 1
+            edit-edge --parent <parent_id> --child <child_id> (opt)--new_parent <new_parent> (opt)--new_child <new_child>
+                e.g. edit-edge --parent 1 --child 2 --new_child 4
         delete edge:
             delete-edge --parent <parent_id> --child <child_id>
                 e.g. delete-edge --parent 1 --child 2
