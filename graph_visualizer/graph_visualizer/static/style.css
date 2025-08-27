@@ -26,6 +26,7 @@ html, body {
             font-family: Arial, sans-serif;
             display: flex;
             flex-direction: column;
+    overflow-x: hidden
         }
 h3{
         margin: 0 auto;}
@@ -33,7 +34,6 @@ h3{
     height: 50% !important;
 }
 
-    /* Your existing rule will still apply to main view */
     svg {
         height: 70vh !important;
     }
@@ -49,45 +49,52 @@ h3{
             width: 95vw;
         }
 
-        .cli-container{
-            width: 99%;
-            display: flex;
-            flex-direction: column;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            background: #1e1e1e;
-            gap: 0.5rem;
-            .cli-history {
-                height: 150px;
-                overflow-y: auto;
-                background-color: #1e1e1e;
-                color: #f1f1f1;
-                font-family: monospace;
-                font-size: 0.9rem;
-                padding: 0.5rem;
-                border-radius: 6px;
-                margin-bottom: 0.5rem;
-            }
+        .cli-container {
+    width: 99%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #ffffff;
+    gap: 0.5rem;
+}
 
-            .cli-input-wrapper {
-                display: flex;
-                gap: 0.5rem;
-            }
+.cli-history {
+    height: 150px;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+    color: #252629 !important;
+    font-family: monospace;
+    font-size: 0.9rem;
+    padding: 0.5rem;
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    border: 1px solid #ccc;
+}
 
-            input {
-                flex: 1;
-                padding: 0.5rem;
-                border: none;
-                font-family: monospace;
-                font-size: 0.95rem;
-                background-color: #1e1e1e;
-                color: #f1f1f1;
-            }
-            input:focus{
-                outline:none
-            }
-        }
+.cli-input-wrapper {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.cli-input-wrapper input {
+    flex: 1;
+    padding: 0.5rem;
+    border: 2px solid #4a90e2;
+    border-radius: 6px;
+    font-family: monospace;
+    font-size: 0.95rem;
+    background-color: #eaf4fe;
+    color: #1e1e1e;
+    transition: border 0.2s, background 0.2s;
+}
+
+.cli-input-wrapper input:focus {
+    outline: none;
+    border-color: #357ABD;
+    background-color: #d2eafd;
+}
 
         .controls {
             padding: 10px 15px;
@@ -105,8 +112,6 @@ h3{
         }
 
         .view {
-            border: 2px solid;
-            border-radius: 8px;
             display: flex;
             flex-direction: column;
             height: 50%;
@@ -115,7 +120,7 @@ h3{
         }
 
         #main-view { flex: 2; border-color: #4CAF50; }
-        #bird-view { flex: 1; border-color: #FF9800; background: #f9f9f9; pointer-events: none; }
+        #bird-view { flex: 1; border-color: #FF9800; background: #ffffff; pointer-events: none; }
         .tree-view .view-content {
             overflow-y: auto;
             overflow-x: auto;
@@ -127,6 +132,7 @@ h3{
         .graph-view {
             height: 70%;
             padding-right: 10px;
+            text-align: center;
         }
         /* Header view-a */
         .view-header {
@@ -135,10 +141,6 @@ h3{
             font-weight: bold;
             color: white;
         }
-
-        .main-view .view-header { background: #4CAF50; }
-        .bird-view .view-header { background: #FF9800; }
-        .tree-view .view-header { background: #2196F3; }
 
         .view-content {
             flex: 1;
@@ -366,6 +368,20 @@ body {
         width: 90%;
         min-width: auto;
     }
+}
+.styled-select {
+    padding: 5px 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #ffffff;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.styled-select:focus {
+    outline: none;
+    border-color: #9c555d; /* ista boja naglaska kao workspace */
+    box-shadow: 0 0 5px rgba(156, 85, 93, 0.5);
 }
 
 /* General dropdown styling */

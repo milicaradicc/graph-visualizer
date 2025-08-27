@@ -31,9 +31,9 @@
 
 <div class="graph-container">
     <!-- Controls for visualizer switch -->
-    <div class="controls">
-        <label for="visualizer-select">Choose visualizer:</label>
-        <select id="visualizer-select">
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <label for="visualizer-select">Visualizer:</label>
+        <select id="visualizer-select" class="styled-select">
             {% for plugin in visualizer_plugins %}
                 <option value="{{ plugin.identifier }}" {% if plugin.identifier == visualizer_plugin.identifier %}selected{% endif %}>
                     {{ plugin.name }}
@@ -46,8 +46,8 @@
     <div class="views-container">
         <div class="left-view">
         <!-- Tree View -->
-            <div class="view tree-view">
-                <div class="view-header">Tree View</div>
+            <div class="view tree-view" id="tree-view" class="graph-view">
+                <h3>Tree View</h3>
                 <div class="view-content" id="tree-container"></div>
             </div>
         <!-- Bird View -->
@@ -80,7 +80,7 @@
     </div>
 
    <div id="cliTerminal" class="cli-container">
-        <div id="cliHistory" class="cli-history" style="white-space: pre;"></div>
+        <div id="cliHistory" class="cli-history"></div>
         <form method="POST" action="{% url 'run_cli_command' %}" id="cliForm">
             {% csrf_token %}
             <div class="cli-input-wrapper">
@@ -103,6 +103,14 @@
 
 <script>
     window.graphData = {{ graph_json|safe }};
+      window.addEventListener('load', function() {
+        // Scroll to top on page load
+        window.scrollTo(0, 0);
+
+        // Ako želiš da scroll uvek ostane na vrhu prilikom rendera
+        document.body.scrollTop = 0; // za Safari
+        document.documentElement.scrollTop = 0; // za Chrome, Firefox, IE i Opera
+      });
 </script>
 
 {% load static %}
