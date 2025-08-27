@@ -55,10 +55,10 @@ function createGraphInteractionManager() {
         const height = svg.node().clientHeight || 600;
         const isManyNodes = nodeData.length > 100;
         const simulation = d3.forceSimulation(nodeData)
-            .force("link", d3.forceLink(linkData).id(d => d.id).distance(isManyNodes ? 400 : 200))
+            .force("link", d3.forceLink(linkData).id(d => d.id).distance(isManyNodes ? 400 : 250))
             .force("charge", d3.forceManyBody().strength(0))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collision", d3.forceCollide().radius(isManyNodes ? 120 : 70))
+            .force("collision", d3.forceCollide().radius(isManyNodes ? 120 : 90))
             .force("gravity", d3.forceManyBody().strength(isManyNodes ? -250 : -100))
             .on("tick", tick);
 
