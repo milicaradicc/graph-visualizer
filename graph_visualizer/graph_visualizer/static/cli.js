@@ -13,7 +13,7 @@ function addToHistory(text, type = 'info') {
         case 'success': line.style.color = '#28a745'; break;
         case 'error': line.style.color = '#dc3545'; break;
         case 'warning': line.style.color = '#ffc107'; break;
-        default: line.style.color = '#f1f1f1';
+        default: line.style.color = '#1e1e1e';
     }
 
     cliHistory.appendChild(line);

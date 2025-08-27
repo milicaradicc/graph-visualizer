@@ -1,5 +1,3 @@
-// TODO: enable scroll when many items are opened
-// TODO: graph change - detect change in main using observer and render new tree
 (function() {
     const container = document.getElementById("tree-container");
     console.log(container)
@@ -34,7 +32,6 @@
         }
     });
 
-    // --- hybrid root node detection ---
     function findRoots(nodes, edges) {
         // create set of nodes that have parents
         const hasParent = new Set();
