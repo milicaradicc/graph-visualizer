@@ -29,7 +29,9 @@ class CommandHandler:
             return Status.SUCCESS,f"Edge {parent_id} -> {child_id} created."
         return Status.ERROR,f"Something with adding edge {parent_id} -> {child_id} went wrong."
 
-    def edit_edge(self, old_parent: str, old_child: str, new_parent: str, new_child: str):
+    def edit_edge(self, old_parent: str, old_child: str, new_parent: str|None, new_child: str|None):
+        new_parent=new_parent or old_parent
+        new_child=new_child or old_child
         if self.workspace.edit_edge(old_parent,old_child,new_parent,new_child):
             return Status.SUCCESS,f"Edge {old_parent} -> {old_child} updated to {new_parent} -> {new_child}."
         return Status.ERROR,f"Something with editing old edge {old_parent} -> {old_child} went wrong."
@@ -218,10 +220,12 @@ class CLIHandler:
                 flags = parse_flags(parts[1:])
                 old_parent = flags.get("parent")
                 old_child = flags.get("child")
-                new_parent = flags.get("new_parent")
-                new_child = flags.get("new_child")
-                if not all([old_parent, old_child, new_parent, new_child]):
-                    raise ValueError("Missing flags for edit-edge")
+                new_parent = flags.get("new_parent") or None
+                new_child = flags.get("new_child") or None
+                if not old_parent or not old_child:
+                    raise ValueError("Missing --parent or --child (old edge identifiers)")
+                if not new_parent and not new_child:
+                    raise ValueError("At least one of --new_parent or --new_child must be provided")
                 status,message = self.manager.edit_edge(old_parent, old_child, new_parent, new_child)
                 return status,message
 
