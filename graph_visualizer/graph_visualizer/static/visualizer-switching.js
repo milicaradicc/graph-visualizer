@@ -14,14 +14,11 @@ class VisualizerSwitcher {
             return;
         }
 
-        // Set and mark the initial visualizer as loaded
         this.currentVisualizer = this.selectElement.value;
         this.loadedVisualizers.add(this.currentVisualizer);
 
-        // Show initial visualizer
         this.showVisualizer(this.currentVisualizer, false);
 
-        // Add event listener for switching
         this.selectElement.addEventListener('change', (e) => {
             this.switchToVisualizer(e.target.value);
         });
@@ -64,7 +61,6 @@ class VisualizerSwitcher {
     }
 
     showVisualizer(pluginId, isNewlyLoaded = false) {
-        // Hide all visualizers
         this.contentContainer.querySelectorAll('[data-plugin-id]').forEach(viz => {
             viz.classList.remove('active');
             viz.style.display = 'none';
@@ -87,7 +83,6 @@ class VisualizerSwitcher {
     }
 
     initializeNewVisualizer(container, pluginId) {
-        // Re-run scripts inside dynamic HTML
         const scripts = container.querySelectorAll('script');
         scripts.forEach(oldScript => {
             const newScript = document.createElement('script');
@@ -101,14 +96,10 @@ class VisualizerSwitcher {
             oldScript.parentNode.replaceChild(newScript, oldScript);
         });
 
-        // Trigger resize
         setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     }
 
     async setupVisualizerInstance(pluginId) {
-        console.log(`Setting up visualizer instance for ${pluginId}`);
-
-        // Method 1: Use global checkForVisualizer if available
         if (window.checkForVisualizer(pluginId)) {
             const success = window.checkForVisualizer(pluginId);
             if (success) {
@@ -116,17 +107,15 @@ class VisualizerSwitcher {
                 return;
             }
         }
-        }
+    }
 
     enableGenericInteractions(pluginId) {
 
         if (!window.graphInteractionManager) return;
 
-        // Prepare pluginAPI structure
         window.pluginAPI = window.pluginAPI || {};
         window.pluginAPI[pluginId] = window.pluginAPI[pluginId] || {};
 
-        // The plugin instance must exist or be initialized by plugin script
         const pluginInstance = window.pluginAPI[pluginId].instance;
         if (!pluginInstance) {
             console.warn(`No plugin instance found for ${pluginId}`);
@@ -134,8 +123,6 @@ class VisualizerSwitcher {
         }
 
         try {
-
-            // Call with the correct arguments: (instance, enableEvents=true, enableControl=true)
             const interactiveInstance = window.graphInteractionManager
                 .enableGenericPluginInteractions(pluginInstance, true, true, true);
 
@@ -151,32 +138,28 @@ class VisualizerSwitcher {
         setTimeout(() => window.dispatchEvent(new Event('resize')), 100);
     }
 
-    // Public helpers
-    getCurrentVisualizer() {
-    return this.currentVisualizer; }
-    switchTo(pluginId) {
+    getCurrentVisualizer() { return this.currentVisualizer; }
 
+    switchTo(pluginId) {
         this.selectElement.value = pluginId;
         this.switchToVisualizer(pluginId);
     }
-    getLoadedVisualizers() {
-    return Array.from(this.loadedVisualizers); }
-    async preloadVisualizer(pluginId) {
 
+    getLoadedVisualizers() { return Array.from(this.loadedVisualizers); }
+
+    async preloadVisualizer(pluginId) {
         if (!this.loadedVisualizers.has(pluginId)) {
             await this.switchToVisualizer(pluginId);
         }
     }
 }
 
-// Initialize
 let visualizerSwitcher = null;
 document.addEventListener('DOMContentLoaded', () => {
     visualizerSwitcher = new VisualizerSwitcher();
     window.visualizerSwitcher = visualizerSwitcher;
 });
 
-// Enhance graph interaction manager
 function enhanceGraphInteractionManager() {
     if (!window.graphInteractionManager) {
         console.warn('graphInteractionManager not found, skipping enhancement');

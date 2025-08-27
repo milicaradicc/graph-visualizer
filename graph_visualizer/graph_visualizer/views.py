@@ -21,11 +21,10 @@ def index(request):
     if graph is not None:
         graph_json = serialize_to_json(graph)
 
-    # Only generate HTML for the first (default) visualizer plugin
     initial_visualizer_html = None
     default_plugin = None
     if graph is not None and visualizer_plugins:
-        default_plugin = visualizer_plugins[0]  # First plugin as default
+        default_plugin = visualizer_plugins[0]
         try:
             initial_visualizer_html = default_plugin.visualize(graph)
         except Exception as e:
@@ -56,7 +55,6 @@ def get_visualizer_html(request, plugin_identifier):
     if graph is None:
         return JsonResponse({"error": "No graph data available"}, status=404)
 
-    # Find the requested plugin
     selected_plugin = None
     for plugin in visualizer_plugins:
         if plugin.identifier() == plugin_identifier:

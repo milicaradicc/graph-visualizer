@@ -49,13 +49,12 @@
                 <div class="view-content" id="tree-container"></div>
             </div>
         <!-- Bird View -->
-
             <div id="bird-view" class="graph-view">
-            <h3>Bird View</h3>
-            <div class="view-content">
-                <svg id="bird-svg"></svg>
+                <h3>Bird View</h3>
+                <div class="view-content">
+                    <svg id="bird-svg"></svg>
+                </div>
             </div>
-        </div>
         </div>
         <div class="right-view">
         <!-- Main View -->
@@ -63,7 +62,6 @@
                 <h3>Main View</h3>
                 <div class="visualizer-content" id="visualizer-content">
                     {% if initial_visualizer_html and default_plugin %}
-                        <!-- Only render the initial/default visualizer -->
                         <div id="visualizer-{{ default_plugin.identifier }}"
                              data-plugin-id="{{ default_plugin.identifier }}"
                              class="active">

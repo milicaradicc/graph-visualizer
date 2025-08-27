@@ -1,45 +1,43 @@
 <style>
-
-
 #simple_visualizer {
     width: 100%;
     height: 100%;
     display: block !important;
     .node {
-    cursor: pointer;
-    fill: white;
-    stroke: black;
-    stroke-width: 2px;
-}
+        cursor: pointer;
+        fill: white;
+        stroke: black;
+        stroke-width: 2px;
+    }
 
-.node:hover {
-    fill: #f5f5f5;
-    stroke-width: 3px;
-}
+    .node:hover {
+        fill: #f5f5f5;
+        stroke-width: 3px;
+    }
 
-.link {
-    fill: none !important;
-    stroke: black;
-    stroke-width: 1.5px;
-}
+    .link {
+        fill: none !important;
+        stroke: black;
+        stroke-width: 1.5px;
+    }
 
-.link.directed {
-    marker-end: url(#arrowhead);
-}
+    .link.directed {
+        marker-end: url(#arrowhead);
+    }
 
-.node-label {
-    font-family: Arial, sans-serif;
-    font-size: 10px;
-    font-weight: bold;
-    fill: red;
-    text-anchor: middle;
-    pointer-events: none;
-    dominant-baseline: central;
-}
+    .node-label {
+        font-family: Arial, sans-serif;
+        font-size: 10px;
+        font-weight: bold;
+        fill: red;
+        text-anchor: middle;
+        pointer-events: none;
+        dominant-baseline: central;
+    }
 
-.arrowhead {
-    fill: red;
-}
+    .arrowhead {
+        fill: red;
+    }
 }
 </style>
 
@@ -72,7 +70,6 @@ function createSimpleVisualization() {
         return;
     }
 
-    // Calculate node degrees for sizing
     const degreeMap = {};
     links.forEach(l => {
         degreeMap[l.source] = (degreeMap[l.source] || 0) + 1;
@@ -114,7 +111,7 @@ function createSimpleVisualization() {
         defs.append("marker")
             .attr("id", "arrowhead")
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 44)  // adjust if needed
+            .attr("refX", 44)
             .attr("refY", 0)
             .attr("markerWidth", arrowSize)
             .attr("markerHeight", arrowSize)
@@ -153,13 +150,12 @@ function createSimpleVisualization() {
         .attr("r", d => d.radius)
         .attr("id", d => d.id);
 
-    // Add text to node groups - FIXED: Proper positioning
     const textSelection = nodeGroups
         .append("text")
         .attr("class", "node-label")
         .text(d => d.displayText)
-        .attr("x", 0)  // Centered in the group
-        .attr("y", 0); // Centered in the group
+        .attr("x", 0)
+        .attr("y", 0);
 }
 createSimpleVisualization();
 </script>
