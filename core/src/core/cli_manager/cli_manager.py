@@ -92,11 +92,12 @@ def parse_flags(args: list[str]) -> Dict[str, str]:
         arg = args[i]
         if arg.startswith("--"):
             key = arg[2:]
-            if i + 1 >= len(args):
-                raise ValueError(f"Flag {arg} requires a value")
-            value = args[i + 1]
-            flags[key] = value
-            i += 2
+            i += 1
+            value_parts = []
+            while i < len(args) and not args[i].startswith("--"):
+                value_parts.append(args[i])
+                i += 1
+            flags[key] = " ".join(value_parts)
         else:
             raise ValueError(f"Unexpected argument: {arg}")
     return flags
