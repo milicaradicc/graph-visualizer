@@ -4,6 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import redirect
 from django.shortcuts import render
 
+from core.cli_manager.cli_manager import CLIHandler
+from core.cli_manager.status import Status
 from core.use_cases import WorkspaceService, PluginService
 from .apps import datasource_group, visualizer_group
 from .util import serialize_to_json
@@ -37,6 +39,7 @@ def index(request):
         'filter_operators': WorkspaceService.get_filter_operators(),
         'active_searches': [search.to_dict() for search in workspace.searches],
         'active_filters': [f.to_dict() for f in workspace.filters],
+        'cli_history': workspace.cli_history,
     })
 
 def get_plugin_params(request, plugin_identifier):
@@ -232,3 +235,56 @@ def remove_filter(request):
     messages.success(request, "Filter removed successfully")
 
     return redirect("index")
+
+
+def run_cli_command(request):
+    if request.method != "POST":
+        messages.error(request, "Invalid request")
+        return redirect("index")
+
+    command = request.POST.get("command", "").strip()
+    workspace_service = apps.get_app_config('graph_visualizer').workspace_service
+    workspace = workspace_service.get_current_workspace()
+    cli = CLIHandler(workspace)
+
+    if not command:
+        workspace.cli_history.append({
+            "command": command,
+            "response" : "",
+            "status": Status.ERROR.value
+        })
+        return None
+
+    if command.lower() == "clear":
+        workspace.cli_history.clear()
+        messages.warning(request, "CLI cleared")
+        return redirect("index")
+
+    try:
+        status, message = cli.run_command(command)
+        workspace.cli_history.append({
+            "command": command,
+            "response": message,
+            "status": status.name.lower()
+        })
+
+        if status == Status.SUCCESS:
+            if command != "help":
+                messages.success(request, message)
+        elif status == Status.WARNING:
+            messages.warning(request, message)
+        else:
+            messages.error(request, message)
+
+        return redirect("index")
+
+
+    except Exception as e:
+        workspace.cli_history.append({
+            "command": command,
+            "response": str(e),
+            "status": "error"
+        })
+        messages.error(request, str(e))
+
+    return None

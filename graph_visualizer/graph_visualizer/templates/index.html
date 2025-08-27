@@ -46,13 +46,13 @@
     <div class="views-container">
 
         <!-- Tree View -->
-            <div class="view tree-view">
-                <div class="view-header">Tree View</div>
-                <div class="view-content" id="tree-container"></div>
-            </div>
+        <div class="view tree-view">
+            <div class="view-header">Tree View</div>
+            <div class="view-content" id="tree-container"></div>
+        </div>
 
         <!-- Additional Views from kolega -->
-        <div id="main-view" class="graph-view">
+        <div id="main-view" class="main-view">
             <h3>Main View</h3>
             {% if graph_html %}
                 {{ graph_html | safe }}
@@ -61,7 +61,7 @@
             {% endif %}
         </div>
 
-        <div id="bird-view" class="graph-view">
+        <div id="bird-view" class="bird-view">
             <h3>Bird View</h3>
             {% if bird_html %}
                 {{ bird_html | safe }}
@@ -71,6 +71,27 @@
         </div>
 
     </div>
+
+   <div id="cliTerminal" class="cli-container">
+        <div id="cliHistory" class="cli-history" style="white-space: pre;"></div>
+        <form method="POST" action="{% url 'run_cli_command' %}" id="cliForm">
+            {% csrf_token %}
+            <div class="cli-input-wrapper">
+                <input type="text" name="command" id="cliInput" placeholder="Type command..." autocomplete="off">
+            </div>
+        </form>
+    </div>
+
+   {{ cli_history|json_script:"cliHistoryData" }}
+
+    <script>
+        const cliHistoryData = JSON.parse(
+            document.getElementById("cliHistoryData").textContent
+        );
+    </script>
+    <script src="{% static 'cli.js' %}"></script>
+
+
 </div>
 
 <script>
