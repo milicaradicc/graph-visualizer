@@ -145,12 +145,31 @@ class Workspace(object):
     def remove_filter(self, filter_id):
         self._filters = [f for f in self._filters if f.id != filter_id]
 
+    def remove_filter_by_values(self, attribute: str, operator: str, value) -> bool:
+        from . import FilterOperator
+
+        to_remove = [
+            f for f in self.filters
+            if f._attribute == attribute and f._operator == FilterOperator(operator) and str(f._value) == str(value)
+        ]
+
+        if not to_remove:
+            return False
+
+        for f in to_remove:
+            self.filters.remove(f)
+        return True
+
     def add_search(self, query: str):
         from . import Search
         self._searches.append(Search(query))
 
     def remove_search(self, search_id):
         self._searches = [s for s in self._searches if s.id != search_id]
+
+    def remove_search_by_query(self, query):
+        self._searches = [s for s in self._searches if s.query != query]
+        return True
 
     def to_dict(self):
         return {

@@ -43,6 +43,28 @@ class CommandHandler:
         self.workspace.clean_start()
         return Status.SUCCESS,"Workspace cleared (all nodes and edges deleted)."
 
+    def add_search(self, query: str):
+        if not query:
+            return Status.ERROR, "Search query cannot be empty"
+        self.workspace.add_search(query)
+        return Status.SUCCESS, f"Search '{query}' added."
+
+    def remove_search(self, query: str):
+        if self.workspace.remove_search_by_query(query):
+            return Status.SUCCESS, f"Search {query} removed."
+        return Status.ERROR, f"Search {query} not found."
+
+    def add_filter(self, attribute: str, operator: str, value):
+        try:
+            self.workspace.add_filter(attribute, operator, value)
+            return Status.SUCCESS, f"Filter added: {attribute} {operator} {value}"
+        except ValueError as e:
+            return Status.ERROR, str(e)
+
+    def remove_filter(self, attribute: str, operator: str, value:str):
+        if self.workspace.remove_filter_by_values(attribute, operator, value):
+            return Status.SUCCESS, f"Filter {attribute} {operator} {value} removed."
+        return Status.ERROR, f"Filter {attribute} {operator} {value} not found."
 
 def convert_value(value):
     """Convert value string to int, float, or date if applicable."""
@@ -124,6 +146,18 @@ class CLIHandler:
         delete edge:
             delete-edge --parent <parent_id> --child <child_id>
                 e.g. delete-edge --parent 1 --child 2
+        add search:
+            add-search --query <search query>
+                e.g. add-search --query Diana
+        remove search:
+            remove-search --query <search query>
+                e.g. remove-search --query Diana
+        add filter:
+            add-filter --attribute <attribute> --operator <operator> --value <value>
+                e.g. add-filter --attribute age --operator > --value 20
+        remove filter:
+            remove-filter --attribute <attribute> --operator <operator> --value <value>
+                e.g. remove-filter --attribute age --operator > --value 20
         clear workspace:
             clear-start
         help:
@@ -202,6 +236,40 @@ class CLIHandler:
             elif cmd == "clear-start":
                 status,message = self.manager.clean_start()
                 return status,message
+
+            elif cmd == "add-search":
+                flags = parse_flags(parts[1:])
+                query = flags.get("query")
+                if not query:
+                    raise ValueError("Missing --query")
+                return self.manager.add_search(query)
+
+            elif cmd == "remove-search":
+                flags = parse_flags(parts[1:])
+                query = flags.get("query")
+                if not query:
+                    raise ValueError("Missing --query")
+                return self.manager.remove_search(query)
+
+            elif cmd == "add-filter":
+                flags = parse_flags(parts[1:])
+                attr = flags.get("attribute")
+                op = flags.get("operator")
+                val = flags.get("value")
+                if not all([attr, op, val]):
+                    raise ValueError("Missing --attribute, --operator, or --value")
+                val = convert_value(val)
+                return self.manager.add_filter(attr, op, val)
+
+            elif cmd == "remove-filter":
+                flags = parse_flags(parts[1:])
+                attr = flags.get("attribute")
+                op = flags.get("operator")
+                val = flags.get("value")
+                if not all([attr, op, val]):
+                    raise ValueError("Missing --attribute, --operator, or --value")
+                val = convert_value(val)
+                return self.manager.remove_filter(attr,op,val)
 
             elif cmd == "help":
                 return Status.SUCCESS, self.INSTRUCTION
