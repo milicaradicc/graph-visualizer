@@ -1,5 +1,11 @@
 <style>
-.node {
+
+
+#simple_visualizer {
+    width: 100%;
+    height: 100%;
+    display: block !important;
+    .node {
     cursor: pointer;
     fill: white;
     stroke: black;
@@ -12,7 +18,7 @@
 }
 
 .link {
-    fill: none;
+    fill: none !important;
     stroke: black;
     stroke-width: 1.5px;
 }
@@ -34,11 +40,6 @@
 .arrowhead {
     fill: red;
 }
-
-#simple_visualizer {
-    width: 100%;
-    height: 100%;
-    display: block !important;
 }
 </style>
 
@@ -55,12 +56,13 @@ function createSimpleVisualization() {
     const containerElement = document.querySelector("#simple_visualizer").parentNode;
     const width = Math.max(containerElement.clientWidth || 800, 400);
     const height = Math.max(containerElement.clientHeight || 600, 300);
-    const arrowSize = 4;
+    const arrowSize = 9;
     const manyNodes = nodes.length >= 50;
 
     const minRadius = manyNodes ? 5 : 15;
     const maxRadius = manyNodes ? 25 : 60;
-    if (!nodes && nodes.length == 0) {
+
+    if (!nodes || nodes.length === 0) {
         d3.select("#simple_visualizer")
             .append("text")
             .attr("x", 50)
@@ -69,6 +71,7 @@ function createSimpleVisualization() {
             .text("No graph data to display");
         return;
     }
+
     // Calculate node degrees for sizing
     const degreeMap = {};
     links.forEach(l => {
@@ -84,33 +87,20 @@ function createSimpleVisualization() {
         .domain([minDeg, maxDeg])
         .range([minRadius, maxRadius]);
 
-    // Prepare node data
-    const nodeData = nodes.map((node, i) => {
+    const nodeData = nodes.map(node => {
         const displayText = node.id || 'Unknown';
         const degree = degreeMap[node.id] || 0;
         const radius = scaleRadius(degree);
-        // Simple circular layout for static positioning ?????????????????
-        const angle = (i / nodes.length) * 2 * Math.PI;
-        const padding = 60; // Padding from edges
-        const maxRadius = Math.min(width, height) * 0.35; // Use more conservative radius
-        const centerRadius = Math.max(50, maxRadius - maxRadius); // Conservative sizing
-                const x = width / 2 + centerRadius * Math.cos(angle);
-        const y = height / 2 + centerRadius * Math.sin(angle);
 
-        const boundedX = Math.max(radius + padding, Math.min(width - radius - padding, x));
-        const boundedY = Math.max(radius + padding, Math.min(height - radius - padding, y));
+        return { ...node, radius, displayText, degree, x: width / 2, y: height / 2 };
+    });
 
-        return { ...node, radius, displayText, degree, x: boundedX, y: boundedY };
-        });
-
-    // Prepare link data
     const linkData = links.map(link => ({
         ...link,
         source: nodeData.find(n => n.id === link.source),
         target: nodeData.find(n => n.id === link.target)
     })).filter(link => link.source && link.target);
 
-    // Setup SVG
     const svg = d3.select("#simple_visualizer")
         .attr("viewBox", `0 0 ${width} ${height}`)
         .attr("preserveAspectRatio", "xMidYMid meet")
@@ -119,83 +109,57 @@ function createSimpleVisualization() {
 
     svg.selectAll("*").remove();
 
-    // Setup arrow markers for directed graphs
     if (isDirected) {
         const defs = svg.append("defs");
         defs.append("marker")
             .attr("id", "arrowhead")
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 10)
+            .attr("refX", 44)  // adjust if needed
             .attr("refY", 0)
             .attr("markerWidth", arrowSize)
             .attr("markerHeight", arrowSize)
             .attr("orient", "auto")
+            .attr("markerUnits", "userSpaceOnUse")
             .append("path")
             .attr("d", "M0,-5L10,0L0,5")
-            .attr("class", "arrowhead");
+            .attr("fill", "red");
     }
 
-    // Create container
     const container = svg.append("g").attr("class", "visualization-container");
 
-    // Create links with static positions
-
-    const linkSelection = container.append("g")
-        .attr("class", "links")
-        .selectAll("line")
+    const linkSelection = container.selectAll(".link")
         .data(linkData)
-        .join("line")
+        .enter()
+        .append("path")
+        .attr("class", "links")
         .attr("enabled", "true")
-        .attr("class", d => isDirected ? "link directed" : "link")
-        .attr("x1", d => d.source.x)
-        .attr("y1", d => d.source.y)
-        .attr("x2", d => {
-            if (!isDirected) return d.target.x;
-            const dx = d.target.x - d.source.x;
-            const dy = d.target.y - d.source.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance === 0) return d.target.x;
-            const targetRadius = d.target.radius || 10;
-            return d.target.x - (dx / distance) * (targetRadius + 5);
-        })
-        .attr("y2", d => {
-            if (!isDirected) return d.target.y;
-            const dx = d.target.x - d.source.x;
-            const dy = d.target.y - d.source.y;
-            const distance = Math.sqrt(dx * dx + dy * dy);
-            if (distance === 0) return d.target.y;
-            const targetRadius = d.target.radius || 10;
-            return d.target.y - (dy / distance) * (targetRadius + 5);
-        });
-    // Create nodes
-    const nodeGroup = container.append("g")
-        .attr("class", "nodes");
+        .attr("fill", "none")
+        .attr("stroke", "black")
+        .attr("stroke-width", 1.5)
+        .attr("marker-end", isDirected ? "url(#arrowhead)" : null);
 
-    const nodeSelection = nodeGroup
-        .selectAll("circle")
+    const nodeGroups = container.selectAll(".node-group")
         .data(nodeData)
-        .join("circle")
+        .enter()
+        .append("g")
+        .attr("class", "node-group")
+        .attr("enabled", "true")
+        .attr("transform", d => `translate(${d.x},${d.y})`);
+
+    const nodeSelection = nodeGroups
+        .append("circle")
         .attr("class", "node")
         .attr("enabled", "true")
         .attr("r", d => d.radius)
-        .attr("cx", d => d.x)
-        .attr("cy", d => d.y);
+        .attr("id", d => d.id);
 
-    // Add tooltips
-    nodeSelection.append("title").text(d => d.displayText);
-
-    // Create labels
-    const labelSelection = nodeGroup.selectAll("text")
-        .data(nodeData)
-        .join("text")
+    // Add text to node groups - FIXED: Proper positioning
+    const textSelection = nodeGroups
+        .append("text")
         .attr("class", "node-label")
-        .attr("enabled", "true")
-        .attr("dy", -3)
-        .style("font-size", "8px")
-        .text(d => d.id)
-        .attr("x", d => d.x)
-        .attr("y", d => d.y);
-
+        .text(d => d.displayText)
+        .attr("x", 0)  // Centered in the group
+        .attr("y", 0); // Centered in the group
 }
-createSimpleVisualization()
+createSimpleVisualization();
 </script>

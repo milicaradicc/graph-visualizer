@@ -61,50 +61,64 @@ function createGraphInteractionManager() {
     }
 
     // Enable interactions for visualizer
-    function enableGenericPluginInteractions(visualizerInstance, enableDrag = true, enableZoom = true) {
+    function enableGenericPluginInteractions(visualizerInstance, enableDrag = true, enableZoom = true, isDirected = true) {
         if (!visualizerInstance || !visualizerInstance.nodeData) {
             console.warn('Invalid visualizer instance', visualizerInstance);
             return null;
         }
-        console.log(visualizerInstance)
 
-        const { svg, container, nodeSelection, linkSelection, labelSelection, nodeData, linkData } = visualizerInstance;
+        const { svg, container, nodeSelection, linkSelection, nodeData, linkData } = visualizerInstance;
         const width = svg.node().clientWidth || 800;
         const height = svg.node().clientHeight || 600;
+        console.log(svg, container, nodeSelection, linkSelection, nodeData, linkData)
 
-        // Create simulation
         const simulation = d3.forceSimulation(nodeData)
-            .force("link", d3.forceLink(linkData).id(d => d.id).distance(100))
-            .force("charge", d3.forceManyBody().strength(-200))
+            .force("link", d3.forceLink(linkData).id(d => d.id).distance(200))
+            .force("charge", d3.forceManyBody().strength(0))
             .force("center", d3.forceCenter(width / 2, height / 2))
-            .force("collision", d3.forceCollide().radius(d => d.radius + 10))
+            .force("collision", d3.forceCollide().radius(70))
+            .force("gravity", d3.forceManyBody().strength(-100))
             .on("tick", tick);
 
         function tick() {
             linkSelection
-                .attr("x1", d => d.source.x)
-                .attr("y1", d => d.source.y)
-                .attr("x2", d => d.target.x)
-                .attr("y2", d => d.target.y);
+                    .attr("d", function (d) {
+                        // FIXED: Use linkData instead of undefined 'links'
+                        const reverse = linkData.find(
+                            (l) => l.source.id === d.target.id && l.target.id === d.source.id
+                        );
 
-            nodeSelection
-                .attr("cx", d => d.x = Math.max(d.radius + 5, Math.min(width - d.radius - 5, d.x)))
-                .attr("cy", d => d.y = Math.max(d.radius + 5, Math.min(height - d.radius - 5, d.y)));
+                        if (reverse && reverse !== d) {
+                            const offset = 20;
+                            const dx = d.target.x - d.source.x;
+                            const dy = d.target.y - d.source.y;
+                            const dist = Math.sqrt(dx * dx + dy * dy);
 
-            labelSelection
-                .attr("x", d => d.x)
-                .attr("y", d => d.y);
-        }
+                            if (dist > 0) {
+                                const nx = -dy / dist;
+                                const ny = dx / dist;
 
-        activeSimulation = simulation;
+                                const mx = (d.source.x + d.target.x) / 2 + nx * offset;
+                                const my = (d.source.y + d.target.y) / 2 + ny * offset;
+
+                                return `M${d.source.x},${d.source.y} Q${mx},${my} ${d.target.x},${d.target.y}`;
+                            }
+                        }
+                        return `M${d.source.x},${d.source.y} L${d.target.x},${d.target.y}`;
+                    });
+
+                // FIXED: Update node group transforms (not individual elements)
+                nodeSelection
+                    .attr("transform", (d) => `translate(${d.x},${d.y})`);
+            }
 
         // Add behaviors
-        if (enableDrag) {
+        if (enableDrag && nodeSelection) {
             nodeSelection.call(createDragBehavior(simulation));
         }
 
         if (enableZoom) {
-            createZoomBehavior(svg, container, labelSelection);
+            createZoomBehavior(svg, container);
         }
 
         // Fit to view after initialization
@@ -120,28 +134,45 @@ function createGraphInteractionManager() {
 
     // Fit graph to view
     function fitGraphToView(svg, container, nodeData, width, height) {
-        if (!nodeData || nodeData.length === 0) return;
+    if (!nodeData || nodeData.length === 0) return;
 
-        const padding = 50;
-        const xExtent = d3.extent(nodeData, d => d.x);
-        const yExtent = d3.extent(nodeData, d => d.y);
+    // Add padding to ensure nodes don't touch edges
+    const padding = 50;
 
-        const graphWidth = xExtent[1] - xExtent[0];
-        const graphHeight = yExtent[1] - yExtent[0];
-        const graphCenterX = (xExtent[0] + xExtent[1]) / 2;
-        const graphCenterY = (yExtent[0] + yExtent[1]) / 2;
+    // Get current node positions
+    const xExtent = d3.extent(nodeData, d => d.x);
+    const yExtent = d3.extent(nodeData, d => d.y);
 
-        const scaleX = (width - padding * 2) / graphWidth;
-        const scaleY = (height - padding * 2) / graphHeight;
-        const scale = Math.min(scaleX, scaleY, 1);
+    // Handle edge cases where all nodes might be at same position
+    const graphWidth = Math.max(xExtent[1] - xExtent[0], 1);
+    const graphHeight = Math.max(yExtent[1] - yExtent[0], 1);
 
-        const translateX = width / 2 - graphCenterX * scale;
-        const translateY = height / 2 - graphCenterY * scale;
+    // Calculate graph center
+    const graphCenterX = (xExtent[0] + xExtent[1]) / 2;
+    const graphCenterY = (yExtent[0] + yExtent[1]) / 2;
 
-        svg.transition()
-            .duration(750)
-            .call(d3.zoom().transform, d3.zoomIdentity.translate(translateX, translateY).scale(scale));
-    }
+    // Calculate available space
+    const availableWidth = width - padding * 2;
+    const availableHeight = height - padding * 2;
+
+    // Calculate scale factors
+    const scaleX = availableWidth / graphWidth;
+    const scaleY = availableHeight / graphHeight;
+
+    // Use the smaller scale to ensure everything fits, with max scale of 2 for readability
+    const scale = Math.min(scaleX, scaleY, 2);
+
+    // Calculate translation to center the graph
+    const translateX = width / 2 - graphCenterX * scale;
+    const translateY = height / 2 - graphCenterY * scale;
+
+    // Apply the transform with smooth transition
+    const zoom = d3.zoom();
+    svg.transition()
+        .duration(750)
+        .ease(d3.easeQuadInOut)
+        .call(zoom.transform, d3.zoomIdentity.translate(translateX, translateY).scale(scale));
+}
 
     // Initialize bird view observer
     function initializeBirdView(mainViewSelector, birdViewSvgId) {

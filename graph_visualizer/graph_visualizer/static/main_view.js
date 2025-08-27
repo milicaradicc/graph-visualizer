@@ -66,22 +66,15 @@ window.checkForVisualizer = function(pluginId) {
         const svgSelection = d3.select(`#${pluginId}`);
         const containerSelection = d3.select(container);
 
-        const nodeSelection = svgSelection.selectAll('circle.node[enabled="true"]')
-            .data(nodeData, d => d.id); // Bind nodeData to circles
+        const nodeSelection = svgSelection.selectAll('g.node-group[enabled="true"]')
+        .data(nodeData, d => d.id);
 
-        const linkSelection = svgSelection.selectAll('line.link.directed[enabled="true"]')
-            .data(linkData); // Bind linkData to lines
-
-        const labelSelection = svgSelection.selectAll('text.node-label[enabled="true"]')
-            .data(nodeData, d => d.id); // Bind nodeData to labels
+        const linkSelection = svgSelection.selectAll('path.links[enabled="true"]')
+        .data(linkData);
 
         nodeSelection
             .attr('cx', d => d.x || 0)
             .attr('cy', d => d.y || 0);
-
-        labelSelection
-            .attr('x', d => d.x || 0)
-            .attr('y', d => d.y || 0);
 
         const svgNode = svgSelection.node();
         const width = svgNode.clientWidth || 800;
@@ -101,7 +94,6 @@ window.checkForVisualizer = function(pluginId) {
                 container: containerSelection,
                 nodeSelection: nodeSelection,
                 linkSelection: linkSelection,
-                labelSelection: labelSelection,
                 nodeData: nodeData,
                 linkData: linkData
             }
@@ -127,7 +119,7 @@ window.checkForVisualizer = function(pluginId) {
                     mainView.contains(visualizerSvg) && window.graphInteractionManager) {
 
                     const interactiveInstance = window.graphInteractionManager
-                        .enableGenericPluginInteractions(window.pluginAPI[pluginId].instance, true, true);
+                        .enableGenericPluginInteractions(window.pluginAPI[pluginId].instance, true, true, true);
                     if (interactiveInstance) {
                         window.pluginAPI[pluginId].interactiveInstance = interactiveInstance;
                     } else {

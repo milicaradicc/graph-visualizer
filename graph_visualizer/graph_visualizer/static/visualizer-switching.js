@@ -137,7 +137,7 @@ class VisualizerSwitcher {
 
             // Call with the correct arguments: (instance, enableEvents=true, enableControl=true)
             const interactiveInstance = window.graphInteractionManager
-                .enableGenericPluginInteractions(pluginInstance, true, true);
+                .enableGenericPluginInteractions(pluginInstance, true, true, true);
 
             if (interactiveInstance) {
                 window.pluginAPI[pluginId].interactiveInstance = interactiveInstance;

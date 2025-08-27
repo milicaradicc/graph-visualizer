@@ -1,18 +1,25 @@
 <style>
-.node text {
-    font: 12px sans-serif;
-    pointer-events: none;
-}
-
-.link {
-    stroke: #999;
-    stroke-opacity: 0.6;
-}
-
 #block_visualizer {
     width: 100%;
     height: 100%;
     display: block !important;
+
+    .node text {
+    font: 12px sans-serif;
+    pointer-events: none;
+}
+.node {
+    cursor: pointer;
+}
+
+.node:hover {
+    fill: #f5f5f5;
+    stroke-width: 3px;
+}
+.link {
+    stroke: #999;
+    stroke-opacity: 0.6;
+}
 }
 </style>
 
@@ -21,7 +28,6 @@
 </div>
 
 <script>
-// helper: wrap text within maxWidth
 function wrapText(textSelection, maxWidth) {
     textSelection.each(function() {
         const text = d3.select(this);
@@ -51,7 +57,6 @@ function wrapText(textSelection, maxWidth) {
     });
 }
 
-// normalize edges (avoid duplicates)
 function normalizeEdges(nodes, edges, isDirected) {
     const links = [];
     const seen = new Set();
@@ -84,7 +89,8 @@ function renderBlockGraph() {
          edges: {{ edges | tojson | safe }},
          directed: {{ directed | tojson }}
      };
-    const width = 1000, height = 600;
+    const width = 800;
+    const height = 600;
     
     // Check if we have valid data
     if (!data || !data.nodes || data.nodes.length === 0) {
@@ -108,57 +114,50 @@ function renderBlockGraph() {
         .style("width", "100%")
         .style("height", "100%");
 
-    // Clear any existing content
     svg.selectAll("*").remove();
 
-    // Create main container - ONLY ONCE
     const container = svg.append("g").attr("class", "visualization-container");
 
-    // add arrow marker only if directed
-    const markerId = `arrow`;
+    const markerId = `arrowhead-block`;
     if (data.directed) {
         svg.append("defs").append("marker")
             .attr("id", markerId)
             .attr("viewBox", "0 -5 10 10")
-            .attr("refX", 70)
+            .attr("refX", 100)
             .attr("refY", 0)
-            .attr("markerWidth", 6)
-            .attr("markerHeight", 6)
+            .attr("markerWidth", 9)
+            .attr("markerHeight", 9)
             .attr("orient", "auto")
+            .attr("markerUnits", "userSpaceOnUse")
             .append("path")
             .attr("d", "M0,-5L10,0L0,5")
             .attr("fill", "#999");
     }
 
-    // Create links
-    const linkSelection = container.append("g")
-        .attr("class", "links")
-        .selectAll("line")
+    const linkSelection = container.selectAll(".link")
         .data(links)
         .enter()
-        .append("line")
+        .append("path")
+        .attr("class", "links")
         .attr("enabled", "true")
-        .attr("class", data.directed ? "link directed" : "link")
+        .attr("fill", "none")
         .attr("stroke-width", 2)
         .attr("stroke", "#999")
         .attr("marker-end", data.directed ? `url(#${markerId})` : null);
 
-    // Create nodes
-    const nodeSelection = container.append("g")
-        .attr("class", "nodes")
-        .selectAll("g")
+    const nodeGroups = container.selectAll(".node-group")
         .data(data.nodes)
         .enter()
         .append("g")
-        .attr("class", "node")
+        .attr("class", "node-group")
         .attr("enabled", "true");
 
-    // Draw node rectangles and text
-    nodeSelection.each(function(d) {
+    nodeGroups.each(function(d) {
         const g = d3.select(this);
 
-        // Main rectangle
         g.append("rect")
+            .attr("class", "node")
+            .attr("enabled", "true")
             .attr("width", d.blockWidth)
             .attr("height", d.blockHeight)
             .attr("x", -d.blockWidth/2)
@@ -166,9 +165,9 @@ function renderBlockGraph() {
             .attr("fill", "#fff")
             .attr("stroke", "#000")
             .attr("rx", 5)
-            .attr("ry", 5);
+            .attr("ry", 5)
+            .attr("id", d.id);
 
-        // Header rectangle
         g.append("rect")
             .attr("width", d.blockWidth)
             .attr("height", 25)
@@ -177,27 +176,29 @@ function renderBlockGraph() {
             .attr("fill", "#f8adbb")
             .attr("rx", 5)
             .attr("ry", 5);
+    });
 
-        // ID text
-        g.append("text")
-            .attr("class", "node-label")
-            .attr("enabled", "true")
-            .attr("x", 0)
-            .attr("y", -d.blockHeight/2 + 17)
-            .text(`ID: ${d.id}`)
-            .attr("font-size", "12px")
-            .attr("font-weight", "bold")
-            .attr("fill", "#000")
-            .attr("text-anchor", "middle");
+    const textSelection = nodeGroups
+        .append("text")
+        .attr("class", "node-label")
+        .text(d => `ID: ${d.id}`)
+        .attr("x", 0)
+        .attr("y", d => -d.blockHeight/2 + 17)
+        .attr("font-size", "12px")
+        .attr("font-weight", "bold")
+        .attr("fill", "#000")
+        .attr("text-anchor", "middle");
 
-        // Attribute texts
+    nodeGroups.each(function(d) {
+        const g = d3.select(this);
+
         g.selectAll(".attrText")
             .data(d.attrs)
             .enter()
             .append("text")
             .attr("class", "attrText")
             .attr("x", -d.blockWidth/2 + 5)
-            .attr("y", (attr, i) => -d.blockHeight/2 + 40 + i * 20)
+            .attr("y", (attr, i) => -d.blockHeight/2 + 40 + i * 18)
             .text(attr => `${attr[0]}: ${attr[1] != null ? attr[1].toString() : ''}`)
             .attr("font-size", "12px")
             .attr("fill", "#000")
@@ -205,10 +206,6 @@ function renderBlockGraph() {
                 wrapText(d3.select(this), d.blockWidth - 10);
             });
     });
-
-    // Create labelSelection equivalent (all text elements in nodes)
-    const labelSelection = nodeSelection.selectAll("text")
-        .attr("enabled", "true");
 }
 
 renderBlockGraph();
