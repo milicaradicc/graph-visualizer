@@ -1,8 +1,8 @@
 -e ./api
--e ./core
 -e ./datasource_rdf
+-e ./datasource_pypi
 -e ./datasource_json
 -e ./block_visualizer
 -e ./simple_visualizer
--e ./plugins/pypi_datasource
+-e ./core
 -r ./graph_visualizer/requirements.txt
