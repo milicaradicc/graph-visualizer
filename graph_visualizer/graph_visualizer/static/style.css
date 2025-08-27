@@ -10,19 +10,43 @@
   color: #fff;
   font-weight: bold;
 }
+.left-view{
+    width:30%;
+    height:73vh;
+}
+.right-view{
+    width:70%;
+}
 
 html, body {
             margin: 0;
-            padding: 5px;
-            height: 100%;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
             font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
         }
+h3{
+        margin: 0 auto;}
+        #bird-view svg {
+    height: 50% !important;
+}
+
+    /* Your existing rule will still apply to main view */
+    svg {
+        height: 70vh !important;
+    }
+
+    #main-view svg {
+        height: 70vh !important;
+    }
 
         .graph-container {
             display: flex;
             flex-direction: column;
-            height: 100%;
-            width: 99%;
+            height: 80vh;
+            width: 95vw;
         }
 
         .cli-container{
@@ -76,7 +100,8 @@ html, body {
             flex: 1;
             gap: 10px;
             padding: 0;
-            align-items: flex-start;
+            height: 80vh;
+            margin-bottom: 4rem;
         }
 
         .view {
@@ -84,19 +109,24 @@ html, body {
             border-radius: 8px;
             display: flex;
             flex-direction: column;
-            height: 95%;
+            height: 50%;
             overflow: hidden;
             background: white;
         }
 
-        .main-view { flex: 2; border-color: #4CAF50; width: -webkit-fill-available;}
-        .bird-view { flex: 1; border-color: #FF9800; background: #f9f9f9; pointer-events: none; }
+        #main-view { flex: 2; border-color: #4CAF50; }
+        #bird-view { flex: 1; border-color: #FF9800; background: #f9f9f9; pointer-events: none; }
         .tree-view .view-content {
             overflow-y: auto;
-            overflow-x: hidden;
-            height: 100%;
+            overflow-x: auto;
+            width: 100%;
+            height: 40%;
             padding-right: 10px;
             box-sizing: content-box;
+        }
+        .graph-view {
+            height: 70%;
+            padding-right: 10px;
         }
         /* Header view-a */
         .view-header {
@@ -115,7 +145,6 @@ html, body {
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
             position: relative;
         }
 

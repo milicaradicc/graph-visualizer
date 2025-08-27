@@ -1,12 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
+{% extends 'base.html' %}
+{% block head_content %}
     {% load static %}
     <link rel="stylesheet" href="{% static 'tree_view.css' %}">
-    <link rel="stylesheet" href="{% static 'style.css' %}">
-</head>
-<body>
+{% endblock %}
 
+{% block content %}
 <!-- Workspace management -->
 {% include "workspace_management.html" %}
 
@@ -32,44 +30,53 @@
 </script>
 
 <div class="graph-container">
-
     <!-- Controls for visualizer switch -->
     <div class="controls">
         <label for="visualizer-select">Choose visualizer:</label>
         <select id="visualizer-select">
-            <option value="block">Block Visualizer</option>
-            <option value="simple">Simple Visualizer</option>
+            {% for plugin in visualizer_plugins %}
+                <option value="{{ plugin.identifier }}" {% if plugin.identifier == visualizer_plugin.identifier %}selected{% endif %}>
+                    {{ plugin.name }}
+                </option>
+            {% endfor %}
         </select>
     </div>
 
     <!-- Views container -->
     <div class="views-container">
-
+        <div class="left-view">
         <!-- Tree View -->
-        <div class="view tree-view">
-            <div class="view-header">Tree View</div>
-            <div class="view-content" id="tree-container"></div>
+            <div class="view tree-view">
+                <div class="view-header">Tree View</div>
+                <div class="view-content" id="tree-container"></div>
+            </div>
+        <!-- Bird View -->
+            <div id="bird-view" class="graph-view">
+                <h3>Bird View</h3>
+                <div class="view-content">
+                    <svg id="bird-svg"></svg>
+                </div>
+            </div>
         </div>
-
-        <!-- Additional Views from kolega -->
-        <div id="main-view" class="main-view">
-            <h3>Main View</h3>
-            {% if graph_html %}
-                {{ graph_html | safe }}
-            {% else %}
-                <svg id="main-svg"></svg>
-            {% endif %}
+        <div class="right-view">
+        <!-- Main View -->
+            <div id="main-view" class="graph-view">
+                <h3>Main View</h3>
+                <div class="visualizer-content" id="visualizer-content">
+                    {% if visualizer_html and visualizer_plugin %}
+                        <div id="visualizer-{{ visualizer_plugin.identifier }}"
+                             data-plugin-id="{{ visualizer_plugin.identifier }}"
+                             class="active">
+                            {{ visualizer_html|safe }}
+                        </div>
+                    {% else %}
+                        <div>
+                            <p>No graph data available. Please load data first.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-
-        <div id="bird-view" class="bird-view">
-            <h3>Bird View</h3>
-            {% if bird_html %}
-                {{ bird_html | safe }}
-            {% else %}
-                <svg id="bird-svg"></svg>
-            {% endif %}
-        </div>
-
     </div>
 
    <div id="cliTerminal" class="cli-container">
@@ -96,27 +103,11 @@
 
 <script>
     window.graphData = {{ graph_json|safe }};
-    const select = document.getElementById("visualizer-select");
-    const mainBlockDiv = document.getElementById("main-block-visualizer");
-    const mainSimpleDiv = document.getElementById("main-simple-visualizer");
-
-    function switchVisualizer(type) {
-        if(type === "block") {
-            mainBlockDiv.classList.remove("hidden");
-            mainSimpleDiv.classList.add("hidden");
-        } else {
-            mainBlockDiv.classList.add("hidden");
-            mainSimpleDiv.classList.remove("hidden");
-        }
-    }
-
-    select.addEventListener("change", e => switchVisualizer(e.target.value));
-    switchVisualizer(select.value);
 </script>
 
+{% load static %}
 <script src="{% static 'tree_view.js' %}"></script>
-
-{% block content %}{% endblock %}
-
-</body>
-</html>
+<script src="{% static 'main_view.js' %}"></script>
+<script src="{% static 'graph_interactions.js' %}"></script>
+<script src="{% static 'visualizer_switcher.js' %}"></script>
+{% endblock %}

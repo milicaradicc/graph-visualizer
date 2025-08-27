@@ -16,3 +16,5 @@ class GraphVisualizerConfig(AppConfig):
     def ready(self):
         self.plugin_service.load_plugins(datasource_group)
         self.plugin_service.load_plugins(visualizer_group)
+        if visualizer_group in self.plugin_service.plugins and self.plugin_service.plugins[visualizer_group] and len(self.plugin_service.plugins[visualizer_group]) != 0:
+            self.plugin_service.set_current_visualizer(self.plugin_service.plugins[visualizer_group][0])
