@@ -1,6 +1,5 @@
 (function() {
     const container = document.getElementById("tree-container");
-    console.log(container)
     const graph = window.graphData;
 
     if (!graph) {
@@ -84,7 +83,6 @@
 
     const roots = findRoots(nodes, edges);
 
-    // --- create tree node with lazy loading ---
     function createTreeNode(node, visited = new Set()) {
         const li = document.createElement("li");
         li.classList.add("tree-node");
@@ -116,7 +114,6 @@
         }
         li.appendChild(dataDiv);
 
-        // lazy loading click
         toggleBtn.addEventListener("click", (e) => {
             e.stopPropagation();
 
@@ -158,7 +155,6 @@
         return li;
     }
 
-    // render root nodes
     const treeRoot = document.createElement("ul");
     treeRoot.classList.add("tree-root");
     roots.forEach(root => treeRoot.appendChild(createTreeNode(root)));
