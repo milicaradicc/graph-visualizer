@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+    <script type="text/javascript" src="https://d3js.org/d3.v5.min.js"></script>
+<!--    <script type="text/javascript" src="{% static 'd3.v3.js' %}"></script>-->
+    <title>Graph Visualizer</title>
+    {% block head_content %}{% endblock %}
+
+</head>
+<body>
+  {% block content %}{% endblock %}
+</body>
+</html>

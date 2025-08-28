@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "block-visualizer"
+version = "0.1"
+description = "A block visualization plugin for displaying graph."
+dependencies = [
+    "graph-api==0.1",
+    "rdflib>=6.0"
+]
+[tool.setuptools.package-data]
+block_visualizer = ["templates/*"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[project.entry-points."core.visualizer"]
+simple_visualizer = "block_visualizer.block_visualizer:BlockVisualizer"

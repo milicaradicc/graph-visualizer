@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+{% block head_content %}
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'tree_view.css' %}">
+{% endblock %}
+
+{% block content %}
+<!-- Workspace management -->
+{% include "workspace_management.html" %}
+
+{% include "search_filter.html" %}
+
+<!-- Popups -->
+{% if messages %}
+<div class="popup-container">
+  {% for message in messages %}
+    <div class="popup {{ message.tags }}">
+      <span class="popup-text">{{ message }}</span>
+      <span class="popup-close" onclick="this.parentElement.remove()">×</span>
+    </div>
+  {% endfor %}
+</div>
+{% endif %}
+
+<script>
+    // Auto-close popups after 5 seconds
+    setTimeout(() => {
+      document.querySelectorAll(".popup").forEach(popup => popup.remove());
+    }, 5000);
+</script>
+
+<div class="graph-container">
+    <!-- Controls for visualizer switch -->
+        <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <label for="visualizer-select">Visualizer:</label>
+        <select id="visualizer-select" class="styled-select">
+            {% for plugin in visualizer_plugins %}
+                <option value="{{ plugin.identifier }}" {% if plugin.identifier == visualizer_plugin.identifier %}selected{% endif %}>
+                    {{ plugin.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <!-- Views container -->
+    <div class="views-container">
+        <div class="left-view">
+        <!-- Tree View -->
+            <div class="view tree-view" id="tree-view" class="graph-view">
+                <h3>Tree View</h3>
+                <div class="view-content" id="tree-container"></div>
+            </div>
+        <!-- Bird View -->
+            <div id="bird-view" class="graph-view">
+                <h3>Bird View</h3>
+                <div class="view-content">
+                    <svg id="bird-svg"></svg>
+                </div>
+            </div>
+        </div>
+        <div class="right-view">
+        <!-- Main View -->
+            <div id="main-view" class="graph-view">
+                <h3>Main View</h3>
+                <div class="visualizer-content" id="visualizer-content">
+                    {% if visualizer_html and visualizer_plugin %}
+                        <div id="visualizer-{{ visualizer_plugin.identifier }}"
+                             data-plugin-id="{{ visualizer_plugin.identifier }}"
+                             class="active">
+                            {{ visualizer_html|safe }}
+                        </div>
+                    {% else %}
+                        <div>
+                            <p>No graph data available. Please load data first.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+   <div id="cliTerminal" class="cli-container">
+        <div id="cliHistory" class="cli-history"></div>
+        <form method="POST" action="{% url 'run_cli_command' %}" id="cliForm">
+            {% csrf_token %}
+            <div class="cli-input-wrapper">
+                <input type="text" name="command" id="cliInput" placeholder="Type command..." autocomplete="off">
+            </div>
+        </form>
+    </div>
+
+   {{ cli_history|json_script:"cliHistoryData" }}
+
+    <script>
+        const cliHistoryData = JSON.parse(
+            document.getElementById("cliHistoryData").textContent
+        );
+    </script>
+    <script src="{% static 'cli.js' %}"></script>
+
+
+</div>
+
+<script>
+    window.graphData = {{ graph_json|safe }};
+      window.addEventListener('load', function() {
+        // Scroll to top on page load
+        window.scrollTo(0, 0);
+
+        // Ako želiš da scroll uvek ostane na vrhu prilikom rendera
+        document.body.scrollTop = 0; // za Safari
+        document.documentElement.scrollTop = 0; // za Chrome, Firefox, IE i Opera
+      });
+</script>
+
+{% load static %}
+<script src="{% static 'tree_view.js' %}"></script>
+<script src="{% static 'main_view.js' %}"></script>
+<script src="{% static 'graph_interactions.js' %}"></script>
+<script src="{% static 'visualizer_switcher.js' %}"></script>
+{% endblock %}
