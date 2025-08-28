@@ -93,12 +93,8 @@
         const toggleBtn = document.createElement("span");
         toggleBtn.classList.add("toggle-btn");
 
-        if (node.children.length > 0) {
-            toggleBtn.textContent = "+";
-            toggleBtn.style.cursor = "pointer";
-        } else {
-            toggleBtn.textContent = "";
-        }
+        toggleBtn.textContent = "+";
+        toggleBtn.style.cursor = "pointer";
 
         span.appendChild(toggleBtn);
         span.appendChild(document.createTextNode(node.id));
