@@ -6,7 +6,7 @@ A Django-based application for visualizing and interacting with graphs.
 
 | Name             | Plugin            | GitHub                                       |
 |------------------|-------------------|----------------------------------------------|
-| Milica Radić     | Block Visualizer  | [milicaradicc](https://github.com/milicaradic) |
+| Milica Radić     | Block Visualizer  | [milicaradicc](https://github.com/milicaradicc) |
 | Nadja Zorić      | Simple Visualizer | [zoricnadja](https://github.com/zoricnadja)          |
 | Mijat Krivokapić | Rdf Datasource    | [mijatkrivokapic](https://github.com/mijatkrivokapic) |
 | Andjela Ristić   | Json Datasource   | [RisticAndjela](https://github.com/RisticAndjela) |
